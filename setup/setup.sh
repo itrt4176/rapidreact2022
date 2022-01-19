@@ -1,4 +1,5 @@
 #! /bin/sh
+git branch -t main origin/main
 
 git flow init -d
 
