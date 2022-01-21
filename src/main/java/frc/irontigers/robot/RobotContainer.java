@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.XboxController.Button;
-import edu.wpi.first.wpilibj.XboxController.Button.*;
+import frc.irontigers.robot.subsystems.Intake;
 import frc.irontigers.robot.subsystems.Shooter;
 
 /**
@@ -28,9 +28,15 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
 
   private XboxController controller = new XboxController(0);
-  private JoystickButton increaseSpeed = new JoystickButton(controller, Button.kRightBumper.value);
-  private JoystickButton decreaseSpeed = new JoystickButton(controller, Button.kLeftBumper.value);
+  private JoystickButton increaseShooter = new JoystickButton(controller, Button.kRightBumper.value);
+  private JoystickButton decreaseShooter = new JoystickButton(controller, Button.kLeftBumper.value);
+
+  private JoystickButton increaseIntake = new JoystickButton(controller, Button.kB.value);
+  private JoystickButton decreaseIntake = new JoystickButton(controller, Button.kX.value);
+
+
   private Shooter shooter = new Shooter();
+  private Intake intake = new Intake();
 
   public RobotContainer() {
     // Configure the button bindings
@@ -44,8 +50,11 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    increaseSpeed.whenPressed(() -> shooter.speedUP());
-    decreaseSpeed.whenPressed(() -> shooter.slowDOWN());
+    increaseShooter.whenPressed(() -> shooter.speedUP());
+    decreaseShooter.whenPressed(() -> shooter.slowDOWN());
+
+    increaseIntake.whenPressed(() -> intake.speedUP());
+    decreaseIntake.whenPressed(() -> intake.slowDOWN());
   }
 
   /**
