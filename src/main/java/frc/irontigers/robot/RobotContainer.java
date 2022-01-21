@@ -5,8 +5,14 @@
 package frc.irontigers.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import frc.irontigers.robot.Constants.Flywheel;
 import frc.tigerlib.XboxControllerIT;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.XboxController.Button.*;
+import frc.irontigers.robot.subsystems.Shooter;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -20,6 +26,12 @@ public class RobotContainer {
   // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
+
+  private XboxController controller = new XboxController(0);
+  private JoystickButton increaseSpeed = new JoystickButton(controller, Button.kRightBumper.value);
+  private JoystickButton decreaseSpeed = new JoystickButton(controller, Button.kLeftBumper.value);
+  private Shooter shooter = new Shooter();
+
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
@@ -31,7 +43,10 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxControllerIT}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+    increaseSpeed.whenPressed(() -> shooter.speedUP());
+    decreaseSpeed.whenPressed(() -> shooter.slowDOWN());
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
