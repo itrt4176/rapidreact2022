@@ -6,12 +6,12 @@ package frc.irontigers.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import frc.irontigers.robot.Constants.Flywheel;
+import frc.irontigers.robot.commands.BangBangShooterTest;
 import frc.tigerlib.XboxControllerIT;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj.XboxController.Button;
-import edu.wpi.first.wpilibj.XboxController.Button.*;
+import static edu.wpi.first.wpilibj.XboxController.Button.*;
 import frc.irontigers.robot.subsystems.Shooter;
 
 /**
@@ -28,9 +28,14 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
 
   private XboxController controller = new XboxController(0);
-  private JoystickButton increaseSpeed = new JoystickButton(controller, Button.kRightBumper.value);
-  private JoystickButton decreaseSpeed = new JoystickButton(controller, Button.kLeftBumper.value);
+  private JoystickButton increaseSpeed = new JoystickButton(controller, kRightBumper.value);
+  private JoystickButton decreaseSpeed = new JoystickButton(controller, kLeftBumper.value);
+  private JoystickButton startBangBang = new JoystickButton(controller, kStart.value);
+  private JoystickButton stopBangBang = new JoystickButton(controller, kBack.value);
+
   private Shooter shooter = new Shooter();
+
+  private BangBangShooterTest bangBangTest = new BangBangShooterTest(shooter, 2500);
 
   public RobotContainer() {
     // Configure the button bindings
@@ -46,6 +51,10 @@ public class RobotContainer {
   private void configureButtonBindings() {
     increaseSpeed.whenPressed(() -> shooter.speedUP());
     decreaseSpeed.whenPressed(() -> shooter.slowDOWN());
+
+    startBangBang.whenPressed(bangBangTest);
+    stopBangBang.cancelWhenPressed(bangBangTest);
+    
   }
 
   /**
