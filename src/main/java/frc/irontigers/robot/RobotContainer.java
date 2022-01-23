@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.irontigers.robot.subsystems.Intake;
 import frc.irontigers.robot.subsystems.Shooter;
+import frc.irontigers.robot.subsystems.InFeed;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -28,15 +29,19 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
 
   private XboxController controller = new XboxController(0);
-  private JoystickButton increaseShooter = new JoystickButton(controller, Button.kRightBumper.value);
-  private JoystickButton decreaseShooter = new JoystickButton(controller, Button.kLeftBumper.value);
+  private JoystickButton shooterON = new JoystickButton(controller, Button.kRightBumper.value);
+  private JoystickButton shooterOFF = new JoystickButton(controller, Button.kLeftBumper.value);
 
   private JoystickButton increaseIntake = new JoystickButton(controller, Button.kB.value);
   private JoystickButton decreaseIntake = new JoystickButton(controller, Button.kX.value);
 
+  private JoystickButton infeedON = new JoystickButton(controller, Button.kStart.value);
+  private JoystickButton infeedOFF = new JoystickButton(controller, Button.kBack.value);
+
 
   private Shooter shooter = new Shooter();
   private Intake intake = new Intake();
+  private InFeed infeed = new InFeed();
 
   public RobotContainer() {
     // Configure the button bindings
@@ -50,11 +55,14 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    increaseShooter.whenPressed(() -> shooter.speedUP());
-    decreaseShooter.whenPressed(() -> shooter.slowDOWN());
+    shooterON.whenPressed(() -> shooter.turnON());
+    shooterOFF.whenPressed(() -> shooter.turnOFF());
 
-    increaseIntake.whenPressed(() -> intake.speedUP());
-    decreaseIntake.whenPressed(() -> intake.slowDOWN());
+    // increaseIntake.whenPressed(() -> intake.speedUP());
+    // decreaseIntake.whenPressed(() -> intake.slowDOWN());
+
+    infeedON.whenPressed(() -> infeed.set(0.3));
+    infeedOFF.whenPressed(() -> infeed.set(0));
   }
 
   /**

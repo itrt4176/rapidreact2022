@@ -33,13 +33,11 @@ public class Shooter extends SubsystemBase {
     return speed;
   }
 
-  public void speedUP() {
-    speed = MathUtil.clamp(speed + 0.05, -1.0, 1.0);
+  public void turnON() {
     set(speed);
   }
 
-  public void slowDOWN() {
-    speed = MathUtil.clamp(speed - 0.05, -1.0, 1.0);
+  public void turnOFF() {
     set(speed);
   }
 

@@ -15,7 +15,7 @@ package frc.irontigers.robot;
 public final class Constants {
     public final class Flywheel {
         public final static int MOTOR_ID = 0;
-        public final static double DEFAULT_SPEED = 0.25;
+        public final static double DEFAULT_SPEED = 0.80;
     }
 
     public final class Intake {
