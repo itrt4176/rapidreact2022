@@ -9,7 +9,7 @@ plugins {
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 
-def ROBOT_MAIN_CLASS = "frc.robot.Main"
+def ROBOT_MAIN_CLASS = "frc.irontigers.robot.Main"
 
 repositories {
     maven { url 'https://jitpack.io' }
@@ -23,9 +23,9 @@ repositories {
 }
 
 // Required for AdvantageKit logging.
-configurations.all {
-    exclude group: "edu.wpi.first.wpilibj"
-}
+// configurations.all {
+//     exclude group: "edu.wpi.first.wpilibj"
+// }
 
 // Define my targets (RoboRIO) and artifacts (deployable files)
 // This is added by GradleRIO's backing project DeployUtils.
