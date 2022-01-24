@@ -22,4 +22,9 @@ public final class Constants {
         public final static int MOTOR_ID = 1;
         public final static double DEFAULT_SPEED = 0.25;
     }
+
+    public static final class InFeedVals {
+        public final static int MOTOR_ID = 0;
+        public final static double DEFAULT_SPEED = 0.03;
+    }
 }

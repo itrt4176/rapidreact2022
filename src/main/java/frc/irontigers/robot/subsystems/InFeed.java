@@ -21,6 +21,10 @@ public class InFeed extends SubsystemBase {
     infeed.set(speed);
   }
 
+  public double get() {
+    return infeed.get();
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

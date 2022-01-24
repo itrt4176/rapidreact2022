@@ -6,7 +6,6 @@ package frc.irontigers.robot.subsystems;
 
 import static frc.irontigers.robot.Constants.IntakeVals.*;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -15,11 +14,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
   private Talon intake;
-  private double speed;
 
   public Intake() {
     intake = new Talon(MOTOR_ID);
-    speed = DEFAULT_SPEED;
   }
 
   public void set(double speed) {
@@ -28,16 +25,6 @@ public class Intake extends SubsystemBase {
 
   public double get() {
     return intake.get();
-  }
-
-  public void speedUP() {
-    speed = MathUtil.clamp(speed + 0.05, -1.0, 1.0);
-    set(speed);
-  }
-
-  public void slowDOWN() {
-    speed = MathUtil.clamp(speed - 0.05, -1.0, 1.0);
-    set(speed);
   }
 
   @Override

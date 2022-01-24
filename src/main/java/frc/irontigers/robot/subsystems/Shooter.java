@@ -15,11 +15,9 @@ public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
 
   private WPI_TalonFX flywheel;
-  private double speed;
 
   public Shooter() {
     flywheel = new WPI_TalonFX(0);
-    speed = DEFAULT_SPEED;
   }
 
   public double getRPM() {
@@ -32,14 +30,6 @@ public class Shooter extends SubsystemBase {
 
   public double get() {
     return flywheel.get();
-  }
-
-  public void turnON() {
-    set(speed);
-  }
-
-  public void turnOFF() {
-    set(speed);
   }
 
   @Override

@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import static frc.irontigers.robot.Constants.*;
 import frc.irontigers.robot.subsystems.Intake;
 import frc.irontigers.robot.subsystems.Shooter;
 import frc.irontigers.robot.subsystems.InFeed;
@@ -32,14 +33,14 @@ public class RobotContainer {
 
   private final XboxController controller = new XboxController(0);
 
-  private final JoystickButton shooterON = new JoystickButton(controller, Button.kRightBumper.value);
-  private final JoystickButton shooterOFF = new JoystickButton(controller, Button.kLeftBumper.value);
+  private final JoystickButton shooterOnButton = new JoystickButton(controller, Button.kRightBumper.value);
+  private final JoystickButton shooterOffButton = new JoystickButton(controller, Button.kLeftBumper.value);
 
-  private final JoystickButton increaseIntake = new JoystickButton(controller, Button.kB.value);
-  private final JoystickButton decreaseIntake = new JoystickButton(controller, Button.kX.value);
+  private final JoystickButton increaseIntakeButton = new JoystickButton(controller, Button.kB.value);
+  private final JoystickButton decreaseIntakeButton = new JoystickButton(controller, Button.kX.value);
 
-  private final JoystickButton infeedON = new JoystickButton(controller, Button.kStart.value);
-  private final JoystickButton infeedOFF = new JoystickButton(controller, Button.kBack.value);
+  private final JoystickButton infeedOnButton = new JoystickButton(controller, Button.kStart.value);
+  private final JoystickButton infeedOffButton = new JoystickButton(controller, Button.kBack.value);
 
 
   
@@ -56,14 +57,14 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    shooterON.whenPressed(() -> shooter.turnON());
-    shooterOFF.whenPressed(() -> shooter.turnOFF());
+    shooterOnButton.whenPressed(() -> shooter.set(ShooterVals.DEFAULT_SPEED));
+    shooterOffButton.whenPressed(() -> shooter.set(0));
 
-    // increaseIntake.whenPressed(() -> intake.speedUP());
-    // decreaseIntake.whenPressed(() -> intake.slowDOWN());
+    // increaseIntake.whenPressed(() -> intake.set(intake.get() + 0.05));
+    // decreaseIntake.whenPressed(() -> intake.set(intake.get() - 0.05));
 
-    infeedON.whenPressed(() -> infeed.set(0.3));
-    infeedOFF.whenPressed(() -> infeed.set(0));
+    infeedOnButton.whenPressed(() -> infeed.set(InFeedVals.DEFAULT_SPEED));
+    infeedOffButton.whenPressed(() -> infeed.set(0));
   }
 
   /**
