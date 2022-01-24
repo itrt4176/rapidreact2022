@@ -31,7 +31,7 @@ public class RobotContainer {
   private final Intake intake = new Intake();
   private final InFeed infeed = new InFeed();
 
-  private final XboxController controller = new XboxController(0);
+  private final XboxControllerIT controller = new XboxControllerIT(0);
 
   private final JoystickButton shooterOnButton = new JoystickButton(controller, Button.kRightBumper.value);
   private final JoystickButton shooterOffButton = new JoystickButton(controller, Button.kLeftBumper.value);
