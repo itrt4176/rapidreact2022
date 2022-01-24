@@ -13,12 +13,12 @@ package frc.irontigers.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public final class Shooter {
+    public static final class Shooter {
         public final static int MOTOR_ID = 0;
         public final static double DEFAULT_SPEED = 0.80;
     }
 
-    public final class Intake {
+    public static final class Intake {
         public final static int MOTOR_ID = 1;
         public final static double DEFAULT_SPEED = 0.25;
     }
