@@ -31,7 +31,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public double get() {
-    return speed;
+    return flywheel.get();
   }
 
   public void turnON() {
