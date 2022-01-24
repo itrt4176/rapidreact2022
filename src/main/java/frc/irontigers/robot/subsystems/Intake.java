@@ -4,7 +4,7 @@
 
 package frc.irontigers.robot.subsystems;
 
-import static frc.irontigers.robot.Constants.Intake.*;
+import static frc.irontigers.robot.Constants.IntakeVals.*;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
