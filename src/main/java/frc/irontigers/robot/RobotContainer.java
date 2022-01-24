@@ -26,21 +26,23 @@ public class RobotContainer {
   // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  private final Shooter shooter = new Shooter();
+  private final Intake intake = new Intake();
+  private final InFeed infeed = new InFeed();
 
-  private XboxController controller = new XboxController(0);
-  private JoystickButton shooterON = new JoystickButton(controller, Button.kRightBumper.value);
-  private JoystickButton shooterOFF = new JoystickButton(controller, Button.kLeftBumper.value);
+  private final XboxController controller = new XboxController(0);
 
-  private JoystickButton increaseIntake = new JoystickButton(controller, Button.kB.value);
-  private JoystickButton decreaseIntake = new JoystickButton(controller, Button.kX.value);
+  private final JoystickButton shooterON = new JoystickButton(controller, Button.kRightBumper.value);
+  private final JoystickButton shooterOFF = new JoystickButton(controller, Button.kLeftBumper.value);
 
-  private JoystickButton infeedON = new JoystickButton(controller, Button.kStart.value);
-  private JoystickButton infeedOFF = new JoystickButton(controller, Button.kBack.value);
+  private final JoystickButton increaseIntake = new JoystickButton(controller, Button.kB.value);
+  private final JoystickButton decreaseIntake = new JoystickButton(controller, Button.kX.value);
+
+  private final JoystickButton infeedON = new JoystickButton(controller, Button.kStart.value);
+  private final JoystickButton infeedOFF = new JoystickButton(controller, Button.kBack.value);
 
 
-  private Shooter shooter = new Shooter();
-  private Intake intake = new Intake();
-  private InFeed infeed = new InFeed();
+  
 
   public RobotContainer() {
     // Configure the button bindings
