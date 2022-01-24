@@ -8,21 +8,21 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class InFeed extends SubsystemBase {
+public class Magazine extends SubsystemBase {
   /** Creates a new InFeed. */
 
-  private WPI_TalonFX infeed;
+  private WPI_TalonFX conveyor;
   
-  public InFeed() {
-    infeed = new WPI_TalonFX(1);
+  public Magazine() {
+    conveyor = new WPI_TalonFX(1);
   }
 
   public void set(double speed) {
-    infeed.set(speed);
+    conveyor.set(speed);
   }
 
   public double get() {
-    return infeed.get();
+    return conveyor.get();
   }
 
   @Override

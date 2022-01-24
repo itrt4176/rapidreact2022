@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import static frc.irontigers.robot.Constants.*;
 import frc.irontigers.robot.subsystems.Intake;
 import frc.irontigers.robot.subsystems.Shooter;
-import frc.irontigers.robot.subsystems.InFeed;
+import frc.irontigers.robot.subsystems.Magazine;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -29,7 +29,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   private final Shooter shooter = new Shooter();
   private final Intake intake = new Intake();
-  private final InFeed infeed = new InFeed();
+  private final Magazine magazine = new Magazine();
 
   private final XboxControllerIT controller = new XboxControllerIT(0);
 
@@ -39,8 +39,8 @@ public class RobotContainer {
   private final JoystickButton increaseIntakeButton = new JoystickButton(controller, Button.kB.value);
   private final JoystickButton decreaseIntakeButton = new JoystickButton(controller, Button.kX.value);
 
-  private final JoystickButton infeedOnButton = new JoystickButton(controller, Button.kStart.value);
-  private final JoystickButton infeedOffButton = new JoystickButton(controller, Button.kBack.value);
+  private final JoystickButton magazineOnButton = new JoystickButton(controller, Button.kStart.value);
+  private final JoystickButton magazineOffButton = new JoystickButton(controller, Button.kBack.value);
 
 
   
@@ -63,8 +63,8 @@ public class RobotContainer {
     // increaseIntake.whenPressed(() -> intake.set(intake.get() + 0.05));
     // decreaseIntake.whenPressed(() -> intake.set(intake.get() - 0.05));
 
-    infeedOnButton.whenPressed(() -> infeed.set(InFeedVals.DEFAULT_SPEED));
-    infeedOffButton.whenPressed(() -> infeed.set(0));
+    magazineOnButton.whenPressed(() -> magazine.set(MagazineVals.DEFAULT_SPEED));
+    magazineOffButton.whenPressed(() -> magazine.set(0));
   }
 
   /**
