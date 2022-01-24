@@ -27,7 +27,7 @@ public class Intake extends SubsystemBase {
   }
 
   public double get() {
-    return speed;
+    return intake.get();
   }
 
   public void speedUP() {
