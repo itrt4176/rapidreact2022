@@ -5,7 +5,6 @@
 package frc.irontigers.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import frc.irontigers.robot.Constants.Flywheel;
 import frc.tigerlib.XboxControllerIT;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.XboxController;

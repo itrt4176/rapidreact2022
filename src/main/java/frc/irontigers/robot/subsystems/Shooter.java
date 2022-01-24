@@ -4,7 +4,7 @@
 
 package frc.irontigers.robot.subsystems;
 
-import static frc.irontigers.robot.Constants.Flywheel.*;
+import static frc.irontigers.robot.Constants.Shooter.*;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
