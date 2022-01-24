@@ -4,11 +4,12 @@
 
 package frc.irontigers.robot.subsystems;
 
+import static frc.irontigers.robot.Constants.Intake.*;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.irontigers.robot.Constants;
 
 
 public class Intake extends SubsystemBase {
@@ -17,8 +18,8 @@ public class Intake extends SubsystemBase {
   private double speed;
 
   public Intake() {
-    intake = new Talon(Constants.Intake.MOTOR_ID);
-    speed = Constants.Intake.DEFAULT_SPEED;
+    intake = new Talon(MOTOR_ID);
+    speed = DEFAULT_SPEED;
   }
 
   public void set(double speed) {
