@@ -6,13 +6,16 @@ package frc.irontigers.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import frc.tigerlib.XboxControllerIT;
+import frc.tigerlib.XboxControllerIT.DPadDirection;
+import frc.tigerlib.command.button.DPadButton;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import static frc.irontigers.robot.Constants.*;
 
 import frc.irontigers.robot.commands.BangBangShooterTest;
+import frc.irontigers.robot.commands.RampShooter;
 import frc.irontigers.robot.subsystems.Intake;
 import frc.irontigers.robot.subsystems.Shooter;
 import frc.irontigers.robot.subsystems.Magazine;
@@ -44,10 +47,11 @@ public class RobotContainer {
   private final JoystickButton magazineOnButton = new JoystickButton(controller, Button.kStart.value);
   private final JoystickButton magazineOffButton = new JoystickButton(controller, Button.kBack.value);
 
-  private final JoystickButton startBangBang = new JoystickButton(controller, Button.kStart.value);
-  private final JoystickButton stopBangBang = new JoystickButton(controller, Button.kBack.value);
+  private final DPadButton startBangBang = new DPadButton(controller, DPadDirection.kRight);
+  private final DPadButton stopBangBang = new DPadButton(controller, DPadDirection.kLeft);
 
-  private final BangBangShooterTest bangBangTest = new BangBangShooterTest(shooter, 2500);
+  private final SequentialCommandGroup bangBangTest = new RampShooter(shooter, 2500, 3000)
+                                                            .andThen(new BangBangShooterTest(shooter, 2500));
 
   public RobotContainer() {
     // Configure the button bindings
