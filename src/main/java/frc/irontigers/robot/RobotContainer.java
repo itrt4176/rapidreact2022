@@ -5,14 +5,17 @@
 package frc.irontigers.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import frc.irontigers.robot.Constants.Flywheel;
-import frc.irontigers.robot.commands.BangBangShooterTest;
 import frc.tigerlib.XboxControllerIT;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import static edu.wpi.first.wpilibj.XboxController.Button.*;
+import edu.wpi.first.wpilibj.XboxController.Button;
+import static frc.irontigers.robot.Constants.*;
+
+import frc.irontigers.robot.commands.BangBangShooterTest;
+import frc.irontigers.robot.subsystems.Intake;
 import frc.irontigers.robot.subsystems.Shooter;
+import frc.irontigers.robot.subsystems.Magazine;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -26,16 +29,25 @@ public class RobotContainer {
   // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  private final Shooter shooter = new Shooter();
+  private final Intake intake = new Intake();
+  private final Magazine magazine = new Magazine();
 
-  private XboxController controller = new XboxController(0);
-  private JoystickButton increaseSpeed = new JoystickButton(controller, kRightBumper.value);
-  private JoystickButton decreaseSpeed = new JoystickButton(controller, kLeftBumper.value);
-  private JoystickButton startBangBang = new JoystickButton(controller, kStart.value);
-  private JoystickButton stopBangBang = new JoystickButton(controller, kBack.value);
+  private final XboxControllerIT controller = new XboxControllerIT(0);
 
-  private Shooter shooter = new Shooter();
+  private final JoystickButton shooterOnButton = new JoystickButton(controller, Button.kRightBumper.value);
+  private final JoystickButton shooterOffButton = new JoystickButton(controller, Button.kLeftBumper.value);
 
-  private BangBangShooterTest bangBangTest = new BangBangShooterTest(shooter, 2500);
+  private final JoystickButton increaseIntakeButton = new JoystickButton(controller, Button.kB.value);
+  private final JoystickButton decreaseIntakeButton = new JoystickButton(controller, Button.kX.value);
+
+  private final JoystickButton magazineOnButton = new JoystickButton(controller, Button.kStart.value);
+  private final JoystickButton magazineOffButton = new JoystickButton(controller, Button.kBack.value);
+
+  private final JoystickButton startBangBang = new JoystickButton(controller, Button.kStart.value);
+  private final JoystickButton stopBangBang = new JoystickButton(controller, Button.kBack.value);
+
+  private final BangBangShooterTest bangBangTest = new BangBangShooterTest(shooter, 2500);
 
   public RobotContainer() {
     // Configure the button bindings
@@ -49,12 +61,17 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    increaseSpeed.whenPressed(() -> shooter.speedUP());
-    decreaseSpeed.whenPressed(() -> shooter.slowDOWN());
+    shooterOnButton.whenPressed(() -> shooter.set(ShooterVals.DEFAULT_SPEED));
+    shooterOffButton.whenPressed(() -> shooter.set(0));
+
+    // increaseIntake.whenPressed(() -> intake.set(intake.get() + 0.05));
+    // decreaseIntake.whenPressed(() -> intake.set(intake.get() - 0.05));
+
+    magazineOnButton.whenPressed(() -> magazine.set(MagazineVals.DEFAULT_SPEED));
+    magazineOffButton.whenPressed(() -> magazine.set(0));
 
     startBangBang.whenPressed(bangBangTest);
     stopBangBang.cancelWhenPressed(bangBangTest);
-    
   }
 
   /**
