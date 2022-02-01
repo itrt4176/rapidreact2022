@@ -7,17 +7,23 @@ public class Version {
     private String build_date;
     private int dirty;
 
+    private StringBuilder str;
+
     public Version() {
         git_sha = git_date = git_branch = build_date = "ERROR";
         dirty = -1;
 
+        buildString();
     }
+
     public Version(String git_sha, String git_date, String git_branch, String build_date, int dirty) {
         this.git_sha = git_sha;
         this.git_date = git_date;
         this.git_branch = git_branch;
         this.build_date = build_date;
         this.dirty = dirty;
+
+        buildString();
     }
 
     /**
@@ -54,6 +60,34 @@ public class Version {
     public int getDirty() {
         return dirty;
     }
+
+    private void buildString() {
+        str = new StringBuilder();
+        String newline = System.lineSeparator();
+
+        str.append("Rapid React 2022")
+                .append(newline)
+                .append("\tBranch: ")
+                .append(git_branch);
+        
+        if (dirty == 1) {
+            str.append("*")
+                    .append(newline)
+                    .append("\tBuild Date: ")
+                    .append(build_date);
+        } else {
+            str.append(newline)
+                    .append("\tCommit: ")
+                    .append(git_sha.substring(0, 6))
+                    .append(newline)
+                    .append("\tDate: ")
+                    .append(git_date);
+        }
+    }
     
+    @Override
+    public String toString() {
+        return str.toString();
+    }
     
 }
