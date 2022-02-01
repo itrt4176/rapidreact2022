@@ -48,11 +48,12 @@ public class Robot extends TimedRobot {
     Version version;
 
     try {
-      ObjectMapper mapper = new ObjectMapper(new YAMLFactory())
-        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        // .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+      YAMLMapper mapper = YAMLMapper.builder()
+          .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+          .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
+          .build();
 
-      version = mapper.readValue(new File(Filesystem.getDeployDirectory(), "version.yaml"), Version.class);
+      version = mapper.readValue(new File(Filesystem.getDeployDirectory().getPath(), "version.yaml"), Version.class);
     } catch (IOException e) {
       version = new Version();
     }
