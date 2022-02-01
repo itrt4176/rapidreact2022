@@ -11,13 +11,15 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLParser;
 
-// import org.littletonrobotics.junction.LoggedRobot;
-// import org.littletonrobotics.junction.Logger;
-// import org.littletonrobotics.junction.inputs.LoggedNetworkTables;
-// import org.littletonrobotics.junction.io.ByteLogReceiver;
-// import org.littletonrobotics.junction.io.ByteLogReplay;
-// import org.littletonrobotics.junction.io.LogSocketServer;
+import org.littletonrobotics.junction.LoggedRobot;
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.inputs.LoggedNetworkTables;
+import org.littletonrobotics.junction.io.ByteLogReceiver;
+import org.littletonrobotics.junction.io.ByteLogReplay;
+import org.littletonrobotics.junction.io.LogSocketServer;
 
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -31,7 +33,7 @@ import frc.irontigers.robot.utils.Version;
  * the package after creating this project, you must also update the build.gradle file in the
  * project.
  */
-public class Robot extends TimedRobot {
+public class Robot extends LoggedRobot {
   private Command autoCommand;
 
   private RobotContainer container;
@@ -42,8 +44,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    // setUseTiming(isReal()); // Run as fast as possible during replay
-    // LoggedNetworkTables.getInstance().addTable("/SmartDashboard"); // Log & replay "SmartDashboard" values (no tables are logged by default).
+    setUseTiming(isReal()); // Run as fast as possible during replay
+    LoggedNetworkTables.getInstance().addTable("/SmartDashboard"); // Log & replay "SmartDashboard" values (no tables are logged by default).
+    LoggedNetworkTables.getInstance().addTable("/FMSInfo");
 
     Version version;
 
@@ -58,22 +61,31 @@ public class Robot extends TimedRobot {
       version = new Version();
     }
 
+    Logger.getInstance().recordMetadata("ProjectName", "Rapid React 2022");
+
+    if (version.getDirty() == 1) {
+      Logger.getInstance().recordMetadata("Branch", version.getGitBranch() + "*"); // Set a metadata value
+      Logger.getInstance().recordMetadata("BuildDate", version.getBuildDate());
+    } else {
+      Logger.getInstance().recordMetadata("Branch", version.getGitBranch());
+      Logger.getInstance().recordMetadata("Commit", version.getGitSHA().substring(0, 6));
+      Logger.getInstance().recordMetadata("CommitDate", version.getGitDate());
+      Logger.getInstance().recordMetadata("BuildDate", version.getBuildDate());
+    }
+
+    if (isReal() || System.getenv("DESK_SIM").contentEquals("true")) {
+      Logger.getInstance().addDataReceiver(new ByteLogReceiver(Filesystem.getOperatingDirectory() + "/logs")); // Log to RoboRIO logs directory (name will be selected automatically)
+      Logger.getInstance().addDataReceiver(new LogSocketServer(5800)); // Provide log data over the network, viewable in Advantage Scope.
+    } else {
+      String path = ByteLogReplay.promptForPath(); // Prompt the user for a file path on the command line
+      Logger.getInstance().setReplaySource(new ByteLogReplay(path)); // Read log file for replay
+      // Save replay results to a new log with the "_sim" suffix
+      Logger.getInstance().addDataReceiver(new ByteLogReceiver(ByteLogReceiver.addPathSuffix(path, "_sim")));
+    }
+
+    Logger.getInstance().start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
+
     System.out.println(version);
-
-    //   Logger.getInstance().recordMetadata("Branch", version.getGitBranch()); // Set a metadata value
-    //   Logger.getInstance().recordMetadata("BuildDate", version.getBuildDate());
-
-    // if (isReal()) {
-    //   Logger.getInstance().addDataReceiver(new ByteLogReceiver("/media/sda1/")); // Log to USB stick (name will be selected automatically)
-    //   Logger.getInstance().addDataReceiver(new LogSocketServer(5800)); // Provide log data over the network, viewable in Advantage Scope.
-    // } else {
-    //   String path = ByteLogReplay.promptForPath(); // Prompt the user for a file path on the command line
-    //   Logger.getInstance().setReplaySource(new ByteLogReplay(path)); // Read log file for replay
-    //   // Save replay results to a new log with the "_sim" suffix
-    //   Logger.getInstance().addDataReceiver(new ByteLogReceiver(ByteLogReceiver.addPathSuffix(path, "_sim")));
-    // }
-
-    // Logger.getInstance().start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
 
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.

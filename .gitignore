@@ -168,7 +168,7 @@ gradle-app.setting
 bin/
 
 # Simulation GUI and other tools window save file
-*-window.json
+simgui*.json
 
 # JEnv local Java version configuration file
 .java-version
@@ -176,4 +176,9 @@ bin/
 # Used by previous versions of JEnv
 .jenv-version
 
+# Version YAML
 src/main/deploy/version.yaml
+
+# AdvantageKit logs but keep folder
+logs/*
+!logs/.gitkeep

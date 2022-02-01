@@ -23,9 +23,9 @@ repositories {
 }
 
 // Required for AdvantageKit logging.
-// configurations.all {
-//     exclude group: "edu.wpi.first.wpilibj"
-// }
+configurations.all {
+    exclude group: "edu.wpi.first.wpilibj"
+}
 
 // Define my targets (RoboRIO) and artifacts (deployable files)
 // This is added by GradleRIO's backing project DeployUtils.
@@ -89,12 +89,13 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 }
 
-// Generate Version.java
+// Generate version.yaml
 project.compileJava.dependsOn(createVersionFile)
 
 // Simulation configuration (e.g. environment variables).
 wpi.sim.addGui().defaultEnabled = true
 wpi.sim.addDriverstation()
+wpi.sim.envVar("DESK_SIM", "true")
 
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')
 // in order to make them all available at runtime. Also adding the manifest so WPILib
