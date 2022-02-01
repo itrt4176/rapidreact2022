@@ -7,8 +7,11 @@ public class Version {
     private String build_date;
     private int dirty;
 
-    public Version() {}
+    public Version() {
+        git_sha = git_date = git_branch = build_date = "ERROR";
+        dirty = -1;
 
+    }
     public Version(String git_sha, String git_date, String git_branch, String build_date, int dirty) {
         this.git_sha = git_sha;
         this.git_date = git_date;
