@@ -45,18 +45,22 @@ public class Robot extends TimedRobot {
     // setUseTiming(isReal()); // Run as fast as possible during replay
     // LoggedNetworkTables.getInstance().addTable("/SmartDashboard"); // Log & replay "SmartDashboard" values (no tables are logged by default).
 
-    // ObjectMapper mapper = new ObjectMapper(new YAMLFactory())
-    //     .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-    //     .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+    Version version;
 
-    // try {
-    //   Version version = mapper.readValue(new File(Filesystem.getDeployDirectory(), "version.yaml"), Version.class);
+    try {
+      ObjectMapper mapper = new ObjectMapper(new YAMLFactory())
+        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        // .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+
+      version = mapper.readValue(new File(Filesystem.getDeployDirectory(), "version.yaml"), Version.class);
+    } catch (IOException e) {
+      version = new Version();
+    }
+
+    System.out.println(version);
+
     //   Logger.getInstance().recordMetadata("Branch", version.getGitBranch()); // Set a metadata value
     //   Logger.getInstance().recordMetadata("BuildDate", version.getBuildDate());
-    // } catch (IOException e) {
-    //   // TODO Auto-generated catch block
-    //   e.printStackTrace();
-    // }
 
     // if (isReal()) {
     //   Logger.getInstance().addDataReceiver(new ByteLogReceiver("/media/sda1/")); // Log to USB stick (name will be selected automatically)
