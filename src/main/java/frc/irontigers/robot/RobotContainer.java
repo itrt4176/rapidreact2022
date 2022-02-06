@@ -15,7 +15,9 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import static frc.irontigers.robot.Constants.*;
 
 import frc.irontigers.robot.commands.BangBangShooterTest;
+import frc.irontigers.robot.commands.Drive;
 import frc.irontigers.robot.commands.RampShooter;
+import frc.irontigers.robot.subsystems.DriveSystem;
 import frc.irontigers.robot.subsystems.Intake;
 import frc.irontigers.robot.subsystems.Shooter;
 import frc.irontigers.robot.subsystems.Magazine;
@@ -35,6 +37,8 @@ public class RobotContainer {
   private final Shooter shooter = new Shooter();
   private final Intake intake = new Intake();
   private final Magazine magazine = new Magazine();
+
+  private final DriveSystem driveSystem = new DriveSystem();
 
   private final XboxControllerIT controller = new XboxControllerIT(0);
 
@@ -84,6 +88,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return null;
+    return new Drive(driveSystem);
   }
 }

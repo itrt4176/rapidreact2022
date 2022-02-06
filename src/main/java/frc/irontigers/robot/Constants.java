@@ -27,4 +27,13 @@ public final class Constants {
         public final static int MOTOR_ID = 0;
         public final static double DEFAULT_SPEED = 0.03;
     }
+
+    public static final class DriveSystemVals {
+        public final static int BACK_LEFT = 2;
+        public final static int FRONT_LEFT = 3;
+        public final static int FRONT_RIGHT = 4;
+        public final static int BACK_RIGHT = 5;
+
+        public final static double DEFAULT_SPEED = 0.2;
+    }
 }
