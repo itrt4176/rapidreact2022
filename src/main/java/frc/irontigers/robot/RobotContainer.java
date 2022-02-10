@@ -7,15 +7,16 @@ package frc.irontigers.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import frc.tigerlib.XboxControllerIT;
 import frc.tigerlib.XboxControllerIT.DPadDirection;
+import frc.tigerlib.command.MecanumJoystickDrive;
 import frc.tigerlib.command.button.DPadButton;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.MecanumControllerCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import static frc.irontigers.robot.Constants.*;
 
 import frc.irontigers.robot.commands.BangBangShooterTest;
-import frc.irontigers.robot.commands.Drive;
 import frc.irontigers.robot.commands.RampShooter;
 import frc.irontigers.robot.commands.RunIntake;
 import frc.irontigers.robot.subsystems.DriveSystem;
@@ -45,9 +46,10 @@ public class RobotContainer {
   private final Intake intake = new Intake();
   private final Magazine magazine = new Magazine();
 
-  private final DriveSystem driveSystem = new DriveSystem();
-
   private final XboxControllerIT controller = new XboxControllerIT(0);
+
+  private final DriveSystem driveSystem = new DriveSystem();
+  private final MecanumJoystickDrive joystickDrive = new MecanumJoystickDrive(driveSystem, controller);
 
   private final JoystickButton shooterOnButton = new JoystickButton(controller, Button.kRightBumper.value);
   private final JoystickButton shooterOffButton = new JoystickButton(controller, Button.kLeftBumper.value);
@@ -74,6 +76,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+    driveSystem.setDefaultCommand(joystickDrive);
   }
 
   /**
@@ -106,6 +109,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new Drive(driveSystem);
+    return null;
   }
 }

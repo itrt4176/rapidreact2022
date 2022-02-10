@@ -6,11 +6,17 @@ package frc.irontigers.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.irontigers.robot.Constants;
+import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
+import frc.tigerlib.subsystem.drive.MecanumDriveSubsystem;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
+import edu.wpi.first.math.util.Units;
 
-public class DriveSystem extends SubsystemBase {
+public class DriveSystem extends MecanumDriveSubsystem {
   /** Creates a new DriveSystem. */
 
   private WPI_TalonFX leftFront;
@@ -18,7 +24,10 @@ public class DriveSystem extends SubsystemBase {
   private WPI_TalonFX rightFront;
   private WPI_TalonFX rightBack;
 
+  private AHRS gyro;
+
   private MecanumDrive drive;
+  private MecanumDriveKinematics kinematics;
 
   public DriveSystem() {
     leftFront = new WPI_TalonFX(Constants.DriveSystemVals.FRONT_LEFT);
@@ -26,15 +35,35 @@ public class DriveSystem extends SubsystemBase {
     rightFront = new WPI_TalonFX(Constants.DriveSystemVals.FRONT_RIGHT);
     rightBack = new WPI_TalonFX(Constants.DriveSystemVals.BACK_RIGHT);
 
-    drive = new MecanumDrive(leftFront, leftBack, rightFront, rightBack);
-  }
+    gyro = new AHRS();
+    kinematics = new MecanumDriveKinematics(
+      new Translation2d(Units.inchesToMeters(-23.5 / 2.0), Units.inchesToMeters(20.25 / 2.0)),
+      new Translation2d(Units.inchesToMeters(23.5 / 2.0), Units.inchesToMeters(20.25 / 2.0)),
+      new Translation2d(Units.inchesToMeters(-23.5 / 2.0), Units.inchesToMeters(-20.25 / 2.0)),
+      new Translation2d(Units.inchesToMeters(23.5 / 2.0), Units.inchesToMeters(-20.25 / 2.0))
+    );
 
-  public void drive() {
-    drive.driveCartesian(Constants.DriveSystemVals.DEFAULT_SPEED, 0.0, 0.0);
+    setMotors(leftFront, leftBack, rightFront, rightBack, kinematics);
+    setGyro(gyro);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+
+  @Override
+  protected MecanumDriveWheelSpeeds getWheelSpeeds() {
+    // TODO Auto-generated method stub
+    return new MecanumDriveWheelSpeeds(0, 0, 0, 0);
+  }
+
+  @Override
+  protected void resetEncoders() {
+    // TODO Auto-generated method stub
+    leftFront.setSelectedSensorPosition(0);
+    leftFront.setSelectedSensorPosition(0);
+    rightFront.setSelectedSensorPosition(0);
+    rightBack.setSelectedSensorPosition(0);
   }
 }
