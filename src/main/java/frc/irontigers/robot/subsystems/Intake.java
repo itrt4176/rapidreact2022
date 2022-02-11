@@ -4,19 +4,19 @@
 
 package frc.irontigers.robot.subsystems;
 
-import static frc.irontigers.robot.Constants.IntakeVals.*;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.irontigers.robot.Constants.IntakeVals;
 
 
 public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
-  private Talon intake;
+  private WPI_TalonSRX intake;
 
   public Intake() {
-    intake = new Talon(MOTOR_ID);
+    intake = new WPI_TalonSRX(IntakeVals.MOTOR_ID);
   }
 
   public void set(double speed) {

@@ -4,6 +4,7 @@
 
 package frc.irontigers.robot;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.GenericHID;
 import frc.tigerlib.XboxControllerIT;
 import frc.tigerlib.XboxControllerIT.DPadDirection;
@@ -11,6 +12,7 @@ import frc.tigerlib.command.MecanumJoystickDrive;
 import frc.tigerlib.command.button.DPadButton;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.MecanumControllerCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.XboxController.Button;
@@ -50,12 +52,17 @@ public class RobotContainer {
 
   private final DriveSystem driveSystem = new DriveSystem();
   private final MecanumJoystickDrive joystickDrive = new MecanumJoystickDrive(driveSystem, controller);
+  private final JoystickButton intakeOn = new JoystickButton(controller, Button.kRightStick.value);
+  private final JoystickButton reverseIntake = new JoystickButton(controller, Button.kLeftStick.value);
 
   private final JoystickButton shooterOnButton = new JoystickButton(controller, Button.kRightBumper.value);
   private final JoystickButton shooterOffButton = new JoystickButton(controller, Button.kLeftBumper.value);
 
-  private final JoystickButton increaseIntakeButton = new JoystickButton(controller, Button.kB.value);
-  private final JoystickButton decreaseIntakeButton = new JoystickButton(controller, Button.kX.value);
+  private final JoystickButton increaseIntakeButton = new JoystickButton(controller, Button.kY.value);
+  private final JoystickButton decreaseIntakeButton = new JoystickButton(controller, Button.kA.value);
+
+  private final JoystickButton increaseShooterButton = new JoystickButton(controller, Button.kB.value);
+  private final JoystickButton decreaseShooterButton = new JoystickButton(controller, Button.kX.value);
 
   private final JoystickButton intakeForward = new JoystickButton(controller, Button.kY.value);
   private final JoystickButton intakeBackward = new JoystickButton(controller, Button.kA.value);
@@ -89,8 +96,14 @@ public class RobotContainer {
     shooterOnButton.whenPressed(() -> shooter.set(ShooterVals.DEFAULT_SPEED));
     shooterOffButton.whenPressed(() -> shooter.set(0));
 
-    // increaseIntake.whenPressed(() -> intake.set(intake.get() + 0.05));
-    // decreaseIntake.whenPressed(() -> intake.set(intake.get() - 0.05));
+    increaseIntakeButton.whenPressed(() -> intake.set(intake.get() + 0.05));
+    decreaseIntakeButton.whenPressed(() -> intake.set(intake.get() - 0.05));
+
+    intakeOn.whenPressed(() -> intake.set(IntakeVals.DEFAULT_SPEED));
+    reverseIntake.whenPressed(() -> intake.set(IntakeVals.DEFAULT_SPEED*-1));
+
+    increaseShooterButton.whenPressed(() -> shooter.set(MathUtil.clamp(shooter.get() + 0.05,0,1)));
+    decreaseShooterButton.whenPressed(() -> shooter.set(MathUtil.clamp(shooter.get() - 0.05,0,1)));
 
     // magazineOnButton.whenPressed(() -> magazine.set(MagazineVals.DEFAULT_SPEED));
     // magazineOffButton.whenPressed(() -> magazine.set(0));
