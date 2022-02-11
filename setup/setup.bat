@@ -5,3 +5,5 @@ git flow init -d
 git flow config set master main
 git flow config set release "comp/"
 git flow config set hotfix "at-comp/"
+
+copy .\setup\commands\* %USERPROFILE%\.vscode\extensions\wpilibsuite.vscode-wpilib-2022.*\resources\java\src\commands
