@@ -15,7 +15,7 @@ package frc.irontigers.robot;
 public final class Constants {
     public static final class ShooterVals {
         public final static int MOTOR_ID = 0;
-        public final static double DEFAULT_SPEED = 0.80;
+        public final static double DEFAULT_SPEED = 0.90;
     }
 
     public static final class IntakeVals {
@@ -24,8 +24,8 @@ public final class Constants {
     }
 
     public static final class MagazineVals {
-        public final static int MOTOR_ID = 0;
-        public final static double DEFAULT_SPEED = 0.03;
+        public final static int MOTOR_ID = 6;
+        public final static double DEFAULT_SPEED = 0.6;
     }
 
     public static final class DriveSystemVals {

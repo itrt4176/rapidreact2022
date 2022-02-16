@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 import frc.tigerlib.subsystem.drive.MecanumDriveSubsystem;
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
 import edu.wpi.first.math.util.Units;
@@ -26,7 +25,6 @@ public class DriveSystem extends MecanumDriveSubsystem {
 
   private AHRS gyro;
 
-  private MecanumDrive drive;
   private MecanumDriveKinematics kinematics;
 
   public DriveSystem() {
@@ -43,8 +41,15 @@ public class DriveSystem extends MecanumDriveSubsystem {
       new Translation2d(Units.inchesToMeters(23.5 / 2.0), Units.inchesToMeters(-20.25 / 2.0))
     );
 
-    setMotors(leftFront, leftBack, rightFront, rightBack, kinematics);
     setGyro(gyro);
+    setMotors(leftFront, leftBack, rightFront, rightBack, kinematics);
+    
+  }
+
+  @Override
+  public void drive(double xSpeed, double ySpeed, double rotation) {
+      // TODO Remove after library fixed
+      super.drive(ySpeed, xSpeed, rotation);
   }
 
   @Override
