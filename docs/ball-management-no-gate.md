@@ -1,8 +1,18 @@
 # Ball Management with no Ball Gates
 
+## Definitions
+
+| Name | Type | Location | Note |
+| --- | --- | --- | --- |
+| C1  | Color Sensor | Intake | [Example code](https://github.com/REVrobotics/Color-Sensor-v3-Examples) |
+| S1  | IR Tripwire | Intake | DIO |
+| S2  | IR Tripwire | Before first ball position | DIO |
+| S3  | IR Tripwire | Before second ball position | DIO |
+| S4  | IR Tripwire | After flywheel | DIO |
+
 ```mermaid
 flowchart TB
-    start([<b>Start</b>])
+    start([Start])
     magOff0[/Magazine off/]
     intakeForward1[/Intake forward/]
     s1[/Read S1/]
@@ -13,7 +23,7 @@ flowchart TB
     ballCheck1{balls < 2?}
     ballCheck2{balls < 2?}
     reject1Sub[[Reject first ball]]
-    c1[/Read Color/]
+    c1[/Read C1/]
     c1Check{Correct?}
     inc[balls++]
     reject2Sub[[Reject second ball]]
@@ -28,7 +38,7 @@ flowchart TB
     ballCheck1 -- true --> ball1Sub --> s1
     ballCheck1 -- false --> ball2Sub
 
-    ball2Sub --> inOff[/Intake off/] --> shooterFast[/Shooter fast/] --> stop([<b>Stop</b>])
+    ball2Sub --> inOff[/Intake off/] --> shooterFast[/Shooter fast/] --> stop([Stop])
 
     ballCheck2 -- true ---> reject1Sub
     ballCheck2 -- false ---> reject2Sub
@@ -39,6 +49,7 @@ flowchart TB
 ```
 
 ## First ball
+
 ```mermaid
 flowchart LR
     magOn1[/Magazine on/]
@@ -56,6 +67,7 @@ flowchart LR
 ```
 
 ## Second ball
+
 ```mermaid
 flowchart LR
     magOn2[/Magazine on/]
@@ -73,8 +85,9 @@ flowchart LR
 ```
 
 ## Reject first ball
+
 ```mermaid
-    flowchart LR
+flowchart LR
     magOn3[/Magazine on/] --> shooterSlow[/Shooter slow/] --> s4_1[/Read S4/] --> s4Check_1{Broken?}
     s4Check_1 -- false --> s4_1
     s4Check_1 -- true --> s4_2[/Read S4/] --> s4Check_2{Unbroken?}
@@ -83,6 +96,7 @@ flowchart LR
 ```
 
 ## Reject second ball
+
 ```mermaid
 flowchart LR
     intakeReverse[/Intake reverse/] --> s1_2[/Read S1/] --> s1Check_2{Unbroken?}
