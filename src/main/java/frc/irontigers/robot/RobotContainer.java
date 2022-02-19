@@ -27,6 +27,7 @@ import frc.irontigers.robot.subsystems.Intake;
 import frc.irontigers.robot.subsystems.Shooter;
 import frc.irontigers.robot.subsystems.Magazine;
 
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -59,15 +60,15 @@ public class RobotContainer {
   private final JoystickButton shooterOnButton = new JoystickButton(controller, Button.kRightBumper.value);
   private final JoystickButton shooterOffButton = new JoystickButton(controller, Button.kLeftBumper.value);
 
-  private final JoystickButton increaseIntakeButton = new JoystickButton(controller, Button.kX.value);
-  private final JoystickButton decreaseIntakeButton = new JoystickButton(controller, Button.kB.value);
+  // private final JoystickButton increaseIntakeButton = new JoystickButton(controller, Button.kX.value);
+  // private final JoystickButton decreaseIntakeButton = new JoystickButton(controller, Button.kB.value);
 
   // private final JoystickButton increaseShooterButton = new JoystickButton(controller, Button.kB.value);
   // private final JoystickButton decreaseShooterButton = new JoystickButton(controller, Button.kX.value);
 
   private final JoystickButton intakeForward = new JoystickButton(controller, Button.kY.value);
   private final JoystickButton intakeBackward = new JoystickButton(controller, Button.kA.value);
-  private final JoystickButton intakeStop = new JoystickButton(controller, Button.kBack.value);
+  private final JoystickButton intakeStop = new JoystickButton(controller, Button.kB.value);
 
   private final DPadButton startBangBang = new DPadButton(controller, DPadDirection.kRight);
   private final DPadButton stopBangBang = new DPadButton(controller, DPadDirection.kLeft);
@@ -95,8 +96,8 @@ public class RobotContainer {
     shooterOnButton.whenPressed(() -> shooter.set(ShooterVals.DEFAULT_SPEED));
     shooterOffButton.whenPressed(() -> shooter.set(0));
 
-    increaseIntakeButton.whenPressed(() -> intake.set(intake.get() + 0.05));
-    decreaseIntakeButton.whenPressed(() -> intake.set(intake.get() - 0.05));
+    // increaseIntakeButton.whenPressed(() -> intake.set(intake.get() + 0.05));
+    // decreaseIntakeButton.whenPressed(() -> intake.set(intake.get() - 0.05));
 
     // intakeOn.whenPressed(() -> intake.set(IntakeVals.DEFAULT_SPEED));
     // reverseIntake.whenPressed(() -> intake.set(-IntakeVals.DEFAULT_SPEED));
