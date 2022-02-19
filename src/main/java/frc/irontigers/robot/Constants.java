@@ -15,16 +15,25 @@ package frc.irontigers.robot;
 public final class Constants {
     public static final class ShooterVals {
         public final static int MOTOR_ID = 0;
-        public final static double DEFAULT_SPEED = 0.80;
+        public final static double DEFAULT_SPEED = 1;
     }
 
     public static final class IntakeVals {
         public final static int MOTOR_ID = 1;
-        public final static double DEFAULT_SPEED = 0.25;
+        public final static double DEFAULT_SPEED = 0.6;
     }
 
     public static final class MagazineVals {
-        public final static int MOTOR_ID = 0;
-        public final static double DEFAULT_SPEED = 0.03;
+        public final static int MOTOR_ID = 6;
+        public final static double DEFAULT_SPEED = 0.6;
+    }
+
+    public static final class DriveSystemVals {
+        public final static int BACK_LEFT = 2;
+        public final static int FRONT_LEFT = 3;
+        public final static int FRONT_RIGHT = 4;
+        public final static int BACK_RIGHT = 5;
+
+        public final static double DEFAULT_SPEED = 0.2;
     }
 }

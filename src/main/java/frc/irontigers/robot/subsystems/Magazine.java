@@ -6,15 +6,20 @@ package frc.irontigers.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.irontigers.robot.Constants.MagazineVals;
 
 public class Magazine extends SubsystemBase {
   /** Creates a new InFeed. */
 
   private WPI_TalonFX conveyor;
+  private DigitalInput sensor;
   
   public Magazine() {
-    conveyor = new WPI_TalonFX(1);
+    conveyor = new WPI_TalonFX(MagazineVals.MOTOR_ID);
+    sensor = new DigitalInput(0);
   }
 
   public void set(double speed) {
@@ -25,8 +30,13 @@ public class Magazine extends SubsystemBase {
     return conveyor.get();
   }
 
+  public boolean beamBroken() {
+    return sensor.get();
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.getBoolean("Beam Broken", beamBroken());
   }
 }
