@@ -16,8 +16,10 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import static frc.irontigers.robot.Constants.*;
 
 import frc.irontigers.robot.commands.BangBangShooterTest;
+import frc.irontigers.robot.commands.ClimberCommand;
 import frc.irontigers.robot.commands.RampShooter;
 import frc.irontigers.robot.commands.RunIntake;
+import frc.irontigers.robot.subsystems.Climber;
 import frc.irontigers.robot.subsystems.DriveSystem;
 import frc.irontigers.robot.subsystems.Intake;
 import frc.irontigers.robot.subsystems.Shooter;
@@ -44,6 +46,7 @@ public class RobotContainer {
   private final Shooter shooter = new Shooter();
   private final Intake intake = new Intake();
   private final Magazine magazine = new Magazine();
+  private final Climber climber = new Climber();
 
   private final XboxControllerIT controller = new XboxControllerIT(0);
 
@@ -56,6 +59,10 @@ public class RobotContainer {
   private final JoystickButton intakeForward = new JoystickButton(controller, Button.kY.value);
   private final JoystickButton intakeBackward = new JoystickButton(controller, Button.kA.value);
   private final JoystickButton intakeStop = new JoystickButton(controller, Button.kBack.value);
+
+  private final JoystickButton climberExtend = new JoystickButton(controller, Button.kB.value);
+  private final JoystickButton climberRetract = new JoystickButton(controller, Button.kX.value);
+  private final DPadButton climberStop = new DPadButton(controller, DPadDirection.kDown);
 
   private final DPadButton startBangBang = new DPadButton(controller, DPadDirection.kRight);
   private final DPadButton stopBangBang = new DPadButton(controller, DPadDirection.kLeft);
@@ -89,6 +96,10 @@ public class RobotContainer {
     intakeForward.whenPressed(new RunIntake(intake, Direction.FORWARD));
     intakeBackward.whenPressed(new RunIntake(intake, Direction.BACKWARD));
     intakeStop.whenPressed(new RunIntake(intake, Direction.STOP));
+
+    climberExtend.whenPressed(new ClimberCommand(climber, Direction.FORWARD));
+    climberRetract.whenPressed(new ClimberCommand(climber, Direction.BACKWARD));
+    climberStop.whenPressed(new ClimberCommand(climber, Direction.STOP));
 
     startBangBang.whenPressed(bangBangTest);
     stopBangBang.cancelWhenPressed(bangBangTest);
