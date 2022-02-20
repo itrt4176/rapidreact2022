@@ -21,7 +21,7 @@ import frc.irontigers.robot.commands.RunIntake;
 import frc.irontigers.robot.subsystems.DriveSystem;
 import frc.irontigers.robot.subsystems.Intake;
 import frc.irontigers.robot.subsystems.Shooter;
-import frc.irontigers.robot.subsystems.Magazine;
+import frc.irontigers.robot.subsystems.magazine.Magazine;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
