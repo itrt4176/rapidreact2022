@@ -26,7 +26,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public double getMPS() {
-    return getRPM()/60 * Math.PI * Constants.ShooterVals.Diameter;
+    return getRPM()/60 * Math.PI * Constants.ShooterVals.DIAMETER;
   }
 
   public void set(double speed) {
