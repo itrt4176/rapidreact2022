@@ -8,7 +8,7 @@ If you do not have git-flow installed, follow the instructions below for your Op
 ### Windows
 git-flow is included in recent releases of Git for Windows and does not need to be separately installed.
 
-### macOS
+git### macOS
 Homebrew
 ```
 $ brew install git-flow-avh
