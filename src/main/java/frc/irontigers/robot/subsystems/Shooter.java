@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.irontigers.robot.Constants;
 
 public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
@@ -22,6 +23,10 @@ public class Shooter extends SubsystemBase {
 
   public double getRPM() {
     return flywheel.getSelectedSensorVelocity()*600/2048;
+  }
+
+  public double getMPS() {
+    return getRPM()/60 * Math.PI * Constants.ShooterVals.Diameter;
   }
 
   public void set(double speed) {

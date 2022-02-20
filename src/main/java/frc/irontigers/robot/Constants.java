@@ -14,6 +14,7 @@ package frc.irontigers.robot;
  */
 public final class Constants {
     public static final class ShooterVals {
+        public final static double Diameter = 1; //change this
         public final static int MOTOR_ID = 0;
         public final static double DEFAULT_SPEED = 1;
     }
