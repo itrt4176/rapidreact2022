@@ -4,6 +4,7 @@
 
 package frc.irontigers.robot;
 
+import edu.wpi.first.math.util.Units;
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -14,7 +15,7 @@ package frc.irontigers.robot;
  */
 public final class Constants {
     public static final class ShooterVals {
-        public final static double Diameter = 1; //change this
+        public final static double DIAMETER = Units.inchesToMeters(6);
         public final static int MOTOR_ID = 0;
         public final static double DEFAULT_SPEED = 1;
     }
