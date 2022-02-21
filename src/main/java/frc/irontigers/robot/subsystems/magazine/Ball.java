@@ -4,8 +4,13 @@
 
 package frc.irontigers.robot.subsystems.magazine;
 
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.util.sendable.SendableRegistry;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+
 /** Add your docs here. */
-public class Ball {
+public class Ball implements Sendable, AutoCloseable {
     private Position position;
     private Color color;
 
@@ -28,6 +33,18 @@ public class Ball {
 
     public Color getColor() {
         return color;
+    }
+
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        builder.setSmartDashboardType("Ball");
+        builder.addStringProperty("position", position::name, null);
+        builder.addStringProperty("color", color::name, null);
+    }
+
+    @Override
+    public void close() {
+        SendableRegistry.remove(this);
     }
 
     public enum Position {
@@ -106,6 +123,14 @@ public class Ball {
     public enum Color {
         Red,
         Blue,
-        Unknown
+        Unknown;
+
+        public boolean equals(Alliance a) {
+            if (a == Alliance.Invalid) {
+                return true;
+            }
+
+            return name() == a.name();
+        }
     }
 }
