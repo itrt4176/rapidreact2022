@@ -43,7 +43,6 @@ public class Magazine extends SubsystemBase {
 
   public void addBall() {
     Ball b = new Ball();
-    SendableRegistry.addChild(this, b);
     balls.add(b);
   }
 
@@ -95,5 +94,9 @@ public class Magazine extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.getBoolean("Beam Broken", beamBroken());
+
+    for (int i = 0; i < balls.size(); i++) {
+      SmartDashboard.putData("Ball[" + i + "]", balls.get(i));
+    }
   }
 }
