@@ -26,6 +26,7 @@ public class Magazine extends SubsystemBase {
   public Magazine() {
     conveyor = new WPI_TalonFX(MagazineVals.MOTOR_ID);
     sensor = new DigitalInput(0);
+    addBall();
   }
 
   public void set(double speed) {
