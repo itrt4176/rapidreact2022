@@ -150,7 +150,8 @@ public class Magazine extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    
+    SmartDashboard.putBoolean("Rear Sensor", readBallSensor(BallSensor.Hold1));
+    SmartDashboard.putBoolean("Front Sensor", readBallSensor(BallSensor.Shot));
   }
 
   public enum BallGate {

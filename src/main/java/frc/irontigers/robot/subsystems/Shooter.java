@@ -37,6 +37,10 @@ public class Shooter extends SubsystemBase {
     return flywheel.get();
   }
 
+  public void spitBall() {
+    flywheel.set(0.2);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
