@@ -39,7 +39,7 @@ public final class Constants {
         public final static double DEFAULT_SPEED = 0.2;
     }
     public static final class ClimberVals {
-        public final static int MOTOR_ID = 6; //fix this
+        public final static int MOTOR_ID = 7; //fix this
         public final static double DEFAULT_SPEED = 0.05; //also fix this
     }
 }
