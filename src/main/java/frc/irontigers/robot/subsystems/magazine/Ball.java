@@ -8,15 +8,16 @@ import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.util.Color;
 
 /** Add your docs here. */
 public class Ball implements Sendable, AutoCloseable {
     private Position position;
-    private Color color;
+    private BallColor color;
 
     public Ball() {
         position = Position.Intake;
-        color = Color.Unknown;
+        color = BallColor.Unknown;
     }
 
     public void forward() {
@@ -31,7 +32,7 @@ public class Ball implements Sendable, AutoCloseable {
         return position;
     }
 
-    public Color getColor() {
+    public BallColor getColor() {
         return color;
     }
 
@@ -120,10 +121,20 @@ public class Ball implements Sendable, AutoCloseable {
         public abstract Position getNext();
     }
 
-    public enum Color {
-        Red,
-        Blue,
-        Unknown;
+    public enum BallColor {
+        Red(Color.kFirstRed),
+        Blue(Color.kFirstBlue),
+        Unknown(null);
+
+        private Color colorValue;
+
+        BallColor(Color colorValue) {
+            this.colorValue = colorValue;
+        }
+
+        public Color getColor() {
+            return colorValue;
+        }
 
         public boolean equals(Alliance a) {
             if (a == Alliance.Invalid) {

@@ -7,11 +7,15 @@ package frc.irontigers.robot.subsystems.magazine;
 import java.util.LinkedList;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.I2C;
+
 import static edu.wpi.first.wpilibj.PneumaticsModuleType.CTREPCM;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.irontigers.robot.Constants.MagazineVals.*;
 import frc.irontigers.robot.subsystems.magazine.Ball.Position;
@@ -30,6 +34,7 @@ public class Magazine extends SubsystemBase {
   private Solenoid frontGate;
   private Solenoid rearGate;
 
+  private ColorSensorV3 colorSensor;
   
   /** Creates a new Magazine. */
   public Magazine() {
@@ -45,6 +50,8 @@ public class Magazine extends SubsystemBase {
 
     frontGate = new Solenoid(CTREPCM, FRONT_SOLENOID);
     rearGate = new Solenoid(CTREPCM, REAR_SOLENOID);
+
+    colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
   }
 
   public void setOutput(double speed) {
@@ -103,6 +110,10 @@ public class Magazine extends SubsystemBase {
     return balls.get(index);
   }
 
+  public int getBallCount() {
+    return balls.size();
+  }
+
   public void updateBallPositions() {
     updateBallPositions(true);
   }
@@ -145,6 +156,10 @@ public class Magazine extends SubsystemBase {
         rearGate.set(true);
         break;
     }
+  }
+
+  public Color readColor() {
+    return colorSensor.getColor();
   }
 
   @Override
