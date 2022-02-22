@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import static edu.wpi.first.wpilibj.PneumaticsModuleType.*;
+import static edu.wpi.first.wpilibj.PneumaticsModuleType.CTREPCM;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -19,9 +19,13 @@ import frc.irontigers.robot.subsystems.magazine.Ball.Position;
 public class Magazine extends SubsystemBase {
 
   private WPI_TalonFX conveyor;
-  private DigitalInput sensor;
 
   private LinkedList<Ball> balls;
+
+  private DigitalInput intakeSensor;
+  private DigitalInput hold1Sensor;
+  private DigitalInput hold2Sensor;
+  private DigitalInput shotSensor;  
 
   private Solenoid frontGate;
   private Solenoid rearGate;
@@ -30,30 +34,47 @@ public class Magazine extends SubsystemBase {
   /** Creates a new Magazine. */
   public Magazine() {
     conveyor = new WPI_TalonFX(MOTOR_ID);
-    sensor = new DigitalInput(0);
 
     balls = new LinkedList<>();
     addBall();
+
+    intakeSensor = new DigitalInput(S1);
+    hold1Sensor = new DigitalInput(S2);
+    hold2Sensor = new DigitalInput(S3);
+    shotSensor = new DigitalInput(S4);
 
     frontGate = new Solenoid(CTREPCM, FRONT_SOLENOID);
     rearGate = new Solenoid(CTREPCM, REAR_SOLENOID);
   }
 
-  public void set(double speed) {
+  public void setOutput(double speed) {
     conveyor.set(speed);
   }
 
-  public double get() {
+  public double getOutput() {
     return conveyor.get();
   }
 
-  public boolean beamBroken() {
-    return sensor.get();
+  public boolean readBallSensor(BallSensor sensor) {
+    switch (sensor) {
+      case Hold1:
+        return hold1Sensor.get();
+      case Hold2:
+        return hold2Sensor.get();
+      case Intake:
+        return intakeSensor.get();
+      case Shot:
+        return shotSensor.get();
+      default:
+        return false;
+    }
   }
 
-  public void addBall() {
-    Ball b = new Ball();
-    balls.add(b);
+  public Ball addBall() {
+    var ball = new Ball();
+    balls.add(ball);
+    SmartDashboard.putData("Ball[" + (balls.size() - 1) + "]", ball);
+    return ball;
   }
 
   public void removeFirstBall() {
@@ -129,16 +150,19 @@ public class Magazine extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.getBoolean("Beam Broken", beamBroken());
-
-    for (int i = 0; i < balls.size(); i++) {
-      SmartDashboard.putData("Ball[" + i + "]", balls.get(i));
-    }
+    
   }
 
   public enum BallGate {
     Front,
     Rear,
     Both
+  }
+
+  public enum BallSensor {
+    Intake,
+    Hold1,
+    Hold2,
+    Shot
   }
 }

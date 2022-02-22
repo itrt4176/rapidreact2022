@@ -83,8 +83,8 @@ public class RobotContainer {
     shooterOnButton.whenPressed(() -> shooter.set(ShooterVals.DEFAULT_SPEED));
     shooterOffButton.whenPressed(() -> shooter.set(0));
 
-    magazineOnButton.whenPressed(() -> magazine.set(-MagazineVals.DEFAULT_SPEED/2));
-    magazineOffButton.whenPressed(() -> magazine.set(0));
+    magazineOnButton.whenPressed(() -> magazine.setOutput(-MagazineVals.DEFAULT_SPEED/2));
+    magazineOffButton.whenPressed(() -> magazine.setOutput(0));
 
     intakeForward.whenPressed(new RunIntake(intake, Direction.FORWARD));
     intakeBackward.whenPressed(new RunIntake(intake, Direction.BACKWARD));
