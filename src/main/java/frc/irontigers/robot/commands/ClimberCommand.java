@@ -13,16 +13,20 @@ public class ClimberCommand extends CommandBase {
   /** Creates a new ClimberCommand. */
   private Climber climber;
   private Direction direction;
-  public ClimberCommand(Climber climber, Direction direction) {
+  private double extentionValue;
+  public ClimberCommand(Climber climber, Direction direction, double extentionValue) {
     this.climber = climber;
     this.direction = direction;
+    this.extentionValue = extentionValue;
     addRequirements(climber);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    extentionValue = 0;  
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override

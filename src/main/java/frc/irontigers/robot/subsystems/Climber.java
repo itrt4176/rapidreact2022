@@ -4,6 +4,7 @@
 
 package frc.irontigers.robot.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
@@ -13,6 +14,7 @@ public class Climber extends SubsystemBase {
   /** Creates a new Climber. */
 
   private WPI_TalonFX climber;
+  public double extentionValue;
 
   public Climber() {
     climber = new WPI_TalonFX(Constants.ClimberVals.MOTOR_ID);
@@ -20,6 +22,9 @@ public class Climber extends SubsystemBase {
 
   public void set(double speed) {
     climber.set(speed);
+  }
+  public double getMotorPosition(){
+    return climber.getSelectedSensorPosition();
   }
 
   public double get() {
@@ -29,5 +34,6 @@ public class Climber extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  SmartDashboard.putNumber("Climber Position", getMotorPosition());
   }
 }
