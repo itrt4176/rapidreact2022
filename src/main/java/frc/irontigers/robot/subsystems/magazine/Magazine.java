@@ -8,25 +8,35 @@ import java.util.LinkedList;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
-import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.DigitalInput;
+import static edu.wpi.first.wpilibj.PneumaticsModuleType.*;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.irontigers.robot.Constants.MagazineVals;
+import static frc.irontigers.robot.Constants.MagazineVals.*;
 import frc.irontigers.robot.subsystems.magazine.Ball.Position;
 
 public class Magazine extends SubsystemBase {
-  /** Creates a new InFeed. */
 
   private WPI_TalonFX conveyor;
   private DigitalInput sensor;
 
-  private LinkedList<Ball> balls = new LinkedList<>();
+  private LinkedList<Ball> balls;
+
+  private Solenoid frontGate;
+  private Solenoid rearGate;
+
   
+  /** Creates a new Magazine. */
   public Magazine() {
-    conveyor = new WPI_TalonFX(MagazineVals.MOTOR_ID);
+    conveyor = new WPI_TalonFX(MOTOR_ID);
     sensor = new DigitalInput(0);
+
+    balls = new LinkedList<>();
     addBall();
+
+    frontGate = new Solenoid(CTREPCM, FRONT_SOLENOID);
+    rearGate = new Solenoid(CTREPCM, REAR_SOLENOID);
   }
 
   public void set(double speed) {
@@ -90,6 +100,32 @@ public class Magazine extends SubsystemBase {
     }
   }
 
+  public void openGate(BallGate gate) {
+    switch (gate) {
+      case Both:
+        rearGate.set(false);
+      case Front:
+        frontGate.set(false);
+        break;
+      case Rear:
+        rearGate.set(false);
+        break;
+    }
+  }
+
+  public void closeGate(BallGate gate) {
+    switch (gate) {
+      case Both:
+        rearGate.set(true);
+      case Front:
+        frontGate.set(true);
+        break;
+      case Rear:
+        rearGate.set(true);
+        break;
+    }
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
@@ -98,5 +134,11 @@ public class Magazine extends SubsystemBase {
     for (int i = 0; i < balls.size(); i++) {
       SmartDashboard.putData("Ball[" + i + "]", balls.get(i));
     }
+  }
+
+  public enum BallGate {
+    Front,
+    Rear,
+    Both
   }
 }
