@@ -37,5 +37,7 @@ public final class Constants {
         public final static int BACK_RIGHT = 5;
 
         public final static double DEFAULT_SPEED = 0.2;
+
+        // public final static Double WHEEL_DIAMETER = Units.inchesToMeters(6/Whatever);
     }
 }

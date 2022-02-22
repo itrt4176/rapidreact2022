@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.irontigers.robot.Constants;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 import frc.tigerlib.subsystem.drive.MecanumDriveSubsystem;
@@ -55,6 +57,10 @@ public class DriveSystem extends MecanumDriveSubsystem {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Distance1", leftFront.getSelectedSensorPosition());
+    SmartDashboard.putNumber("Distance2", leftBack.getSelectedSensorPosition());
+    SmartDashboard.putNumber("Distance3", rightFront.getSelectedSensorPosition());
+    SmartDashboard.putNumber("Distance4", rightBack.getSelectedSensorPosition());
   }
 
   @Override
