@@ -62,18 +62,25 @@ public class Magazine extends SubsystemBase {
     return conveyor.get();
   }
 
+  /**
+   * True when sensor is broken (blocked)
+   * False when sensor isn't broken
+   * 
+   * @param sensor
+   * @return selected sensor's value
+   */
   public boolean readBallSensor(BallSensor sensor) {
     switch (sensor) {
       case Hold1:
-        return hold1Sensor.get();
+        return !hold1Sensor.get();
       case Hold2:
-        return hold2Sensor.get();
+        return !hold2Sensor.get();
       case Intake:
-        return intakeSensor.get();
+        return !intakeSensor.get();
       case Shot:
-        return shotSensor.get();
+        return !shotSensor.get();
       default:
-        return false;
+        return true;
     }
   }
 
