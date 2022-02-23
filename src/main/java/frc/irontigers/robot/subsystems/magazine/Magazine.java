@@ -174,6 +174,8 @@ public class Magazine extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putBoolean("Rear Sensor", readBallSensor(BallSensor.Hold1));
     SmartDashboard.putBoolean("Front Sensor", readBallSensor(BallSensor.Shot));
+    Color color = readColor();
+    SmartDashboard.putNumberArray("RGB", new double[] { color.red, color.green, color.blue });
   }
 
   public enum BallGate {
