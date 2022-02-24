@@ -16,7 +16,7 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
     public static final class ShooterVals {
         public final static double DIAMETER = Units.inchesToMeters(6);
-        public final static int MOTOR_ID = 0;
+        public final static int MOTOR_ID = 7; // Don't change PCM from CAN ID 0
         public final static double DEFAULT_SPEED = 1;
     }
 
