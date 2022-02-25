@@ -29,14 +29,10 @@ public class RunIntake extends CommandBase {
   public void execute() {
     switch(direction){
       case FORWARD:
-      while (intake.get()<Constants.IntakeVals.DEFAULT_SPEED){
-        intake.set(intake.get()+0.05);
-      }
+        intake.set(Constants.IntakeVals.DEFAULT_SPEED);
         break;
       case BACKWARD:
-      while (intake.get()>-Constants.IntakeVals.DEFAULT_SPEED){
-        intake.set(intake.get()-0.05);
-      }
+        intake.set(Constants.IntakeVals.DEFAULT_SPEED);
         break;
       case STOP:
         intake.set(0);

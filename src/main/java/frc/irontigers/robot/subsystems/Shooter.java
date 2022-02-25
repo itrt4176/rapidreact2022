@@ -18,7 +18,7 @@ public class Shooter extends SubsystemBase {
   private WPI_TalonFX flywheel;
 
   public Shooter() {
-    flywheel = new WPI_TalonFX(0);
+    flywheel = new WPI_TalonFX(7);
   }
 
   public double getRPM() {
