@@ -15,12 +15,9 @@ import frc.irontigers.robot.subsystems.magazine.Magazine.BallGate;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class ReadColorCommand extends SequentialCommandGroup {
-  private Magazine magazine;
-  private Shooter shooter;
-  private Intake intake;
 
   /** Creates a new ReadColorCommand. */
-  public ReadColorCommand() {
+  public ReadColorCommand(Magazine magazine, Shooter shooter, Intake intake) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(

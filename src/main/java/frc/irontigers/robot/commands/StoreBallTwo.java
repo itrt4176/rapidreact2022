@@ -16,12 +16,9 @@ import frc.irontigers.robot.subsystems.Shooter;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class StoreBallTwo extends SequentialCommandGroup {
-  private Intake intake;
-  private Magazine magazine;
-  private Shooter shooter;
 
   /** Creates a new StoreBallTwo. */
-  public StoreBallTwo() {
+  public StoreBallTwo(Shooter shooter, Magazine magazine, Intake intake) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(

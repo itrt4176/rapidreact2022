@@ -16,12 +16,9 @@ import frc.irontigers.robot.subsystems.magazine.Magazine.BallGate;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class IntakeBallOne extends SequentialCommandGroup {
-  private Shooter shooter;
-  private Magazine magazine;
-  private Intake intake;
 
   /** Creates a new IntakeBallOne. */
-  public IntakeBallOne() {
+  public IntakeBallOne(Shooter shooter, Magazine magazine, Intake intake) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
