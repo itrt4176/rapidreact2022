@@ -10,6 +10,7 @@ import frc.tigerlib.XboxControllerIT.DPadDirection;
 import frc.tigerlib.command.MecanumJoystickDrive;
 import frc.tigerlib.command.button.DPadButton;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.XboxController.Button;
@@ -18,6 +19,9 @@ import static frc.irontigers.robot.Constants.*;
 import frc.irontigers.robot.commands.BangBangShooterTest;
 import frc.irontigers.robot.commands.RampShooter;
 import frc.irontigers.robot.commands.RunIntake;
+//import frc.irontigers.robot.subsystems.Climber;
+//import frc.irontigers.robot.commands.ClimberCommand;
+
 import frc.irontigers.robot.subsystems.DriveSystem;
 import frc.irontigers.robot.subsystems.Intake;
 import frc.irontigers.robot.subsystems.Shooter;
@@ -44,6 +48,8 @@ public class RobotContainer {
   private final Shooter shooter = new Shooter();
   private final Intake intake = new Intake();
   private final Magazine magazine = new Magazine();
+  //private final Climber climber = new Climber();
+
 
   private final XboxControllerIT controller = new XboxControllerIT(0);
 
@@ -57,11 +63,20 @@ public class RobotContainer {
   private final JoystickButton intakeBackward = new JoystickButton(controller, Button.kA.value);
   private final JoystickButton intakeStop = new JoystickButton(controller, Button.kBack.value);
 
+  
+  
+  
+
+  //private final JoystickButton climberExtend = new JoystickButton(controller, Button.kB.value);
+  //private final JoystickButton climberRetract = new JoystickButton(controller, Button.kX.value);
+  //private final DPadButton climberStop = new DPadButton(controller, DPadDirection.kDown);
+
   private final DPadButton startBangBang = new DPadButton(controller, DPadDirection.kRight);
   private final DPadButton stopBangBang = new DPadButton(controller, DPadDirection.kLeft);
 
   private final JoystickButton magazineOnButton = new JoystickButton(controller, Button.kStart.value);
   private final JoystickButton magazineOffButton = new JoystickButton(controller, Button.kBack.value);
+  
 
   private final SequentialCommandGroup bangBangTest = new RampShooter(shooter, 2500, 3000)
                                                             .andThen(new BangBangShooterTest(shooter, 2500));
@@ -90,6 +105,15 @@ public class RobotContainer {
     intakeBackward.whenPressed(new RunIntake(intake, Direction.BACKWARD));
     intakeStop.whenPressed(new RunIntake(intake, Direction.STOP));
 
+  
+    
+
+    
+
+    //climberExtend.whenPressed(new ClimberCommand(climber, Direction.FORWARD));
+    //climberRetract.whenPressed(new ClimberCommand(climber, Direction.BACKWARD));
+    //climberStop.whenPressed(new ClimberCommand(climber, Direction.STOP));
+
     startBangBang.whenPressed(bangBangTest);
     stopBangBang.cancelWhenPressed(bangBangTest);
   }
@@ -101,5 +125,15 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return null;
+  
+  }
+
+  public SequentialCommandGroup rejectBallTwo() {
+    return new SequentialCommandGroup(
+      new InstantCommand(() -> magazine.setOutput(0)),
+      new RunIntake(intake, Direction.BACKWARD)
+      
+    );
+
   }
 }
