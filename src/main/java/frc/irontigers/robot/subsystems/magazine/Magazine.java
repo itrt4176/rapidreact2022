@@ -17,31 +17,30 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.irontigers.robot.subsystems.magazine.BallsState.Position;
+
 import static frc.irontigers.robot.Constants.MagazineVals.*;
-import frc.irontigers.robot.subsystems.magazine.Ball.Position;
+import static frc.irontigers.robot.subsystems.magazine.BallsState.PositionState.*;
 
 public class Magazine extends SubsystemBase {
 
   private WPI_TalonFX conveyor;
 
-  private LinkedList<Ball> balls;
+  private BallsState states;
 
   private DigitalInput intakeSensor;
   private DigitalInput hold1Sensor;
   private DigitalInput hold2Sensor;
-  private DigitalInput shotSensor;  
+  private DigitalInput shotSensor;
 
   private Solenoid frontGate;
   private Solenoid rearGate;
 
   private ColorSensorV3 colorSensor;
-  
+
   /** Creates a new Magazine. */
   public Magazine() {
     conveyor = new WPI_TalonFX(MOTOR_ID);
-
-    balls = new LinkedList<>();
-    addBall();
 
     intakeSensor = new DigitalInput(S1);
     hold1Sensor = new DigitalInput(S2);
@@ -52,6 +51,8 @@ public class Magazine extends SubsystemBase {
     rearGate = new Solenoid(CTREPCM, REAR_SOLENOID);
 
     colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
+
+    states = new BallsState();
   }
 
   public void setOutput(double speed) {
@@ -62,81 +63,58 @@ public class Magazine extends SubsystemBase {
     return conveyor.get();
   }
 
-  /**
-   * True when sensor is broken (blocked)
-   * False when sensor isn't broken
-   * 
-   * @param sensor
-   * @return selected sensor's value
-   */
-  public boolean readBallSensor(BallSensor sensor) {
-    switch (sensor) {
-      case Hold1:
-        return !hold1Sensor.get();
-      case Hold2:
-        return !hold2Sensor.get();
-      case Intake:
-        return !intakeSensor.get();
-      case Shot:
-        return !shotSensor.get();
-      default:
-        return true;
-    }
-  }
+  // /**
+  //  * True when sensor is broken (blocked)
+  //  * False when sensor isn't broken
+  //  * 
+  //  * @param sensor
+  //  * @return selected sensor's value
+  //  */
+  // public boolean readBallSensor(BallPosition sensor) {
+  //   switch (sensor) {
+  //     case Hold1:
+  //       return !hold1Sensor.get();
+  //     case Hold2:
+  //       return !hold2Sensor.get();
+  //     case Intake:
+  //       return !intakeSensor.get();
+  //     case Shot:
+  //       return !shotSensor.get();
+  //     default:
+  //       return true;
+  //   }
+  // }
 
-  public Ball addBall() {
-    var ball = new Ball();
-    balls.add(ball);
-    SmartDashboard.putData("Ball[" + (balls.size() - 1) + "]", ball);
-    return ball;
-  }
-
-  public void removeFirstBall() {
-    if (!balls.isEmpty()) {
-      balls.removeFirst();
-    }
-  }
-
-  public void removeLastBall() {
-    if (!balls.isEmpty()) {
-      balls.removeLast();
-    }
-  }
-
-  public Ball getBallAt(Position position) {
-    for (Ball b : balls) {
-      if (b.getPosition() == position) {
-        return b;
-      }
-    }
-
-    return null;
+  public BallsState getState() {
+    return states;
   }
   
-  public Ball getBall(int index) {
-    return balls.get(index);
+  /**
+   * Shift current states forward one position.
+   * 
+   * First position becomes <code>EMPTY</code>, last state is dropped.
+   */
+  public void shiftPositionStates() {
+    states.SHOOTER.state = states.H2.state;
+    states.H2.state = states.H1.state;
+    states.H1.state = states.INTAKE.state;
+    states.INTAKE.state = EMPTY;
   }
 
-  public int getBallCount() {
-    return balls.size();
+  /**
+   * Shifts state at given position to next position.
+   * 
+   * Current position become <code>EMPTY</code>.
+   * 
+   * @param current Position to shift state of
+   */
+  public void shiftToNextPosition(Position current) {
+    current.next.state = current.state;
+    current.state = EMPTY;
   }
 
-  public void updateBallPositions() {
-    updateBallPositions(true);
-  }
-
-  public void updateBallPositions(boolean forward) {
-    for (Ball b : balls) {
-      if (forward) {
-        b.forward();
-      } else {
-        b.back();
-      }
-
-      if (b.getPosition() == null) {
-        balls.remove(b);
-      }
-    }
+  public void addBall() {
+    states.INTAKE.state = UNKNOWN;
   }
 
   public void openGate(BallGate gate) {
@@ -165,16 +143,16 @@ public class Magazine extends SubsystemBase {
     }
   }
 
-  public Color readColor() {
+  public Color readBallColor() {
     return colorSensor.getColor();
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putBoolean("Rear Sensor", readBallSensor(BallSensor.Hold1));
-    SmartDashboard.putBoolean("Front Sensor", readBallSensor(BallSensor.Shot));
-    Color color = readColor();
+    // SmartDashboard.putBoolean("Rear Sensor", readBallSensor(BallPosition.Hold1));
+    // SmartDashboard.putBoolean("Front Sensor", readBallSensor(BallPosition.Shot));
+    Color color = readBallColor();
     SmartDashboard.putNumberArray("RGB", new double[] { color.red, color.green, color.blue });
   }
 
@@ -182,12 +160,5 @@ public class Magazine extends SubsystemBase {
     Front,
     Rear,
     Both
-  }
-
-  public enum BallSensor {
-    Intake,
-    Hold1,
-    Hold2,
-    Shot
   }
 }
