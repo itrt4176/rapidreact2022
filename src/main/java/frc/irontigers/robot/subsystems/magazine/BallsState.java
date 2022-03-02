@@ -33,6 +33,17 @@ public class BallsState {
 
     @Override
     public int hashCode() {
+        // int hash = 0;
+        // int i = 0;
+        // Position[] positions = {INTAKE, H1, H2, SHOOTER};
+
+        // for (Position pos : positions) {
+        //     if (pos.state != null) {
+        //         hash |= pos.state.ordinal() << i;
+        //     }
+        //     i += 2;
+        // }
+
         int hash = INTAKE.state.ordinal();
         hash |= H1.state.ordinal() << 2;
         hash |= H2.state.ordinal() << 4;
@@ -44,7 +55,7 @@ public class BallsState {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof BallsState) {
-            return hashCode() == obj.hashCode();
+            return obj.hashCode() == hashCode();
         } else {
             return false;
         }

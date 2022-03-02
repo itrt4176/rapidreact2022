@@ -63,27 +63,27 @@ public class Magazine extends SubsystemBase {
     return conveyor.get();
   }
 
-  // /**
-  //  * True when sensor is broken (blocked)
-  //  * False when sensor isn't broken
-  //  * 
-  //  * @param sensor
-  //  * @return selected sensor's value
-  //  */
-  // public boolean readBallSensor(BallPosition sensor) {
-  //   switch (sensor) {
-  //     case Hold1:
-  //       return !hold1Sensor.get();
-  //     case Hold2:
-  //       return !hold2Sensor.get();
-  //     case Intake:
-  //       return !intakeSensor.get();
-  //     case Shot:
-  //       return !shotSensor.get();
-  //     default:
-  //       return true;
-  //   }
-  // }
+  /**
+   * True when sensor is broken (blocked)
+   * False when sensor isn't broken
+   * 
+   * @param sensor
+   * @return selected sensor's value
+   */
+  public boolean readBallSensor(Sensor sensor) {
+    switch (sensor) {
+      case S1:
+        return !hold1Sensor.get();
+      case S2:
+        return !hold2Sensor.get();
+      case S3:
+        return !intakeSensor.get();
+      case S4:
+        return !shotSensor.get();
+      default:
+        return false;
+    }
+  }
 
   public BallsState getState() {
     return states;
@@ -109,7 +109,23 @@ public class Magazine extends SubsystemBase {
    * @param current Position to shift state of
    */
   public void shiftToNextPosition(Position current) {
-    current.next.state = current.state;
+    if (current.next != null) {
+      current.next.state = current.state;
+    }
+    current.state = EMPTY;
+  }
+
+  /**
+   * Shifts state at given position to next position.
+   * 
+   * Current position become <code>EMPTY</code>.
+   * 
+   * @param current Position to shift state of
+   */
+  public void shiftToPreviousPosition(Position current) {
+    if (current.previous != null) {
+      current.previous.state = current.state;
+    }
     current.state = EMPTY;
   }
 
@@ -160,5 +176,12 @@ public class Magazine extends SubsystemBase {
     Front,
     Rear,
     Both
+  }
+
+  public enum Sensor {
+    S1,
+    S2,
+    S3,
+    S4
   }
 }

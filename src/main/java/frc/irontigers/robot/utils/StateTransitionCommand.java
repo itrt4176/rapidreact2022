@@ -13,21 +13,21 @@ import frc.irontigers.robot.subsystems.magazine.BallsState;
 public abstract class StateTransitionCommand<E> extends SequentialCommandGroup {
     private HashMap<E, Command> nextMap = new HashMap<>();
     private Command nextCommand;
-    private Supplier<E> inputSupplier;
+    private Supplier<E> selector;
 
     public final void addNextState(E input, Command command) {
         nextMap.put(input, command);
     }
 
-    public final void setInputSupplier(Supplier<E> supplier) {
-        inputSupplier = supplier;
+    public final void setNextSelector(Supplier<E> Selector) {
+        selector = Selector;
     }
     
 
     @Override
     public void initialize() {
         addCommands(new WaitUntilCommand(() -> {
-            nextCommand = nextMap.get(inputSupplier.get());
+            nextCommand = nextMap.get(selector.get());
             return nextCommand != null;
         }));
 

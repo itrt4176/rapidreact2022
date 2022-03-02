@@ -13,10 +13,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import static frc.irontigers.robot.Constants.*;
 
 import frc.irontigers.robot.commands.BangBangShooterTest;
+import frc.irontigers.robot.commands.HandleS1;
 import frc.irontigers.robot.commands.RampShooter;
 import frc.irontigers.robot.commands.RunIntake;
 //import frc.irontigers.robot.subsystems.Climber;
@@ -26,6 +28,8 @@ import frc.irontigers.robot.subsystems.DriveSystem;
 import frc.irontigers.robot.subsystems.Intake;
 import frc.irontigers.robot.subsystems.Shooter;
 import frc.irontigers.robot.subsystems.magazine.Magazine;
+import frc.irontigers.robot.subsystems.magazine.Magazine.Sensor;
+import frc.irontigers.robot.utils.OnClearedTrigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -79,7 +83,12 @@ public class RobotContainer {
   
 
   private final SequentialCommandGroup bangBangTest = new RampShooter(shooter, 2500, 3000)
-                                                            .andThen(new BangBangShooterTest(shooter, 2500));
+      .andThen(new BangBangShooterTest(shooter, 2500));
+                                                            
+  private final OnClearedTrigger s1 = new OnClearedTrigger(() -> magazine.readBallSensor(Sensor.S1));
+  private final OnClearedTrigger s2 = new OnClearedTrigger(() -> magazine.readBallSensor(Sensor.S2));
+  private final OnClearedTrigger s3 = new OnClearedTrigger(() -> magazine.readBallSensor(Sensor.S3));
+  private final Trigger s4 = new Trigger(() -> {return magazine.readBallSensor(Sensor.S4);});
 
   public RobotContainer() {
     // Configure the button bindings
@@ -105,7 +114,11 @@ public class RobotContainer {
     intakeBackward.whenPressed(new RunIntake(intake, Direction.BACKWARD));
     intakeStop.whenPressed(new RunIntake(intake, Direction.STOP));
 
-  
+    s1.whenActive(new HandleS1(magazine));
+    s2.whenActive(() -> magazine.shiftToNextPosition(magazine.getState().INTAKE));
+    s3.whenActive(() -> magazine.shiftToNextPosition(magazine.getState().H1));
+    s4.whenActive(() -> magazine.shiftToNextPosition(magazine.getState().H2));
+    s4.whenInactive(() -> magazine.shiftToNextPosition(magazine.getState().SHOOTER));
     
 
     
