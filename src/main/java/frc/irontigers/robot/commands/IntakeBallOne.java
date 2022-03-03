@@ -9,13 +9,16 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.irontigers.robot.RobotContainer.Direction;
 import frc.irontigers.robot.subsystems.Intake;
 import frc.irontigers.robot.subsystems.Shooter;
+import frc.irontigers.robot.subsystems.magazine.BallStates;
 import frc.irontigers.robot.subsystems.magazine.Magazine;
+import frc.irontigers.robot.subsystems.magazine.BallStates.PositionState;
 import frc.irontigers.robot.subsystems.magazine.Magazine.BallGate;
+import frc.irontigers.robot.utils.StateTransitionCommand;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class IntakeBallOne extends SequentialCommandGroup {
+public class IntakeBallOne extends StateTransitionCommand<BallStates> {
 
   /** Creates a new IntakeBallOne. */
   public IntakeBallOne(Shooter shooter, Magazine magazine, Intake intake) {
@@ -28,5 +31,9 @@ public class IntakeBallOne extends SequentialCommandGroup {
       new InstantCommand(() -> magazine.setOutput(0)),
       new InstantCommand(() -> new RunIntake(intake, Direction.STOP))
     );
+
+    setNextSelector(magazine::getState);
+
+    addNextState(new BallStates(PositionState.UNKNOWN, PositionState.EMPTY, PositionState.EMPTY, PositionState.EMPTY), new ReadColorCommand(magazine, shooter, intake));
   }
 }
