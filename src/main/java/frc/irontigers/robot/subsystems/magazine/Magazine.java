@@ -17,16 +17,16 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.irontigers.robot.subsystems.magazine.BallsState.Position;
+import frc.irontigers.robot.subsystems.magazine.BallStates.Position;
 
 import static frc.irontigers.robot.Constants.MagazineVals.*;
-import static frc.irontigers.robot.subsystems.magazine.BallsState.PositionState.*;
+import static frc.irontigers.robot.subsystems.magazine.BallStates.PositionState.*;
 
 public class Magazine extends SubsystemBase {
 
   private WPI_TalonFX conveyor;
 
-  private BallsState states;
+  private BallStates states;
 
   private DigitalInput intakeSensor;
   private DigitalInput hold1Sensor;
@@ -52,7 +52,7 @@ public class Magazine extends SubsystemBase {
 
     colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
 
-    states = new BallsState();
+    states = new BallStates();
   }
 
   public void setOutput(double speed) {
@@ -85,7 +85,7 @@ public class Magazine extends SubsystemBase {
     }
   }
 
-  public BallsState getState() {
+  public BallStates getState() {
     return states;
   }
   

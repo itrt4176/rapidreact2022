@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import frc.irontigers.robot.subsystems.magazine.BallsState;
+import frc.irontigers.robot.subsystems.magazine.BallStates;
 
 public abstract class StateTransitionCommand<E> extends SequentialCommandGroup {
     private HashMap<E, Command> nextMap = new HashMap<>();

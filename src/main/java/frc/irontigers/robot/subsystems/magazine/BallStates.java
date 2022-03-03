@@ -1,9 +1,9 @@
 package frc.irontigers.robot.subsystems.magazine;
 
-public class BallsState {
+public class BallStates {
     public final Position SHOOTER, H2, H1, INTAKE;
 
-    public BallsState(PositionState intake, PositionState h1, PositionState h2, PositionState shooter) {
+    public BallStates(PositionState intake, PositionState h1, PositionState h2, PositionState shooter) {
         SHOOTER = new Position(shooter);
         H2 = new Position(h2);
         H1 = new Position(h1);
@@ -17,7 +17,7 @@ public class BallsState {
         INTAKE.next = H1;
     }
 
-    public BallsState() {
+    public BallStates() {
         SHOOTER = new Position(PositionState.EMPTY);
         H2 = new Position(PositionState.EMPTY);
         H1 = new Position(PositionState.EMPTY);
@@ -54,7 +54,7 @@ public class BallsState {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof BallsState) {
+        if (obj instanceof BallStates) {
             return obj.hashCode() == hashCode();
         } else {
             return false;
