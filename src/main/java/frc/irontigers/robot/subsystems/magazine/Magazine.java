@@ -5,6 +5,7 @@
 package frc.irontigers.robot.subsystems.magazine;
 
 import java.util.LinkedList;
+import java.util.Map;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.ColorSensorV3;
@@ -38,15 +39,23 @@ public class Magazine extends SubsystemBase {
   private Solenoid rearGate;
 
   private ColorSensorV3 colorSensor;
+  private Map<Sensor, DigitalInput> sensors;
 
   /** Creates a new Magazine. */
   public Magazine() {
     conveyor = new WPI_TalonFX(MOTOR_ID);
 
-    intakeSensor = new DigitalInput(S1);
-    hold1Sensor = new DigitalInput(S2);
-    hold2Sensor = new DigitalInput(S3);
-    shotSensor = new DigitalInput(S4);
+    intakeSensor = new DigitalInput(S0);
+    hold1Sensor = new DigitalInput(S1);
+    hold2Sensor = new DigitalInput(S2);
+    shotSensor = new DigitalInput(S3);
+
+    sensors = Map.ofEntries(
+      Map.entry(Sensor.S0, intakeSensor),
+      Map.entry(Sensor.S1, hold1Sensor),
+      Map.entry(Sensor.S2, hold2Sensor),
+      Map.entry(Sensor.S3, shotSensor)
+    );
 
     frontGate = new Solenoid(CTREPCM, FRONT_SOLENOID);
     rearGate = new Solenoid(CTREPCM, REAR_SOLENOID);
@@ -72,34 +81,11 @@ public class Magazine extends SubsystemBase {
    * @return selected sensor's value
    */
   public boolean readBallSensor(Sensor sensor) {
-    switch (sensor) {
-      case S1:
-        return !hold1Sensor.get();
-      case S2:
-        return !hold2Sensor.get();
-      case S3:
-        return !intakeSensor.get();
-      case S4:
-        return !shotSensor.get();
-      default:
-        return false;
-    }
+    return !sensors.get(sensor).get();
   }
 
   public BallStates getState() {
     return states;
-  }
-  
-  /**
-   * Shift current states forward one position.
-   * 
-   * First position becomes <code>EMPTY</code>, last state is dropped.
-   */
-  public void shiftPositionStates() {
-    states.SHOOTER.state = states.H2.state;
-    states.H2.state = states.H1.state;
-    states.H1.state = states.INTAKE.state;
-    states.INTAKE.state = EMPTY;
   }
 
   /**
@@ -199,9 +185,9 @@ public class Magazine extends SubsystemBase {
   }
 
   public enum Sensor {
+    S0,
     S1,
     S2,
-    S3,
-    S4
+    S3
   }
 }

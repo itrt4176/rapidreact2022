@@ -86,10 +86,10 @@ public class RobotContainer {
   private final SequentialCommandGroup bangBangTest = new RampShooter(shooter, 2500, 3000)
       .andThen(new BangBangShooterTest(shooter, 2500));
                                                             
-  private final OnClearedTrigger s1 = new OnClearedTrigger(() -> magazine.readBallSensor(Sensor.S1));
-  private final OnClearedTrigger s2 = new OnClearedTrigger(() -> magazine.readBallSensor(Sensor.S2));
-  private final OnClearedTrigger s3 = new OnClearedTrigger(() -> magazine.readBallSensor(Sensor.S3));
-  private final Trigger s4 = new Trigger(() -> {return magazine.readBallSensor(Sensor.S4);});
+  private final OnClearedTrigger s1 = new OnClearedTrigger(() -> magazine.readBallSensor(Sensor.S0));
+  private final OnClearedTrigger s2 = new OnClearedTrigger(() -> magazine.readBallSensor(Sensor.S1));
+  private final OnClearedTrigger s3 = new OnClearedTrigger(() -> magazine.readBallSensor(Sensor.S2));
+  private final Trigger s4 = new Trigger(() -> {return magazine.readBallSensor(Sensor.S3);});
 
   public RobotContainer() {
     // Configure the button bindings
