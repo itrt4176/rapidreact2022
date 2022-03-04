@@ -86,10 +86,10 @@ public class RobotContainer {
   private final SequentialCommandGroup bangBangTest = new RampShooter(shooter, 2500, 3000)
       .andThen(new BangBangShooterTest(shooter, 2500));
                                                             
-  private final Trigger s1 = new Trigger(() -> magazine.readBallSensor(Sensor.S1)).debounce(0.1);
-  private final Trigger s2 = new Trigger(() -> magazine.readBallSensor(Sensor.S2)).debounce(0.1);
-  private final Trigger s3 = new Trigger(() -> magazine.readBallSensor(Sensor.S3)).debounce(0.1);
-  private final Trigger s4 = new Trigger(() -> {return magazine.readBallSensor(Sensor.S4);}).debounce(0.1);
+  private final OnClearedTrigger s1 = new OnClearedTrigger(() -> magazine.readBallSensor(Sensor.S1));
+  private final OnClearedTrigger s2 = new OnClearedTrigger(() -> magazine.readBallSensor(Sensor.S2));
+  private final OnClearedTrigger s3 = new OnClearedTrigger(() -> magazine.readBallSensor(Sensor.S3));
+  private final Trigger s4 = new Trigger(() -> {return magazine.readBallSensor(Sensor.S4);});
 
   public RobotContainer() {
     // Configure the button bindings
@@ -117,10 +117,9 @@ public class RobotContainer {
     intakeBackward.whenPressed(new RunIntake(intake, Direction.BACKWARD));
     intakeStop.whenPressed(new RunIntake(intake, Direction.STOP));
 
-    // s1.whenInactive(new HandleS1(magazine));
-    s1.whenInactive(() -> magazine.addBall());
-    s2.whenInactive(() -> magazine.shiftToNextPosition(magazine.getState().INTAKE));
-    s3.whenInactive(() -> magazine.shiftToNextPosition(magazine.getState().H1));
+    s1.whenActive(new HandleS1(magazine));
+    s2.whenActive(() -> magazine.shiftToNextPosition(magazine.getState().INTAKE));
+    s3.whenActive(() -> magazine.shiftToNextPosition(magazine.getState().H1));
     s4.whenActive(() -> magazine.shiftToNextPosition(magazine.getState().H2));
     s4.whenInactive(() -> magazine.shiftToNextPosition(magazine.getState().SHOOTER));
     
