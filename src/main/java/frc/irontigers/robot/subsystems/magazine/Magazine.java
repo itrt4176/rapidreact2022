@@ -32,10 +32,10 @@ public class Magazine extends SubsystemBase {
 
   private BallStates states;
 
-  private DigitalInput intakeSensor;
-  private DigitalInput hold1Sensor;
-  private DigitalInput hold2Sensor;
-  private DigitalInput shotSensor;
+  private DigitalInput s0;
+  private DigitalInput s1;
+  private DigitalInput s2;
+  private DigitalInput s3;
 
   private Solenoid frontGate;
   private Solenoid rearGate;
@@ -47,16 +47,16 @@ public class Magazine extends SubsystemBase {
   public Magazine() {
     conveyor = new WPI_TalonFX(MOTOR_ID);
 
-    intakeSensor = new DigitalInput(S0);
-    hold1Sensor = new DigitalInput(S1);
-    hold2Sensor = new DigitalInput(S2);
-    shotSensor = new DigitalInput(S3);
+    s0 = new DigitalInput(S0);
+    s1 = new DigitalInput(S1);
+    s2 = new DigitalInput(S2);
+    s3 = new DigitalInput(S3);
 
     sensors = new EnumMap<>(Map.ofEntries(
-      Map.entry(Sensor.S0, intakeSensor),
-      Map.entry(Sensor.S1, hold1Sensor),
-      Map.entry(Sensor.S2, hold2Sensor),
-      Map.entry(Sensor.S3, shotSensor)
+      Map.entry(Sensor.S0, s0),
+      Map.entry(Sensor.S1, s1),
+      Map.entry(Sensor.S2, s2),
+      Map.entry(Sensor.S3, s3)
     ));
 
     frontGate = new Solenoid(CTREPCM, FRONT_SOLENOID);
