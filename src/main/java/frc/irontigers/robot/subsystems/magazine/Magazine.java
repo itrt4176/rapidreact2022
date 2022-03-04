@@ -4,6 +4,8 @@
 
 package frc.irontigers.robot.subsystems.magazine;
 
+import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
@@ -39,7 +41,7 @@ public class Magazine extends SubsystemBase {
   private Solenoid rearGate;
 
   private ColorSensorV3 colorSensor;
-  private Map<Sensor, DigitalInput> sensors;
+  private EnumMap<Sensor, DigitalInput> sensors;
 
   /** Creates a new Magazine. */
   public Magazine() {
@@ -50,12 +52,12 @@ public class Magazine extends SubsystemBase {
     hold2Sensor = new DigitalInput(S2);
     shotSensor = new DigitalInput(S3);
 
-    sensors = Map.ofEntries(
+    sensors = new EnumMap<>(Map.ofEntries(
       Map.entry(Sensor.S0, intakeSensor),
       Map.entry(Sensor.S1, hold1Sensor),
       Map.entry(Sensor.S2, hold2Sensor),
       Map.entry(Sensor.S3, shotSensor)
-    );
+    ));
 
     frontGate = new Solenoid(CTREPCM, FRONT_SOLENOID);
     rearGate = new Solenoid(CTREPCM, REAR_SOLENOID);
