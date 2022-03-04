@@ -5,6 +5,7 @@
 package frc.irontigers.robot;
 
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.util.Color;
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -17,22 +18,23 @@ public final class Constants {
     public static final class ShooterVals {
         public final static double DIAMETER = Units.inchesToMeters(6);
         public final static int MOTOR_ID = 7; // Don't change PCM from CAN ID 0
-        public final static double DEFAULT_SPEED = 1;
+        public final static double DEFAULT_SPEED = .25;
     }
 
     public static final class IntakeVals {
         public final static int MOTOR_ID = 1;
-        public final static double DEFAULT_SPEED = 0.6;
-    }
+        public final static double DEFAULT_SPEED = 0.6/4;
+        }
 
     public static final class MagazineVals {
         public final static int MOTOR_ID = 6;
-        public final static double DEFAULT_SPEED = 0.6;
+        public final static double DEFAULT_SPEED = 0.6/4;
 
-        public final static int S1 = 3;
-        public final static int S2 = 0;
-        public final static int S3 = 4;
-        public final static int S4 = 1;
+        public final static int S1 = 0;
+        public final static int S2 = 1;
+        public final static int S3 = 2;
+        public final static int S4 = 3;
+
 
         public final static int FRONT_SOLENOID = 0;
         public final static int REAR_SOLENOID = 1;
@@ -46,6 +48,8 @@ public final class Constants {
 
         public final static double DEFAULT_SPEED = 0.2;
     }
+
+    
 
 
 }

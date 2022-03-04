@@ -28,6 +28,7 @@ import frc.irontigers.robot.subsystems.DriveSystem;
 import frc.irontigers.robot.subsystems.Intake;
 import frc.irontigers.robot.subsystems.Shooter;
 import frc.irontigers.robot.subsystems.magazine.Magazine;
+import frc.irontigers.robot.subsystems.magazine.Magazine.BallGate;
 import frc.irontigers.robot.subsystems.magazine.Magazine.Sensor;
 import frc.irontigers.robot.utils.OnClearedTrigger;
 
@@ -95,6 +96,8 @@ public class RobotContainer {
     configureButtonBindings();
     controller.setDeadzone(0.15);
     driveSystem.setDefaultCommand(joystickDrive);
+
+    magazine.closeGate(BallGate.Rear);
   }
 
   /**
@@ -140,13 +143,5 @@ public class RobotContainer {
     return null;
   
   }
-
-  public SequentialCommandGroup rejectBallTwo() {
-    return new SequentialCommandGroup(
-      new InstantCommand(() -> magazine.setOutput(0)),
-      new RunIntake(intake, Direction.BACKWARD)
-      
-    );
-
-  }
 }
+

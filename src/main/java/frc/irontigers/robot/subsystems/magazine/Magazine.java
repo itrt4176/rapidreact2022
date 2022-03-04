@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.I2C;
 
 import static edu.wpi.first.wpilibj.PneumaticsModuleType.CTREPCM;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.SerialPort.WriteBufferMode;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -50,7 +51,7 @@ public class Magazine extends SubsystemBase {
     frontGate = new Solenoid(CTREPCM, FRONT_SOLENOID);
     rearGate = new Solenoid(CTREPCM, REAR_SOLENOID);
 
-    colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
+    colorSensor = new ColorSensorV3(I2C.Port.kMXP);
 
     states = new BallStates();
   }
@@ -170,6 +171,22 @@ public class Magazine extends SubsystemBase {
     // SmartDashboard.putBoolean("Front Sensor", readBallSensor(BallPosition.Shot));
     Color color = readBallColor();
     SmartDashboard.putNumberArray("RGB", new double[] { color.red, color.green, color.blue });
+
+    SmartDashboard.putBoolean("Intake Unknown", states.INTAKE.state == UNKNOWN);
+    SmartDashboard.putBoolean("Intake Right", states.INTAKE.state == RIGHT);
+    SmartDashboard.putBoolean("Intake Wrong", states.INTAKE.state == WRONG);
+
+    SmartDashboard.putBoolean("H1 Unknown", states.H1.state == UNKNOWN);
+    SmartDashboard.putBoolean("H1 Right", states.H1.state == RIGHT);
+    SmartDashboard.putBoolean("H1 Wrong", states.H1.state == WRONG);
+
+    SmartDashboard.putBoolean("H2 Unknown", states.H2.state == UNKNOWN);
+    SmartDashboard.putBoolean("H2 Right", states.H2.state == RIGHT);
+    SmartDashboard.putBoolean("H2 Wrong", states.H2.state == WRONG);
+
+    SmartDashboard.putBoolean("Shooter Unknown", states.SHOOTER.state == UNKNOWN);
+    SmartDashboard.putBoolean("Shooter Right", states.SHOOTER.state == RIGHT);
+    SmartDashboard.putBoolean("Shooter Wrong", states.SHOOTER.state == WRONG);
   }
 
   public enum BallGate {
