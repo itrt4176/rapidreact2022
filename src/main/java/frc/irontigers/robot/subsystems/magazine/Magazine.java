@@ -172,21 +172,23 @@ public class Magazine extends SubsystemBase {
     Color color = readBallColor();
     SmartDashboard.putNumberArray("RGB", new double[] { color.red, color.green, color.blue });
 
-    SmartDashboard.putBoolean("Intake Unknown", states.INTAKE.state == UNKNOWN);
-    SmartDashboard.putBoolean("Intake Right", states.INTAKE.state == RIGHT);
-    SmartDashboard.putBoolean("Intake Wrong", states.INTAKE.state == WRONG);
+    // SmartDashboard.putBoolean("Intake Unknown", states.INTAKE.state == UNKNOWN);
+    // SmartDashboard.putBoolean("Intake Right", states.INTAKE.state == RIGHT);
+    // SmartDashboard.putBoolean("Intake Wrong", states.INTAKE.state == WRONG);
 
-    SmartDashboard.putBoolean("H1 Unknown", states.H1.state == UNKNOWN);
-    SmartDashboard.putBoolean("H1 Right", states.H1.state == RIGHT);
-    SmartDashboard.putBoolean("H1 Wrong", states.H1.state == WRONG);
+    // SmartDashboard.putBoolean("H1 Unknown", states.H1.state == UNKNOWN);
+    // SmartDashboard.putBoolean("H1 Right", states.H1.state == RIGHT);
+    // SmartDashboard.putBoolean("H1 Wrong", states.H1.state == WRONG);
 
-    SmartDashboard.putBoolean("H2 Unknown", states.H2.state == UNKNOWN);
-    SmartDashboard.putBoolean("H2 Right", states.H2.state == RIGHT);
-    SmartDashboard.putBoolean("H2 Wrong", states.H2.state == WRONG);
+    // SmartDashboard.putBoolean("H2 Unknown", states.H2.state == UNKNOWN);
+    // SmartDashboard.putBoolean("H2 Right", states.H2.state == RIGHT);
+    // SmartDashboard.putBoolean("H2 Wrong", states.H2.state == WRONG);
 
-    SmartDashboard.putBoolean("Shooter Unknown", states.SHOOTER.state == UNKNOWN);
-    SmartDashboard.putBoolean("Shooter Right", states.SHOOTER.state == RIGHT);
-    SmartDashboard.putBoolean("Shooter Wrong", states.SHOOTER.state == WRONG);
+    // SmartDashboard.putBoolean("Shooter Unknown", states.SHOOTER.state == UNKNOWN);
+    // SmartDashboard.putBoolean("Shooter Right", states.SHOOTER.state == RIGHT);
+    // SmartDashboard.putBoolean("Shooter Wrong", states.SHOOTER.state == WRONG);
+
+    SmartDashboard.putString("BallState", "[" + states.INTAKE.state + "," + states.H1.state + "," + states.H2.state + "," + states.SHOOTER.state + "]");
   }
 
   public enum BallGate {
