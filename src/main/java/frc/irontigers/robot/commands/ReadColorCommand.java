@@ -26,5 +26,9 @@ public class ReadColorCommand extends SequentialCommandGroup {
       new InstantCommand(() -> magazine.openGate(BallGate.Front)),
       new InstantCommand(() -> magazine.setOutput(0)),
       new InstantCommand(() -> intake.set(0)));
+      new InstantCommand(() -> magazine.checkColorMatch());
+      new InstantCommand(() -> magazine.getAllianceColor());
+      new InstantCommand(() -> magazine.setSensorBallState());
+
   }
 }

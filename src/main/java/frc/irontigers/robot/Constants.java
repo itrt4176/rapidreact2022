@@ -38,6 +38,9 @@ public final class Constants {
 
         public final static int FRONT_SOLENOID = 0;
         public final static int REAR_SOLENOID = 1;
+
+        public static final Color RED_COLOR = new Color(.5, .2, .1);
+        public static final Color BLUE_COLOR = new Color(.1, .4, .4);
     }
 
     public static final class DriveSystemVals {
@@ -47,6 +50,7 @@ public final class Constants {
         public final static int BACK_RIGHT = 5;
 
         public final static double DEFAULT_SPEED = 0.2;
+    
     }
 
     
