@@ -23,12 +23,12 @@ public final class Constants {
 
     public static final class IntakeVals {
         public final static int MOTOR_ID = 1;
-        public final static double DEFAULT_SPEED = 0.6/4;
+        public final static double DEFAULT_SPEED = 0.5;
         }
 
     public static final class MagazineVals {
         public final static int MOTOR_ID = 6;
-        public final static double DEFAULT_SPEED = 0.6/4;
+        public final static double DEFAULT_SPEED = 0.4;
 
         public final static int S0 = 0;
         public final static int S1 = 1;
@@ -48,8 +48,5 @@ public final class Constants {
 
         public final static double DEFAULT_SPEED = 0.2;
     }
-
     
-
-
 }

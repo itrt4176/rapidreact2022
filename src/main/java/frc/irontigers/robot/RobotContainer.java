@@ -4,6 +4,7 @@
 
 package frc.irontigers.robot;
 
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.GenericHID;
 import frc.tigerlib.XboxControllerIT;
 import frc.tigerlib.XboxControllerIT.DPadDirection;
@@ -16,6 +17,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import static frc.irontigers.robot.Constants.*;
+
+import javax.sound.midi.ControllerEventListener;
 
 import frc.irontigers.robot.commands.BangBangShooterTest;
 import frc.irontigers.robot.commands.HandleS1;
@@ -65,12 +68,14 @@ public class RobotContainer {
   private final JoystickButton shooterOffButton = new JoystickButton(controller, Button.kLeftBumper.value);
 
   private final JoystickButton intakeForward = new JoystickButton(controller, Button.kY.value);
-  private final JoystickButton intakeBackward = new JoystickButton(controller, Button.kA.value);
+  // private final JoystickButton intakeBackward = new JoystickButton(controller, Button.kA.value);
   private final JoystickButton intakeStop = new JoystickButton(controller, Button.kBack.value);
 
-  
-  
-  
+  private final JoystickButton openFrontGateButton = new JoystickButton(controller, Button.kX.value);
+  private final JoystickButton closeFrontGateButton = new JoystickButton(controller, Button.kA.value);
+
+  private final DPadButton openRearGateButton = new DPadButton(controller, DPadDirection.kUp);
+  private final DPadButton closeRearGateButton = new DPadButton(controller, DPadDirection.kDown);
 
   //private final JoystickButton climberExtend = new JoystickButton(controller, Button.kB.value);
   //private final JoystickButton climberRetract = new JoystickButton(controller, Button.kX.value);
@@ -86,10 +91,10 @@ public class RobotContainer {
   private final SequentialCommandGroup bangBangTest = new RampShooter(shooter, 2500, 3000)
       .andThen(new BangBangShooterTest(shooter, 2500));
                                                             
-  private final OnClearedTrigger s1 = new OnClearedTrigger(() -> magazine.readBallSensor(Sensor.S0));
-  private final OnClearedTrigger s2 = new OnClearedTrigger(() -> magazine.readBallSensor(Sensor.S1));
-  private final OnClearedTrigger s3 = new OnClearedTrigger(() -> magazine.readBallSensor(Sensor.S2));
-  private final Trigger s4 = new Trigger(() -> {return magazine.readBallSensor(Sensor.S3);});
+  private final Trigger s0 = new Trigger(() -> magazine.readBallSensor(Sensor.S0)).debounce(0.04, DebounceType.kBoth);
+  private final Trigger s1 = new Trigger(() -> magazine.readBallSensor(Sensor.S1)).debounce(0.04, DebounceType.kBoth);
+  private final Trigger s2 = new Trigger(() -> magazine.readBallSensor(Sensor.S2)).debounce(0.08, DebounceType.kBoth);
+  private final Trigger s3 = new Trigger(() -> magazine.readBallSensor(Sensor.S3)).debounce(0.04, DebounceType.kBoth);
 
   public RobotContainer() {
     // Configure the button bindings
@@ -114,17 +119,21 @@ public class RobotContainer {
     magazineOffButton.whenPressed(() -> magazine.setOutput(0));
 
     intakeForward.whenPressed(new RunIntake(intake, Direction.FORWARD));
-    intakeBackward.whenPressed(new RunIntake(intake, Direction.BACKWARD));
+    // intakeBackward.whenPressed(new RunIntake(intake, Direction.BACKWARD));
     intakeStop.whenPressed(new RunIntake(intake, Direction.STOP));
 
-    s1.whenActive(new HandleS1(magazine));
-    s2.whenActive(() -> magazine.shiftToNextPosition(magazine.getState().INTAKE));
-    s3.whenActive(() -> magazine.shiftToNextPosition(magazine.getState().H1));
-    s4.whenActive(() -> magazine.shiftToNextPosition(magazine.getState().H2));
-    s4.whenInactive(() -> magazine.shiftToNextPosition(magazine.getState().SHOOTER));
+    // s0.whenInactive(new HandleS1(magazine));
+    s0.whenInactive(() -> magazine.addBall());
+    s1.whenInactive(() -> magazine.shiftToNextPosition(magazine.getState().INTAKE));
+    s2.whenInactive(() -> magazine.shiftToNextPosition(magazine.getState().H1)).whenInactive(() -> magazine.openGate(BallGate.Rear));
+    s3.whenActive(() -> magazine.shiftToNextPosition(magazine.getState().H2));
+    s3.whenInactive(() -> magazine.shiftToNextPosition(magazine.getState().SHOOTER));
     
+    openFrontGateButton.whenPressed(() -> magazine.openGate(BallGate.Front));
+    closeFrontGateButton.whenPressed(() -> magazine.closeGate(BallGate.Front));
 
-    
+    openRearGateButton.whenPressed(() -> magazine.openGate(BallGate.Rear));
+    closeRearGateButton.whenPressed(() -> magazine.closeGate(BallGate.Rear));
 
     //climberExtend.whenPressed(new ClimberCommand(climber, Direction.FORWARD));
     //climberRetract.whenPressed(new ClimberCommand(climber, Direction.BACKWARD));

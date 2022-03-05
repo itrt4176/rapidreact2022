@@ -98,10 +98,22 @@ public class Magazine extends SubsystemBase {
    * @param current Position to shift state of
    */
   public void shiftToNextPosition(Position current) {
-    if (current.next != null) {
-      current.next.state = current.state;
+      
+    if (current.next.state == EMPTY) {
+
+      if (current.equals(states.H1) && !rearGate.get()){
+        return;
+      }
+
+      if (current.equals(states.H2) && frontGate.get()){
+        return;
+      }
+
+      if (current.next != null) {
+        current.next.state = current.state;
+      }
+      current.state = EMPTY;
     }
-    current.state = EMPTY;
   }
 
   /**
@@ -112,10 +124,22 @@ public class Magazine extends SubsystemBase {
    * @param current Position to shift state of
    */
   public void shiftToPreviousPosition(Position current) {
-    if (current.previous != null) {
-      current.previous.state = current.state;
+    
+    if (current.previous.state == EMPTY) {
+
+      if (current.equals(states.H2) && !rearGate.get()){
+        return;
+      }
+
+      if (current.equals(states.SHOOTER)){
+        return;
+      }
+
+      if (current.previous != null) {
+        current.previous.state = current.state;
+      }
+      current.state = EMPTY;
     }
-    current.state = EMPTY;
   }
 
   public void addBall() {
@@ -125,12 +149,12 @@ public class Magazine extends SubsystemBase {
   public void openGate(BallGate gate) {
     switch (gate) {
       case Both:
-        rearGate.set(false);
+        rearGate.set(true);
       case Front:
         frontGate.set(false);
         break;
       case Rear:
-        rearGate.set(false);
+        rearGate.set(true);
         break;
     }
   }
@@ -138,12 +162,12 @@ public class Magazine extends SubsystemBase {
   public void closeGate(BallGate gate) {
     switch (gate) {
       case Both:
-        rearGate.set(true);
+        rearGate.set(false);
       case Front:
         frontGate.set(true);
         break;
       case Rear:
-        rearGate.set(true);
+        rearGate.set(false);
         break;
     }
   }
