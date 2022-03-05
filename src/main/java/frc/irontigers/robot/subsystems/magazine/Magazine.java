@@ -9,10 +9,17 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+
+
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.revrobotics.ColorMatch;
+import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
 
+
+
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
 
 import static edu.wpi.first.wpilibj.PneumaticsModuleType.CTREPCM;
@@ -21,7 +28,9 @@ import edu.wpi.first.wpilibj.SerialPort.WriteBufferMode;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.irontigers.robot.Constants;
 import frc.irontigers.robot.subsystems.magazine.BallStates.Position;
+import frc.irontigers.robot.subsystems.magazine.BallStates.PositionState;
 
 import static frc.irontigers.robot.Constants.MagazineVals.*;
 import static frc.irontigers.robot.subsystems.magazine.BallStates.PositionState.*;
@@ -42,6 +51,10 @@ public class Magazine extends SubsystemBase {
 
   private ColorSensorV3 colorSensor;
   private EnumMap<Sensor, DigitalInput> sensors;
+  private final ColorMatch colorMatcher;
+  private Color allianceColor = null;
+  private ColorMatchResult match;
+  
 
   /** Creates a new Magazine. */
   public Magazine() {
@@ -65,6 +78,13 @@ public class Magazine extends SubsystemBase {
     colorSensor = new ColorSensorV3(I2C.Port.kMXP);
 
     states = new BallStates();
+  
+   colorMatcher = new ColorMatch();
+
+  colorMatcher.addColorMatch(BLUE_COLOR);
+  colorMatcher.addColorMatch(RED_COLOR);
+
+  
   }
 
   public void setOutput(double speed) {
@@ -74,6 +94,42 @@ public class Magazine extends SubsystemBase {
   public double getOutput() {
     return conveyor.get();
   }
+  public void checkColorMatch(){
+    Color detectedColor = colorSensor.getColor();
+    match = colorMatcher.matchClosestColor(detectedColor);
+
+    
+    }
+    public Color getAllianceColor(){
+      DriverStation.Alliance alliance = DriverStation.getAlliance();
+      
+      
+      if(alliance == DriverStation.Alliance.Blue){
+        return Constants.MagazineVals.BLUE_COLOR;
+      } else if(alliance == DriverStation.Alliance.Red){
+        return Constants.MagazineVals.RED_COLOR;
+      }else{
+        return null;
+      }
+
+      
+      }
+      
+      public void setSensorBallState(){
+        if(allianceColor == null){
+          allianceColor = getAllianceColor();
+        }
+        
+        if(match.color == allianceColor){
+          states.INTAKE.state = PositionState.RIGHT;
+        } else{
+          states.INTAKE.state = PositionState.WRONG;
+        }
+      }
+
+    
+
+
 
   /**
    * True when sensor is broken (blocked)
