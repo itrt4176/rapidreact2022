@@ -3,6 +3,7 @@ package frc.irontigers.robot.utils;
 import java.util.HashMap;
 import java.util.function.Supplier;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.ScheduleCommand;
@@ -28,6 +29,8 @@ public abstract class StateTransitionCommand<E> extends SequentialCommandGroup {
     public void initialize() {
         addCommands(new WaitUntilCommand(() -> {
             nextCommand = nextMap.get(selector.get());
+            DriverStation.reportWarning("Still waiting for the state to match...", false);
+            // System.out.println(nextCommand);
             return nextCommand != null;
         }));
 

@@ -22,7 +22,7 @@ public class StoreBallOne extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new RampShooter(shooter, 0, 20),
+      // new RampShooter(shooter, 0, 20),
       new InstantCommand(() -> magazine.setOutput(MagazineVals.DEFAULT_SPEED)),
       new InstantCommand(() -> magazine.closeGate(BallGate.Rear)),
       new InstantCommand(() -> magazine.closeGate(BallGate.Front)),
