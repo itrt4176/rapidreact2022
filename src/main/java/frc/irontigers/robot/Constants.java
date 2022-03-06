@@ -28,7 +28,7 @@ public final class Constants {
 
     public static final class MagazineVals {
         public final static int MOTOR_ID = 6;
-        public final static double DEFAULT_SPEED = 0.6;
+        public final static double DEFAULT_SPEED = -0.4;
 
         public final static int S0 = 0;
         public final static int S1 = 1;

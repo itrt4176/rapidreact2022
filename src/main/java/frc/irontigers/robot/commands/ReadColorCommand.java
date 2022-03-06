@@ -28,8 +28,9 @@ public class ReadColorCommand extends StateTransitionCommand<BallStates> {
       new InstantCommand(() -> magazine.openGate(BallGate.Rear)),
       new InstantCommand(() -> magazine.openGate(BallGate.Front)),
       new InstantCommand(() -> magazine.setOutput(0)),
-      new InstantCommand(() -> intake.set(0)));
-      new InstantCommand(() -> magazine.readBallColor());
+      new InstantCommand(() -> intake.set(0)),
+      new InstantCommand(magazine::readBallColor)
+    );
       
       setNextSelector(magazine::getState);
 

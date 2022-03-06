@@ -34,6 +34,6 @@ public class Advance extends StateTransitionCommand<BallStates> {
 
     addNextState(
       new BallStates(PositionState.EMPTY, PositionState.RIGHT, PositionState.EMPTY, PositionState.EMPTY), 
-      new AdvanceBallOne(null, magazine, intake));
+      new AdvanceBallOne(shooter, magazine, intake));
   }
 }
