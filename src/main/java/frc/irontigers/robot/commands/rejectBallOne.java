@@ -7,18 +7,33 @@ package frc.irontigers.robot.commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.irontigers.robot.Constants.MagazineVals;
+import frc.irontigers.robot.subsystems.Intake;
 import frc.irontigers.robot.subsystems.Shooter;
+import frc.irontigers.robot.subsystems.magazine.BallStates;
 import frc.irontigers.robot.subsystems.magazine.Magazine;
+import frc.irontigers.robot.subsystems.magazine.BallStates.PositionState;
+import frc.irontigers.robot.utils.StateTransitionCommand;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class rejectBallOne extends SequentialCommandGroup {
+public class rejectBallOne extends StateTransitionCommand<BallStates> {
   /** Creates a new rejectBallOne. */
-  public rejectBallOne(Shooter shooter, Magazine magazine) {
+  public rejectBallOne(Shooter shooter, Magazine magazine, Intake intake) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands( 
       new RampShooter(shooter, 500, 1000), 
       new InstantCommand(() -> magazine.setOutput(MagazineVals.DEFAULT_SPEED)));
-  }
+     
+     
+      setNextSelector(magazine::getState);
+      addNextState(new BallStates(PositionState.EMPTY, PositionState.EMPTY, PositionState.EMPTY, PositionState.EMPTY), new ReadColorCommand(magazine, shooter,intake));
+
+      addNextState(new BallStates(PositionState.UNKNOWN, PositionState.WRONG, PositionState.EMPTY, PositionState.EMPTY), new ReadColorCommand(magazine, shooter, intake));
+
+      addNextState(new BallStates(PositionState.EMPTY, PositionState.EMPTY, PositionState.RIGHT, PositionState.EMPTY), new ReadColorCommand(magazine, shooter, intake));
+
+      addNextState(new BallStates(PositionState.UNKNOWN, PositionState.EMPTY, PositionState.WRONG, PositionState.EMPTY), new ReadColorCommand(magazine, shooter, intake));
 }
+  }
+  
