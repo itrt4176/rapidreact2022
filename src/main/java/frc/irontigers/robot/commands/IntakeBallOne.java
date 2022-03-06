@@ -29,7 +29,7 @@ public class IntakeBallOne extends StateTransitionCommand<BallStates> {
       new InstantCommand(() -> magazine.openGate(BallGate.Front)),
       new InstantCommand(() -> magazine.openGate(BallGate.Rear)),
       new InstantCommand(() -> magazine.setOutput(0)),
-      new InstantCommand(() -> new RunIntake(intake, Direction.STOP))
+      new RunIntake(intake, Direction.STOP)
     );
 
     setNextSelector(magazine::getState);

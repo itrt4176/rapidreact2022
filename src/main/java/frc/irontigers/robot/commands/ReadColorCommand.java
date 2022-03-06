@@ -4,17 +4,24 @@
 
 package frc.irontigers.robot.commands;
 
+import com.fasterxml.jackson.databind.introspect.TypeResolutionContext.Empty;
+
+import org.opencv.ml.EM;
+
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.irontigers.robot.subsystems.Intake;
 import frc.irontigers.robot.subsystems.Shooter;
+import frc.irontigers.robot.subsystems.magazine.BallStates;
 import frc.irontigers.robot.subsystems.magazine.Magazine;
+import frc.irontigers.robot.subsystems.magazine.BallStates.PositionState;
 import frc.irontigers.robot.subsystems.magazine.Magazine.BallGate;
+import frc.irontigers.robot.utils.StateTransitionCommand;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class ReadColorCommand extends SequentialCommandGroup {
+public class ReadColorCommand extends StateTransitionCommand<BallStates> {
 
   /** Creates a new ReadColorCommand. */
   public ReadColorCommand(Magazine magazine, Shooter shooter, Intake intake) {
@@ -25,8 +32,21 @@ public class ReadColorCommand extends SequentialCommandGroup {
       new InstantCommand(() -> magazine.openGate(BallGate.Rear)),
       new InstantCommand(() -> magazine.openGate(BallGate.Front)),
       new InstantCommand(() -> magazine.setOutput(0)),
-      new InstantCommand(() -> intake.set(0)));
-      
+      new InstantCommand(() -> intake.set(0))
+    );
+    
+    setNextSelector(magazine::getState);
+
+    addNextState(new BallStates(PositionState.RIGHT, PositionState.EMPTY, PositionState.EMPTY, PositionState.EMPTY), new Advance(intake, magazine, shooter));
+    addNextState(new BallStates(PositionState.WRONG, PositionState.EMPTY, PositionState.EMPTY, PositionState.EMPTY), new Advance(intake, magazine, shooter));
+    addNextState(new BallStates(PositionState.RIGHT, PositionState.RIGHT, PositionState.EMPTY, PositionState.EMPTY), new Advance(intake, magazine, shooter));
+    addNextState(new BallStates(PositionState.WRONG, PositionState.RIGHT, PositionState.EMPTY, PositionState.EMPTY), new RejectBallTwo(magazine, intake));
+    addNextState(new BallStates(PositionState.RIGHT, PositionState.WRONG, PositionState.EMPTY, PositionState.EMPTY), new rejectBallOne(shooter, magazine));
+    addNextState(new BallStates(PositionState.WRONG, PositionState.WRONG, PositionState.EMPTY, PositionState.EMPTY), new rejectBallOne(shooter, magazine));
+    addNextState(new BallStates(PositionState.RIGHT, PositionState.EMPTY, PositionState.RIGHT, PositionState.EMPTY), new Advance(intake, magazine, shooter));
+    addNextState(new BallStates(PositionState.WRONG, PositionState.EMPTY, PositionState.RIGHT, PositionState.EMPTY), new RejectBallTwo(magazine, intake));
+    addNextState(new BallStates(PositionState.RIGHT, PositionState.EMPTY, PositionState.WRONG, PositionState.EMPTY), new rejectBallOne(shooter, magazine));
+    addNextState(new BallStates(PositionState.WRONG, PositionState.EMPTY, PositionState.WRONG, PositionState.EMPTY), new rejectBallOne(shooter, magazine));
 
   }
 }

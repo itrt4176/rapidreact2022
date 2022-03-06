@@ -1,0 +1,32 @@
+{
+  "LiveWindow": {
+    ".status": {
+      "open": true
+    },
+    "DriveSystem": {
+      "open": true
+    },
+    "Intake": {
+      "open": true
+    },
+    "Magazine": {
+      "open": true
+    },
+    "Shooter": {
+      "open": true
+    },
+    "Ungrouped": {
+      "Scheduler": {
+        "open": true
+      },
+      "open": true
+    },
+    "open": true
+  },
+  "NetworkTables Settings": {
+    "mode": "Client"
+  },
+  "SmartDashboard": {
+    "open": true
+  }
+}
