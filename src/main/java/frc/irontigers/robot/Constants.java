@@ -18,17 +18,17 @@ public final class Constants {
     public static final class ShooterVals {
         public final static double DIAMETER = Units.inchesToMeters(6);
         public final static int MOTOR_ID = 7; // Don't change PCM from CAN ID 0
-        public final static double DEFAULT_SPEED = .25;
+        public final static double DEFAULT_SPEED = 1;
     }
 
     public static final class IntakeVals {
         public final static int MOTOR_ID = 1;
-        public final static double DEFAULT_SPEED = 0.5;
+        public final static double DEFAULT_SPEED = 0.6;
         }
 
     public static final class MagazineVals {
         public final static int MOTOR_ID = 6;
-        public final static double DEFAULT_SPEED = 0.4;
+        public final static double DEFAULT_SPEED = 0.6;
 
         public final static int S0 = 0;
         public final static int S1 = 1;
@@ -39,8 +39,8 @@ public final class Constants {
         public final static int FRONT_SOLENOID = 0;
         public final static int REAR_SOLENOID = 1;
 
-        public static final Color RED_COLOR = new Color(.5, .2, .1);
-        public static final Color BLUE_COLOR = new Color(.1, .4, .4);
+        public static final Color RED_COLOR = new Color(.53, .35, .12);
+        public static final Color BLUE_COLOR = new Color(.16, .4, .44);
     }
 
     public static final class DriveSystemVals {

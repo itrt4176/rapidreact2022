@@ -23,6 +23,7 @@ import javax.sound.midi.ControllerEventListener;
 import frc.irontigers.robot.commands.BangBangShooterTest;
 import frc.irontigers.robot.commands.HandleS1;
 import frc.irontigers.robot.commands.RampShooter;
+import frc.irontigers.robot.commands.ReadColorCommand;
 import frc.irontigers.robot.commands.RunIntake;
 //import frc.irontigers.robot.subsystems.Climber;
 //import frc.irontigers.robot.commands.ClimberCommand;
@@ -123,11 +124,12 @@ public class RobotContainer {
     intakeStop.whenPressed(new RunIntake(intake, Direction.STOP));
 
     // s0.whenInactive(new HandleS1(magazine));
-    s0.whenInactive(() -> magazine.addBall());
+    s0.whenInactive(magazine::addBall).whenInactive(magazine::readBallColor);
     s1.whenInactive(() -> magazine.shiftToNextPosition(magazine.getState().INTAKE));
     s2.whenInactive(() -> magazine.shiftToNextPosition(magazine.getState().H1)).whenInactive(() -> magazine.openGate(BallGate.Rear));
     s3.whenActive(() -> magazine.shiftToNextPosition(magazine.getState().H2));
     s3.whenInactive(() -> magazine.shiftToNextPosition(magazine.getState().SHOOTER));
+    
     
     openFrontGateButton.whenPressed(() -> magazine.openGate(BallGate.Front));
     closeFrontGateButton.whenPressed(() -> magazine.closeGate(BallGate.Front));

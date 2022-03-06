@@ -27,8 +27,10 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SerialPort.WriteBufferMode;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.irontigers.robot.Constants;
+import frc.irontigers.robot.Constants.MagazineVals;
 import frc.irontigers.robot.subsystems.magazine.BallStates.Position;
 import frc.irontigers.robot.subsystems.magazine.BallStates.PositionState;
 
@@ -94,42 +96,16 @@ public class Magazine extends SubsystemBase {
   public double getOutput() {
     return conveyor.get();
   }
-  public void checkColorMatch(){
-    Color detectedColor = colorSensor.getColor();
-    match = colorMatcher.matchClosestColor(detectedColor);
 
+  private void readAllianceFromDS() {
+    DriverStation.Alliance alliance  = DriverStation.getAlliance();
     
-    }
-    public Color getAllianceColor(){
-      DriverStation.Alliance alliance = DriverStation.getAlliance();
-      
-      
-      if(alliance == DriverStation.Alliance.Blue){
-        return Constants.MagazineVals.BLUE_COLOR;
-      } else if(alliance == DriverStation.Alliance.Red){
-        return Constants.MagazineVals.RED_COLOR;
-      }else{
-        return null;
-      }
-
-      
-      }
-      
-      public void setSensorBallState(){
-        if(allianceColor == null){
-          allianceColor = getAllianceColor();
-        }
-        
-        if(match.color == allianceColor){
-          states.INTAKE.state = PositionState.RIGHT;
-        } else{
-          states.INTAKE.state = PositionState.WRONG;
-        }
-      }
-
-    
-
-
+    if (alliance == DriverStation.Alliance.Blue) {
+      allianceColor = BLUE_COLOR;
+    } else if (alliance == DriverStation.Alliance.Red) {
+      allianceColor = RED_COLOR;
+    }  
+  }
 
   /**
    * True when sensor is broken (blocked)
@@ -228,8 +204,15 @@ public class Magazine extends SubsystemBase {
     }
   }
 
-  public Color readBallColor() {
-    return colorSensor.getColor();
+  public void readBallColor() {
+    if (allianceColor == null) {
+      readAllianceFromDS();
+    }
+
+    Color detectedColor = colorSensor.getColor();
+    Color match = colorMatcher.matchClosestColor(detectedColor).color;
+
+    states.INTAKE.state = match == allianceColor ? RIGHT : WRONG;
   }
 
   @Override
@@ -237,7 +220,7 @@ public class Magazine extends SubsystemBase {
     // This method will be called once per scheduler run
     // SmartDashboard.putBoolean("Rear Sensor", readBallSensor(BallPosition.Hold1));
     // SmartDashboard.putBoolean("Front Sensor", readBallSensor(BallPosition.Shot));
-    Color color = readBallColor();
+    Color color = colorSensor.getColor();
     SmartDashboard.putNumberArray("RGB", new double[] { color.red, color.green, color.blue });
 
     SmartDashboard.putBoolean("Intake Unknown", states.INTAKE.state == UNKNOWN);
