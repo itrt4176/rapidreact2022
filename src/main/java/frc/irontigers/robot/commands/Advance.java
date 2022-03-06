@@ -24,7 +24,7 @@ import frc.irontigers.robot.utils.StateTransitionCommand;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class Advance extends StateTransitionCommand<BallStates> {
   /** Creates a new Advance. */
-  public Advance(Intake intake, Magazine magazine, Shooter shooter) {
+  public Advance(Shooter shooter, Intake intake, Magazine magazine) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(

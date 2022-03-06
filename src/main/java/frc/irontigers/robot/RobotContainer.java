@@ -23,6 +23,7 @@ import javax.sound.midi.ControllerEventListener;
 
 import frc.irontigers.robot.commands.BangBangShooterTest;
 import frc.irontigers.robot.commands.HandleS1;
+import frc.irontigers.robot.commands.IntakeBallOne;
 import frc.irontigers.robot.commands.RampShooter;
 import frc.irontigers.robot.commands.ReadColorCommand;
 import frc.irontigers.robot.commands.RunIntake;
@@ -94,10 +95,12 @@ public class RobotContainer {
   private final SequentialCommandGroup bangBangTest = new RampShooter(shooter, 2500, 3000)
       .andThen(new BangBangShooterTest(shooter, 2500));
                                                             
-  private final Trigger s0 = new Trigger(() -> magazine.readBallSensor(Sensor.S0)).debounce(0.04, DebounceType.kBoth);
+  // private final Trigger s0 = new Trigger(() -> magazine.readBallSensor(Sensor.S0)).debounce(0.04, DebounceType.kBoth);
   private final Trigger s1 = new Trigger(() -> magazine.readBallSensor(Sensor.S1)).debounce(0.04, DebounceType.kBoth);
   private final Trigger s2 = new Trigger(() -> magazine.readBallSensor(Sensor.S2)).debounce(0.08, DebounceType.kBoth);
   private final Trigger s3 = new Trigger(() -> magazine.readBallSensor(Sensor.S3)).debounce(0.04, DebounceType.kBoth);
+
+  private final Trigger s0 = new Trigger(() -> magazine.readBallSensor(Sensor.S0)).debounce(0.04, DebounceType.kBoth).negate().and(s1);
 
   public RobotContainer() {
     // Configure the button bindings
@@ -126,13 +129,13 @@ public class RobotContainer {
     intakeStop.whenPressed(new RunIntake(intake, Direction.STOP));
 
     // s0.whenInactive(new HandleS1(magazine));
-    s0.whenInactive(new ConditionalCommand(
-        new InstantCommand(magazine::addBall), 
+    s0.whenActive(new ConditionalCommand(
+        new InstantCommand((magazine::addBall)), 
         new InstantCommand(() -> magazine.shiftToPreviousPosition(magazine.getState().INTAKE)),
         () -> magazine.getState().INTAKE.getState() == PositionState.EMPTY
     ));
     s1.whenInactive(() -> magazine.shiftToNextPosition(magazine.getState().INTAKE));
-    s2.whenInactive(() -> magazine.shiftToNextPosition(magazine.getState().H1)).whenInactive(() -> magazine.openGate(BallGate.Rear));
+    s2.whenInactive(() -> magazine.shiftToNextPosition(magazine.getState().H1));
     s3.whenActive(() -> magazine.shiftToNextPosition(magazine.getState().H2));
     s3.whenInactive(() -> magazine.shiftToNextPosition(magazine.getState().SHOOTER));
     
@@ -157,8 +160,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return null;
-  
+    return new IntakeBallOne(shooter, magazine, intake);
   }
 }
 

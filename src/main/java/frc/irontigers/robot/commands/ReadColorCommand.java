@@ -32,21 +32,21 @@ public class ReadColorCommand extends StateTransitionCommand<BallStates> {
       new InstantCommand(() -> magazine.openGate(BallGate.Rear)),
       new InstantCommand(() -> magazine.openGate(BallGate.Front)),
       new InstantCommand(() -> magazine.setOutput(0)),
-      new InstantCommand(() -> intake.set(0))
+      new InstantCommand(() -> intake.set(0)),
+      new InstantCommand(magazine::readBallColor)
     );
     
     setNextSelector(magazine::getState);
 
-    addNextState(new BallStates(PositionState.RIGHT, PositionState.EMPTY, PositionState.EMPTY, PositionState.EMPTY), new Advance(intake, magazine, shooter));
-    addNextState(new BallStates(PositionState.WRONG, PositionState.EMPTY, PositionState.EMPTY, PositionState.EMPTY), new Advance(intake, magazine, shooter));
-    addNextState(new BallStates(PositionState.RIGHT, PositionState.RIGHT, PositionState.EMPTY, PositionState.EMPTY), new Advance(intake, magazine, shooter));
+    addNextState(new BallStates(PositionState.RIGHT, PositionState.EMPTY, PositionState.EMPTY, PositionState.EMPTY), new Advance(shooter, intake, magazine));
+    addNextState(new BallStates(PositionState.WRONG, PositionState.EMPTY, PositionState.EMPTY, PositionState.EMPTY), new Advance(shooter, intake, magazine));
+    addNextState(new BallStates(PositionState.RIGHT, PositionState.RIGHT, PositionState.EMPTY, PositionState.EMPTY), new Advance(shooter, intake, magazine));
     addNextState(new BallStates(PositionState.WRONG, PositionState.RIGHT, PositionState.EMPTY, PositionState.EMPTY), new RejectBallTwo(magazine, intake, shooter));
     addNextState(new BallStates(PositionState.RIGHT, PositionState.WRONG, PositionState.EMPTY, PositionState.EMPTY), new rejectBallOne(shooter, magazine, intake));
     addNextState(new BallStates(PositionState.WRONG, PositionState.WRONG, PositionState.EMPTY, PositionState.EMPTY), new rejectBallOne(shooter, magazine, intake));
-    addNextState(new BallStates(PositionState.RIGHT, PositionState.EMPTY, PositionState.RIGHT, PositionState.EMPTY), new Advance(intake, magazine, shooter));
+    addNextState(new BallStates(PositionState.RIGHT, PositionState.EMPTY, PositionState.RIGHT, PositionState.EMPTY), new Advance(shooter, intake, magazine));
     addNextState(new BallStates(PositionState.WRONG, PositionState.EMPTY, PositionState.RIGHT, PositionState.EMPTY), new RejectBallTwo(magazine, intake, shooter));
     addNextState(new BallStates(PositionState.RIGHT, PositionState.EMPTY, PositionState.WRONG, PositionState.EMPTY), new rejectBallOne(shooter, magazine, intake));
     addNextState(new BallStates(PositionState.WRONG, PositionState.EMPTY, PositionState.WRONG, PositionState.EMPTY), new rejectBallOne(shooter, magazine, intake));
-
   }
 }
