@@ -35,7 +35,7 @@ public class Advance extends StateTransitionCommand<BallStates> {
     setNextSelector(magazine::getState);
 
     addNextState(new BallStates(PositionState.EMPTY, PositionState.RIGHT, PositionState.EMPTY, PositionState.EMPTY), new AdvanceBallOne(shooter, magazine, intake));
-    addNextState(new BallStates(PositionState.EMPTY, PositionState.WRONG, PositionState.EMPTY, PositionState.EMPTY), new rejectBallOne(shooter, magazine));
+    addNextState(new BallStates(PositionState.EMPTY, PositionState.WRONG, PositionState.EMPTY, PositionState.EMPTY), new rejectBallOne(shooter, magazine, intake));
     addNextState(new BallStates(PositionState.UNKNOWN, PositionState.WRONG, PositionState.EMPTY, PositionState.EMPTY), new ReadColorCommand(magazine, shooter, intake));
     addNextState(new BallStates(PositionState.EMPTY, PositionState.RIGHT, PositionState.RIGHT, PositionState.EMPTY), new StoreBallTwo(shooter, magazine, intake));
   }
