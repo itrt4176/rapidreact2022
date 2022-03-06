@@ -11,6 +11,7 @@ import frc.tigerlib.XboxControllerIT.DPadDirection;
 import frc.tigerlib.command.MecanumJoystickDrive;
 import frc.tigerlib.command.button.DPadButton;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -32,6 +33,7 @@ import frc.irontigers.robot.subsystems.DriveSystem;
 import frc.irontigers.robot.subsystems.Intake;
 import frc.irontigers.robot.subsystems.Shooter;
 import frc.irontigers.robot.subsystems.magazine.Magazine;
+import frc.irontigers.robot.subsystems.magazine.BallStates.PositionState;
 import frc.irontigers.robot.subsystems.magazine.Magazine.BallGate;
 import frc.irontigers.robot.subsystems.magazine.Magazine.Sensor;
 import frc.irontigers.robot.utils.OnClearedTrigger;
@@ -124,7 +126,11 @@ public class RobotContainer {
     intakeStop.whenPressed(new RunIntake(intake, Direction.STOP));
 
     // s0.whenInactive(new HandleS1(magazine));
-    s0.whenInactive(magazine::addBall).whenInactive(magazine::readBallColor);
+    s0.whenInactive(new ConditionalCommand(
+        new InstantCommand(magazine::addBall), 
+        new InstantCommand(() -> magazine.shiftToPreviousPosition(magazine.getState().INTAKE)),
+        () -> magazine.getState().INTAKE.getState() == PositionState.EMPTY
+    ));
     s1.whenInactive(() -> magazine.shiftToNextPosition(magazine.getState().INTAKE));
     s2.whenInactive(() -> magazine.shiftToNextPosition(magazine.getState().H1)).whenInactive(() -> magazine.openGate(BallGate.Rear));
     s3.whenActive(() -> magazine.shiftToNextPosition(magazine.getState().H2));
