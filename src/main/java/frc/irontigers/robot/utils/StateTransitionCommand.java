@@ -12,11 +12,11 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.irontigers.robot.subsystems.magazine.BallStates;
 
 public abstract class StateTransitionCommand<E> extends SequentialCommandGroup {
-    private HashMap<E, Command> nextMap = new HashMap<>();
-    private Command nextCommand;
+    private HashMap<E, Supplier<Command>> nextMap = new HashMap<>();
+    private Supplier<Command> nextCommand;
     private Supplier<E> selector;
 
-    public final void addNextState(E input, Command command) {
+    public final void addNextState(E input, Supplier<Command> command) {
         nextMap.put(input, command);
     }
 
@@ -40,7 +40,7 @@ public abstract class StateTransitionCommand<E> extends SequentialCommandGroup {
     @Override
     public boolean isFinished() {
         if (super.isFinished()) {
-            nextCommand.schedule();
+            nextCommand.get().schedule();
             return true;
         }
         return false;

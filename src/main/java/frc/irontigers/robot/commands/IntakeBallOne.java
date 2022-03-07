@@ -34,6 +34,9 @@ public class IntakeBallOne extends StateTransitionCommand<BallStates> {
 
     setNextSelector(magazine::getState);
 
-    addNextState(new BallStates(PositionState.UNKNOWN, PositionState.EMPTY, PositionState.EMPTY, PositionState.EMPTY), new ReadColorCommand(magazine, shooter, intake));
+    addNextState(
+      new BallStates(PositionState.UNKNOWN, PositionState.EMPTY, PositionState.EMPTY, PositionState.EMPTY), 
+      () -> new ReadColorCommand(magazine, shooter, intake));
+
   }
 }

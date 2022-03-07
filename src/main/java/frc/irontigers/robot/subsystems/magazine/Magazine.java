@@ -130,22 +130,26 @@ public class Magazine extends SubsystemBase {
    * @param current Position to shift state of
    */
   public void shiftToNextPosition(Position current) {
+
+    if (current.next == null) {
+      current.state = EMPTY;
+      return;
+    }
       
     if (current.next.state == EMPTY) {
 
-      if (current.equals(states.H1) && !rearGate.get()){
-        return;
-      }
+        if (current.equals(states.H1) && !rearGate.get()){
+          return;
+        }
 
-      if (current.equals(states.H2) && frontGate.get()){
-        return;
-      }
-
-      if (current.next != null) {
+        if (current.equals(states.H2) && frontGate.get()){
+          return;
+        }
+        
         current.next.state = current.state;
+        current.state = EMPTY;
       }
-      current.state = EMPTY;
-    }
+
   }
 
   /**
@@ -156,6 +160,11 @@ public class Magazine extends SubsystemBase {
    * @param current Position to shift state of
    */
   public void shiftToPreviousPosition(Position current) {
+
+    if (current.previous == null) {
+      current.state = EMPTY;
+      return;
+    }
     
     if (current.previous.state == EMPTY) {
 
@@ -167,9 +176,7 @@ public class Magazine extends SubsystemBase {
         return;
       }
 
-      if (current.previous != null) {
-        current.previous.state = current.state;
-      }
+      current.previous.state = current.state;
       current.state = EMPTY;
     }
   }

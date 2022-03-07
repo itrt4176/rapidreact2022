@@ -6,6 +6,8 @@ package frc.irontigers.robot.commands;
 
 
 
+import javax.swing.text.Position;
+
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.irontigers.robot.Constants.MagazineVals;
@@ -34,6 +36,20 @@ public class Advance extends StateTransitionCommand<BallStates> {
 
     addNextState(
       new BallStates(PositionState.EMPTY, PositionState.RIGHT, PositionState.EMPTY, PositionState.EMPTY), 
-      new AdvanceBallOne(shooter, magazine, intake));
+      () -> new AdvanceBallOne(shooter, magazine, intake)
+    );
+
+    addNextState(
+      new BallStates(PositionState.EMPTY, PositionState.RIGHT, PositionState.RIGHT, PositionState.EMPTY), 
+      () -> new StoreBallTwo(shooter, magazine, intake)
+    );
+
+    addNextState(
+      new BallStates(PositionState.EMPTY, PositionState.WRONG, PositionState.EMPTY, PositionState.EMPTY),
+      () -> new rejectBallOne(shooter, magazine, intake));
+
+    addNextState(
+      new BallStates(PositionState.UNKNOWN, PositionState.WRONG, PositionState.EMPTY, PositionState.EMPTY), 
+      () -> new ReadColorCommand(magazine, shooter, intake));
   }
 }

@@ -10,24 +10,32 @@ import frc.irontigers.robot.Constants.MagazineVals;
 import frc.irontigers.robot.RobotContainer.Direction;
 import frc.irontigers.robot.subsystems.Intake;
 import frc.irontigers.robot.subsystems.Shooter;
+import frc.irontigers.robot.subsystems.magazine.BallStates;
 import frc.irontigers.robot.subsystems.magazine.Magazine;
+import frc.irontigers.robot.subsystems.magazine.BallStates.PositionState;
 import frc.irontigers.robot.subsystems.magazine.Magazine.BallGate;
+import frc.irontigers.robot.utils.StateTransitionCommand;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class StoreBallOne extends SequentialCommandGroup {
+public class StoreBallOne extends StateTransitionCommand<BallStates> {
   /** Creates a new StoreBallOne. */
   public StoreBallOne(Magazine magazine, Shooter shooter, Intake intake) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      // new RampShooter(shooter, 0, 20),
       new InstantCommand(() -> magazine.setOutput(MagazineVals.DEFAULT_SPEED)),
       new InstantCommand(() -> magazine.closeGate(BallGate.Rear)),
       new InstantCommand(() -> magazine.closeGate(BallGate.Front)),
       new RunIntake(intake, Direction.FORWARD)
       
+    );
+    setNextSelector(magazine::getState);
+    
+    addNextState(
+      new BallStates(PositionState.UNKNOWN, PositionState.EMPTY, PositionState.RIGHT, PositionState.EMPTY), 
+      () -> new ReadColorCommand(magazine, shooter, intake)
     );
   }
 }
