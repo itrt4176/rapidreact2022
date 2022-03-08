@@ -23,13 +23,10 @@ import javax.sound.midi.ControllerEventListener;
 
 import frc.irontigers.robot.commands.BangBangShooterTest;
 import frc.irontigers.robot.commands.HandleS1;
-import frc.irontigers.robot.commands.IntakeBallOne;
-import frc.irontigers.robot.commands.RampShooter;
-import frc.irontigers.robot.commands.ReadColor;
-import frc.irontigers.robot.commands.RunIntake;
-//import frc.irontigers.robot.subsystems.Climber;
-//import frc.irontigers.robot.commands.ClimberCommand;
-
+import frc.irontigers.robot.commands.ballstate.IntakeBallOne;
+import frc.irontigers.robot.commands.ballstate.RampShooter;
+import frc.irontigers.robot.commands.ballstate.ReadColor;
+import frc.irontigers.robot.commands.ballstate.RunIntake;
 import frc.irontigers.robot.subsystems.DriveSystem;
 import frc.irontigers.robot.subsystems.Intake;
 import frc.irontigers.robot.subsystems.Shooter;
