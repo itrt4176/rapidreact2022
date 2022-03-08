@@ -25,9 +25,9 @@ public class StoreBallOne extends StateTransitionCommand<BallStates> {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
+      new InstantCommand(() -> shooter.set(0)),
       new InstantCommand(() -> magazine.setOutput(MagazineVals.DEFAULT_SPEED)),
-      new InstantCommand(() -> magazine.closeGate(BallGate.Rear)),
-      new InstantCommand(() -> magazine.closeGate(BallGate.Front)),
+      new InstantCommand(() -> magazine.closeGate(BallGate.Both)),
       new RunIntake(intake, Direction.FORWARD)
       
     );

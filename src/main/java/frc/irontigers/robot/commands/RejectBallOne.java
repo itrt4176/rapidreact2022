@@ -12,6 +12,7 @@ import frc.irontigers.robot.subsystems.Shooter;
 import frc.irontigers.robot.subsystems.magazine.BallStates;
 import frc.irontigers.robot.subsystems.magazine.Magazine;
 import frc.irontigers.robot.subsystems.magazine.BallStates.PositionState;
+import frc.irontigers.robot.subsystems.magazine.Magazine.BallGate;
 import frc.irontigers.robot.utils.StateTransitionCommand;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -22,8 +23,10 @@ public class RejectBallOne extends StateTransitionCommand<BallStates> {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands( 
-      new RampShooter(shooter, 500, 1000), 
-      new InstantCommand(() -> magazine.setOutput(MagazineVals.DEFAULT_SPEED)));
+      new RampShooter(shooter, 500, 1000),
+      new InstantCommand(() -> magazine.openGate(BallGate.Both)),
+      new InstantCommand(() -> magazine.setOutput(MagazineVals.DEFAULT_SPEED))
+    );
 
 
     setNextSelector(magazine::getState);
