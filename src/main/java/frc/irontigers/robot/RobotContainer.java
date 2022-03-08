@@ -131,7 +131,7 @@ public class RobotContainer {
         new InstantCommand(() -> magazine.shiftToPreviousPosition(magazine.getState().INTAKE)),
         () -> magazine.getState().INTAKE.getState() == PositionState.EMPTY
     ));
-    s1.whenInactive(() -> magazine.shiftToNextPosition(magazine.getState().INTAKE));
+    s1.whenInactive(() -> {if (intake.get() == 0) { magazine.shiftToNextPosition(magazine.getState().INTAKE); }});
     s2.whenInactive(() -> magazine.shiftToNextPosition(magazine.getState().H1));
     s3.whenActive(() -> magazine.shiftToNextPosition(magazine.getState().H2));
     s3.whenInactive(() -> magazine.shiftToNextPosition(magazine.getState().SHOOTER));
