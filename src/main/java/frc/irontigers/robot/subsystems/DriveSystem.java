@@ -4,10 +4,10 @@
 
 package frc.irontigers.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.irontigers.robot.Constants;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
-import edu.wpi.first.wpilibj.drive.MecanumDrive;
+
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 import frc.tigerlib.subsystem.drive.MecanumDriveSubsystem;
@@ -46,6 +46,11 @@ public class DriveSystem extends MecanumDriveSubsystem {
     
   }
 
+  public double motorToWheelSpeed(TalonFX motor) {
+    return (motor.getSelectedSensorVelocity()*600/2048)/10.71;
+  }
+
+
   @Override
   public void drive(double xSpeed, double ySpeed, double rotation) {
       // TODO Remove after library fixed
@@ -59,13 +64,11 @@ public class DriveSystem extends MecanumDriveSubsystem {
 
   @Override
   protected MecanumDriveWheelSpeeds getWheelSpeeds() {
-    // TODO Auto-generated method stub
     return new MecanumDriveWheelSpeeds(0, 0, 0, 0);
   }
 
   @Override
   protected void resetEncoders() {
-    // TODO Auto-generated method stub
     leftFront.setSelectedSensorPosition(0);
     leftFront.setSelectedSensorPosition(0);
     rightFront.setSelectedSensorPosition(0);

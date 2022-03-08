@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.irontigers.robot.commands;
+package frc.irontigers.robot.commands.ballstate;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.irontigers.robot.subsystems.Intake;
@@ -22,26 +22,24 @@ public class RunIntake extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    switch(direction){
+  public void initialize() {
+    switch (direction) {
       case FORWARD:
-      while (intake.get()<Constants.IntakeVals.DEFAULT_SPEED){
-        intake.set(intake.get()+0.05);
-      }
+        intake.set(Constants.IntakeVals.DEFAULT_SPEED);
         break;
       case BACKWARD:
-      while (intake.get()>-Constants.IntakeVals.DEFAULT_SPEED){
-        intake.set(intake.get()-0.05);
-      }
+        intake.set(-Constants.IntakeVals.DEFAULT_SPEED);
         break;
       case STOP:
         intake.set(0);
         break;
     }
+  }
+
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {
+    
   }
 
   // Called once the command ends or is interrupted.
@@ -51,6 +49,6 @@ public class RunIntake extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }
