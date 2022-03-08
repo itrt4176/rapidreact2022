@@ -17,10 +17,10 @@ import frc.irontigers.robot.utils.StateTransitionCommand;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class ReadColorCommand extends StateTransitionCommand<BallStates> {
+public class ReadColor extends StateTransitionCommand<BallStates> {
 
   /** Creates a new ReadColorCommand. */
-  public ReadColorCommand(Magazine magazine, Shooter shooter, Intake intake) {
+  public ReadColor(Magazine magazine, Shooter shooter, Intake intake) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
@@ -50,11 +50,11 @@ public class ReadColorCommand extends StateTransitionCommand<BallStates> {
 
     addNextState(
       new BallStates(PositionState.RIGHT, PositionState.WRONG, PositionState.EMPTY, PositionState.EMPTY), 
-      () -> new rejectBallOne(shooter, magazine, intake));
+      () -> new RejectBallOne(shooter, magazine, intake));
 
     addNextState(
       new BallStates(PositionState.WRONG, PositionState.WRONG, PositionState.EMPTY, PositionState.EMPTY), 
-      () -> new rejectBallOne(shooter, magazine, intake));
+      () -> new RejectBallOne(shooter, magazine, intake));
 
     addNextState(
       new BallStates(PositionState.RIGHT, PositionState.EMPTY, PositionState.RIGHT, PositionState.EMPTY), 
@@ -66,10 +66,10 @@ public class ReadColorCommand extends StateTransitionCommand<BallStates> {
 
     addNextState(
       new BallStates(PositionState.RIGHT, PositionState.EMPTY, PositionState.WRONG, PositionState.EMPTY), 
-      () -> new rejectBallOne(shooter, magazine, intake));
+      () -> new RejectBallOne(shooter, magazine, intake));
       
     addNextState(
       new BallStates(PositionState.WRONG, PositionState.EMPTY, PositionState.WRONG, PositionState.EMPTY), 
-      () -> new rejectBallOne(shooter, magazine, intake));
+      () -> new RejectBallOne(shooter, magazine, intake));
   }
 }

@@ -35,7 +35,7 @@ public class StoreBallOne extends StateTransitionCommand<BallStates> {
     
     addNextState(
       new BallStates(PositionState.UNKNOWN, PositionState.EMPTY, PositionState.RIGHT, PositionState.EMPTY), 
-      () -> new ReadColorCommand(magazine, shooter, intake)
+      () -> new ReadColor(magazine, shooter, intake)
     );
   }
 }

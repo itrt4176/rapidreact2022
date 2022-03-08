@@ -16,9 +16,9 @@ import frc.irontigers.robot.utils.StateTransitionCommand;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class rejectBallOne extends StateTransitionCommand<BallStates> {
+public class RejectBallOne extends StateTransitionCommand<BallStates> {
   /** Creates a new rejectBallOne. */
-  public rejectBallOne(Shooter shooter, Magazine magazine, Intake intake) {
+  public RejectBallOne(Shooter shooter, Magazine magazine, Intake intake) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands( 
@@ -35,7 +35,7 @@ public class rejectBallOne extends StateTransitionCommand<BallStates> {
 
     addNextState(
       new BallStates(PositionState.UNKNOWN, PositionState.WRONG, PositionState.EMPTY, PositionState.EMPTY), 
-      () -> new ReadColorCommand(magazine, shooter, intake)
+      () -> new ReadColor(magazine, shooter, intake)
     );
 
     addNextState(
@@ -45,7 +45,7 @@ public class rejectBallOne extends StateTransitionCommand<BallStates> {
 
     addNextState(
       new BallStates(PositionState.UNKNOWN, PositionState.EMPTY, PositionState.RIGHT, PositionState.EMPTY), 
-      () -> new ReadColorCommand(magazine, shooter, intake)
+      () -> new ReadColor(magazine, shooter, intake)
     );
   }
 

@@ -25,7 +25,7 @@ import frc.irontigers.robot.commands.BangBangShooterTest;
 import frc.irontigers.robot.commands.HandleS1;
 import frc.irontigers.robot.commands.IntakeBallOne;
 import frc.irontigers.robot.commands.RampShooter;
-import frc.irontigers.robot.commands.ReadColorCommand;
+import frc.irontigers.robot.commands.ReadColor;
 import frc.irontigers.robot.commands.RunIntake;
 //import frc.irontigers.robot.subsystems.Climber;
 //import frc.irontigers.robot.commands.ClimberCommand;
