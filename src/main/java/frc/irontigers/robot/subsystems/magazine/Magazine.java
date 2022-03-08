@@ -13,8 +13,10 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorSensorV3;
 
-
-
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.util.datalog.IntegerArrayLogEntry;
+import edu.wpi.first.util.datalog.IntegerLogEntry;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
@@ -47,6 +49,12 @@ public class Magazine extends SubsystemBase {
   private EnumMap<Sensor, DigitalInput> sensors;
   private final ColorMatch colorMatcher;
   private Color allianceColor = null;
+
+  private IntegerArrayLogEntry stateLog;
+  private IntegerLogEntry intakeLog;
+  private IntegerLogEntry h1Log;
+  private IntegerLogEntry h2Log;
+  private IntegerLogEntry shooterLog;
   
 
   /** Creates a new Magazine. */
@@ -72,12 +80,17 @@ public class Magazine extends SubsystemBase {
 
     states = new BallStates();
   
-   colorMatcher = new ColorMatch();
+    colorMatcher = new ColorMatch();
 
-  colorMatcher.addColorMatch(BLUE_COLOR);
-  colorMatcher.addColorMatch(RED_COLOR);
+    colorMatcher.addColorMatch(BLUE_COLOR);
+    colorMatcher.addColorMatch(RED_COLOR);
 
-  
+    DataLog log = DataLogManager.getLog();
+    intakeLog = new IntegerLogEntry(log, "magazine/state/intake");
+    h1Log = new IntegerLogEntry(log, "magazine/state/h1");
+    h2Log = new IntegerLogEntry(log, "magazine/state/h2");
+    shooterLog = new IntegerLogEntry(log, "magazine/state/shooter");
+    updateStateLog();
   }
 
   public void setOutput(double speed) {
@@ -139,6 +152,8 @@ public class Magazine extends SubsystemBase {
         
         current.next.state = current.state;
         current.state = EMPTY;
+
+        updateStateLog();
       }
 
   }
@@ -169,11 +184,14 @@ public class Magazine extends SubsystemBase {
 
       current.previous.state = current.state;
       current.state = EMPTY;
+
+      updateStateLog();
     }
   }
 
   public void addBall() {
     states.INTAKE.state = UNKNOWN;
+    updateStateLog();
   }
 
   public void openGate(BallGate gate) {
@@ -211,6 +229,14 @@ public class Magazine extends SubsystemBase {
     Color match = colorMatcher.matchClosestColor(detectedColor).color;
 
     states.INTAKE.state = match == allianceColor ? RIGHT : WRONG;
+    updateStateLog();
+  }
+
+  private void updateStateLog() {
+    intakeLog.append(states.INTAKE.state.ordinal());
+    h1Log.append(states.H1.state.ordinal());
+    h2Log.append(states.H2.state.ordinal());
+    shooterLog.append(states.SHOOTER.state.ordinal());
   }
 
   @Override
@@ -237,8 +263,7 @@ public class Magazine extends SubsystemBase {
     SmartDashboard.putBoolean("Shooter Right", states.SHOOTER.state == RIGHT);
     SmartDashboard.putBoolean("Shooter Wrong", states.SHOOTER.state == WRONG);
 
-    SmartDashboard.putString("BallState",
-        "[" + states.INTAKE.state + "," + states.H1.state + "," + states.H2.state + "," + states.SHOOTER.state + "]");
+    SmartDashboard.putString("BallState", states.toString());
   }
 
   public enum BallGate {

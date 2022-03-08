@@ -60,6 +60,15 @@ public class BallStates {
             return false;
         }
     }
+
+    @Override
+    public String toString() {
+        return "[" + INTAKE.state + "," + H1.state + "," + H2.state + "," + SHOOTER.state + "]";
+    }
+
+    public long[] toLongArray() {
+        return new long[] {INTAKE.state.ordinal(), H1.state.ordinal(), H2.state.ordinal(), SHOOTER.state.ordinal()};
+    }
     
     public enum PositionState {
         EMPTY,
@@ -76,7 +85,7 @@ public class BallStates {
         private Position(PositionState state) {
             this.state = state;
         }
-        
+
         /**
          * @return the state
          */
