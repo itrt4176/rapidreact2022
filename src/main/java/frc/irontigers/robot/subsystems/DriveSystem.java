@@ -4,10 +4,8 @@
 
 package frc.irontigers.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.irontigers.robot.Constants;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
-import edu.wpi.first.wpilibj.drive.MecanumDrive;
 
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -66,13 +64,11 @@ public class DriveSystem extends MecanumDriveSubsystem {
 
   @Override
   protected MecanumDriveWheelSpeeds getWheelSpeeds() {
-    // TODO Auto-generated method stub
     return new MecanumDriveWheelSpeeds(0, 0, 0, 0);
   }
 
   @Override
   protected void resetEncoders() {
-    // TODO Auto-generated method stub
     leftFront.setSelectedSensorPosition(0);
     leftFront.setSelectedSensorPosition(0);
     rightFront.setSelectedSensorPosition(0);

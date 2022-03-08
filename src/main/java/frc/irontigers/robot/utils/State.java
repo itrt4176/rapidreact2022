@@ -4,7 +4,6 @@
 
 package frc.irontigers.robot.utils;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.irontigers.robot.subsystems.magazine.BallStates;
 
 public class State extends StateTransitionCommand<BallStates> {

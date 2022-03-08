@@ -5,15 +5,12 @@
 package frc.irontigers.robot.subsystems.magazine;
 
 import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 
 
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.ColorMatch;
-import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
 
 
@@ -24,15 +21,10 @@ import edu.wpi.first.wpilibj.I2C;
 
 import static edu.wpi.first.wpilibj.PneumaticsModuleType.CTREPCM;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.SerialPort.WriteBufferMode;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.irontigers.robot.Constants;
-import frc.irontigers.robot.Constants.MagazineVals;
 import frc.irontigers.robot.subsystems.magazine.BallStates.Position;
-import frc.irontigers.robot.subsystems.magazine.BallStates.PositionState;
 
 import static frc.irontigers.robot.Constants.MagazineVals.*;
 import static frc.irontigers.robot.subsystems.magazine.BallStates.PositionState.*;
@@ -55,7 +47,6 @@ public class Magazine extends SubsystemBase {
   private EnumMap<Sensor, DigitalInput> sensors;
   private final ColorMatch colorMatcher;
   private Color allianceColor = null;
-  private ColorMatchResult match;
   
 
   /** Creates a new Magazine. */

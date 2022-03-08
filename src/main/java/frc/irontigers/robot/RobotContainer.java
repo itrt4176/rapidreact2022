@@ -19,13 +19,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import static frc.irontigers.robot.Constants.*;
 
-import javax.sound.midi.ControllerEventListener;
-
 import frc.irontigers.robot.commands.BangBangShooterTest;
-import frc.irontigers.robot.commands.HandleS1;
 import frc.irontigers.robot.commands.ballstate.IntakeBallOne;
 import frc.irontigers.robot.commands.ballstate.RampShooter;
-import frc.irontigers.robot.commands.ballstate.ReadColor;
 import frc.irontigers.robot.commands.ballstate.RunIntake;
 import frc.irontigers.robot.subsystems.DriveSystem;
 import frc.irontigers.robot.subsystems.Intake;
@@ -34,7 +30,6 @@ import frc.irontigers.robot.subsystems.magazine.Magazine;
 import frc.irontigers.robot.subsystems.magazine.BallStates.PositionState;
 import frc.irontigers.robot.subsystems.magazine.Magazine.BallGate;
 import frc.irontigers.robot.subsystems.magazine.Magazine.Sensor;
-import frc.irontigers.robot.utils.OnClearedTrigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a

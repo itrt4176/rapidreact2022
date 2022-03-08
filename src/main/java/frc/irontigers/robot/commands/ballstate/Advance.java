@@ -6,10 +6,7 @@ package frc.irontigers.robot.commands.ballstate;
 
 
 
-import javax.swing.text.Position;
-
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.irontigers.robot.Constants.MagazineVals;
 import frc.irontigers.robot.RobotContainer.Direction;
 import frc.irontigers.robot.subsystems.Intake;

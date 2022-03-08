@@ -2,7 +2,6 @@ package frc.irontigers.robot.utils;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
-import frc.irontigers.robot.utils.OnClearedTrigger;
 
 public class OnClearedTriggerTest {
     private boolean testVal;

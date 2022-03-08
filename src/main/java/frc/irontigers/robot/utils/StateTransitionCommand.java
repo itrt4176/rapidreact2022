@@ -5,11 +5,8 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import frc.irontigers.robot.subsystems.magazine.BallStates;
 
 public abstract class StateTransitionCommand<E> extends SequentialCommandGroup {
     private HashMap<E, Supplier<Command>> nextMap = new HashMap<>();
