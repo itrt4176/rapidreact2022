@@ -20,9 +20,9 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import static frc.irontigers.robot.Constants.*;
 
 import frc.irontigers.robot.commands.BangBangShooterTest;
+import frc.irontigers.robot.commands.RampShooter;
+import frc.irontigers.robot.commands.RunIntake;
 import frc.irontigers.robot.commands.ballstate.IntakeBallOne;
-import frc.irontigers.robot.commands.ballstate.RampShooter;
-import frc.irontigers.robot.commands.ballstate.RunIntake;
 import frc.irontigers.robot.subsystems.DriveSystem;
 import frc.irontigers.robot.subsystems.Intake;
 import frc.irontigers.robot.subsystems.Shooter;

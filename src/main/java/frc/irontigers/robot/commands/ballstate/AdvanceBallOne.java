@@ -7,6 +7,7 @@ package frc.irontigers.robot.commands.ballstate;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.irontigers.robot.Constants;
 import frc.irontigers.robot.RobotContainer.Direction;
+import frc.irontigers.robot.commands.RunIntake;
 import frc.irontigers.robot.subsystems.Intake;
 import frc.irontigers.robot.subsystems.Shooter;
 import frc.irontigers.robot.subsystems.magazine.BallStates;
