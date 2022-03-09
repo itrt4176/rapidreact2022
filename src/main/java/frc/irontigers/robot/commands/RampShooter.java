@@ -9,15 +9,15 @@ import frc.irontigers.robot.subsystems.Shooter;
 
 public class RampShooter extends CommandBase {
   private Shooter shooter;
-  private int rpmSpeed;
+  private double speed;
   private double ouputIncrease;
 
   /** Creates a new RampShooter. */
-  public RampShooter(Shooter shooter, int rpmSpeed, int rampTime) {
+  public RampShooter(Shooter shooter, double speed, int rampTime) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shooter = shooter;
     addRequirements(this.shooter);
-    this.rpmSpeed = rpmSpeed;
+    this.speed = speed;
 
     this.ouputIncrease = 1 / (rampTime / 20.0);
   }
@@ -39,6 +39,6 @@ public class RampShooter extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return shooter.getRPM() >= rpmSpeed;
+    return shooter.getMPS() >= speed;
   }
 }

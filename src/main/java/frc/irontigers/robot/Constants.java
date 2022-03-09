@@ -50,7 +50,13 @@ public final class Constants {
         public final static int BACK_RIGHT = 5;
 
         public final static double DEFAULT_SPEED = 0.2;
+
+    }
     
+    public static final class VisionVals {
+        public static final double CAM_HEIGHT = Units.inchesToMeters(29.5);
+        public static final double TARGET_HEIGHT = Units.feetToMeters(8.625);
+        public static final double CAM_ANGLE = Units.degreesToRadians(13.3);
     }
     
 }

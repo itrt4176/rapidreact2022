@@ -8,18 +8,28 @@ import edu.wpi.first.math.controller.BangBangController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.irontigers.robot.subsystems.Shooter;
 
-public class BangBangShooterTest extends CommandBase {
+public class BangBangShoot extends CommandBase {
   private final Shooter shooter;
-  private final int speed;
+  private double speed;
   private final BangBangController bangBang;
 
   /** Creates a new BangBangShooterTest. */
-  public BangBangShooterTest(Shooter shooter, int rpmSpeed) {
+  public BangBangShoot(Shooter shooter, double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shooter = shooter;
     addRequirements(this.shooter);
-    speed = rpmSpeed;
+    this.speed = speed;
     bangBang = new BangBangController();
+  }
+
+  public void increaseSpeed() {
+    speed += 1;
+    bangBang.setSetpoint(speed);
+  }
+
+  public void decreaseSpeed() {
+    speed -= 1;
+    bangBang.setSetpoint(speed);
   }
 
   // Called when the command is initially scheduled.
@@ -31,12 +41,14 @@ public class BangBangShooterTest extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.set(bangBang.calculate(shooter.getRPM()));
+    shooter.set(bangBang.calculate(shooter.getMPS()));
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    shooter.set(0);
+  }
 
   // Returns true when the command should end.
   @Override

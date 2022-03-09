@@ -19,7 +19,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import static frc.irontigers.robot.Constants.*;
 
-import frc.irontigers.robot.commands.BangBangShooterTest;
+import org.photonvision.PhotonCamera;
+
+import frc.irontigers.robot.commands.BangBangShoot;
 import frc.irontigers.robot.commands.RampShooter;
 import frc.irontigers.robot.commands.RunIntake;
 import frc.irontigers.robot.commands.ballstate.IntakeBallOne;
@@ -53,6 +55,7 @@ public class RobotContainer {
   private final Intake intake = new Intake();
   private final Magazine magazine = new Magazine();
   //private final Climber climber = new Climber();
+  // private final PhotonCamera vision = new PhotonCamera("limelight");
 
 
   private final XboxControllerIT controller = new XboxControllerIT(0);
@@ -77,15 +80,16 @@ public class RobotContainer {
   //private final JoystickButton climberRetract = new JoystickButton(controller, Button.kX.value);
   //private final DPadButton climberStop = new DPadButton(controller, DPadDirection.kDown);
 
-  private final DPadButton startBangBang = new DPadButton(controller, DPadDirection.kRight);
-  private final DPadButton stopBangBang = new DPadButton(controller, DPadDirection.kLeft);
+  private final DPadButton increaseBangBang = new DPadButton(controller, DPadDirection.kRight);
+  private final DPadButton decreaseBangBang = new DPadButton(controller, DPadDirection.kLeft);
 
   private final JoystickButton magazineOnButton = new JoystickButton(controller, Button.kStart.value);
   private final JoystickButton magazineOffButton = new JoystickButton(controller, Button.kBack.value);
   
+  private final BangBangShoot bangBangShoot = new BangBangShoot(shooter, 35);
 
-  private final SequentialCommandGroup bangBangTest = new RampShooter(shooter, 2500, 3000)
-      .andThen(new BangBangShooterTest(shooter, 2500));
+  private final SequentialCommandGroup bangBangTest = new RampShooter(shooter, 35, 1500)
+      .andThen(bangBangShoot);
                                                             
   // private final Trigger s0 = new Trigger(() -> magazine.readBallSensor(Sensor.S0)).debounce(0.04, DebounceType.kBoth);
   private final Trigger s1 = new Trigger(() -> magazine.readBallSensor(Sensor.S1)).debounce(0.04, DebounceType.kBoth);
@@ -100,7 +104,7 @@ public class RobotContainer {
     controller.setDeadzone(0.15);
     driveSystem.setDefaultCommand(joystickDrive);
 
-    magazine.closeGate(BallGate.Rear);
+    // magazine.closeGate(BallGate.Rear);
   }
 
   /**
@@ -110,10 +114,10 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    shooterOnButton.whenPressed(() -> shooter.set(ShooterVals.DEFAULT_SPEED));
-    shooterOffButton.whenPressed(() -> shooter.set(0));
+    shooterOnButton.whenPressed(bangBangTest.beforeStarting(() -> magazine.openGate(BallGate.Both)));
+    shooterOffButton.cancelWhenPressed(bangBangTest);
 
-    magazineOnButton.whenPressed(() -> magazine.setOutput(-MagazineVals.DEFAULT_SPEED/2));
+    magazineOnButton.whenPressed(() -> magazine.setOutput(MagazineVals.DEFAULT_SPEED/2));
     magazineOffButton.whenPressed(() -> magazine.setOutput(0));
 
     intakeForward.whenPressed(new RunIntake(intake, Direction.FORWARD));
@@ -142,8 +146,8 @@ public class RobotContainer {
     //climberRetract.whenPressed(new ClimberCommand(climber, Direction.BACKWARD));
     //climberStop.whenPressed(new ClimberCommand(climber, Direction.STOP));
 
-    startBangBang.whenPressed(bangBangTest);
-    stopBangBang.cancelWhenPressed(bangBangTest);
+    increaseBangBang.whenPressed(bangBangShoot::increaseSpeed);
+    decreaseBangBang.whenPressed(bangBangShoot::decreaseSpeed);
   }
 
   /**
