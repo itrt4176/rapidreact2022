@@ -21,7 +21,7 @@ import static frc.irontigers.robot.Constants.*;
 
 import org.photonvision.PhotonCamera;
 
-import frc.irontigers.robot.commands.BangBangShoot;
+import frc.irontigers.robot.commands.RunShooterAtSpeed;
 import frc.irontigers.robot.commands.RampShooter;
 import frc.irontigers.robot.commands.RunIntake;
 import frc.irontigers.robot.commands.ballstate.IntakeBallOne;
@@ -86,7 +86,7 @@ public class RobotContainer {
   private final JoystickButton magazineOnButton = new JoystickButton(controller, Button.kStart.value);
   private final JoystickButton magazineOffButton = new JoystickButton(controller, Button.kBack.value);
   
-  private final BangBangShoot bangBangShoot = new BangBangShoot(shooter, 35);
+  private final RunShooterAtSpeed bangBangShoot = new RunShooterAtSpeed(shooter, magazine, 35);
 
   private final SequentialCommandGroup bangBangTest = new RampShooter(shooter, 35, 1500)
       .andThen(bangBangShoot);

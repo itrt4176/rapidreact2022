@@ -5,30 +5,35 @@
 package frc.irontigers.robot.commands;
 
 import edu.wpi.first.math.controller.BangBangController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.irontigers.robot.subsystems.Shooter;
+import frc.irontigers.robot.subsystems.magazine.Magazine;
+import frc.irontigers.robot.subsystems.magazine.Magazine.BallGate;
 
-public class BangBangShoot extends CommandBase {
+public class RunShooterAtSpeed extends CommandBase {
   private final Shooter shooter;
   private double speed;
   private final BangBangController bangBang;
+  private final Magazine magazine;
 
   /** Creates a new BangBangShooterTest. */
-  public BangBangShoot(Shooter shooter, double speed) {
+  public RunShooterAtSpeed(Shooter shooter, Magazine magazine, double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shooter = shooter;
+    this.magazine = magazine;
     addRequirements(this.shooter);
     this.speed = speed;
     bangBang = new BangBangController();
   }
 
   public void increaseSpeed() {
-    speed += 1;
+    speed += 0.25;
     bangBang.setSetpoint(speed);
   }
 
   public void decreaseSpeed() {
-    speed -= 1;
+    speed -= 0.25;
     bangBang.setSetpoint(speed);
   }
 
@@ -41,7 +46,21 @@ public class BangBangShoot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.set(bangBang.calculate(shooter.getMPS()));
+    // shooter.set(bangBang.calculate(shooter.getMPS()));
+    double error = speed - shooter.getMPS();
+    double p;
+
+    if (error <= 7.5) {
+      p = 0.0065;
+    } else {
+      p = 0.01;
+    }
+
+    double output = shooter.get() + (p * error);
+
+    shooter.set(output);
+
+    SmartDashboard.putNumber("Shooter mps", shooter.getMPS());
   }
 
   // Called once the command ends or is interrupted.
