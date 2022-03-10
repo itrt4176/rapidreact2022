@@ -106,13 +106,11 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
-    PhotonPipelineResult latest = vision.getLatestResult();
-
     PhotonTrackedTarget target = vision.getLatestResult().getBestTarget();
 
     if (target != null) {
       SmartDashboard.putNumber("Distance to target (m)", PhotonUtils.calculateDistanceToTargetMeters(CAM_HEIGHT,
-          TARGET_HEIGHT, CAM_ANGLE, target.getPitch()));
+          TARGET_HEIGHT, CAM_ANGLE, Units.degreesToRadians(target.getPitch())));
     }
   }
 
