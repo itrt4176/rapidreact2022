@@ -19,7 +19,7 @@ public class Climber extends SubsystemBase {
   public Climber() {
     climber = new WPI_TalonFX(Constants.ClimberVals.MOTOR_ID);
   }
-
+ 
   public void set(double speed) {
     climber.set(speed);
   }
@@ -34,7 +34,10 @@ public class Climber extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    extensionValue = getMotorPosistion(); //definitely won't work
+    extensionValue = getMotorPosition(); //definitely won't work
     SmartDashboard.putNumber("Climber Position", getMotorPosition());
+  }
+
+  public void setSelectedSensorPosition(int i) {
   }
 }
