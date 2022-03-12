@@ -7,6 +7,7 @@ package frc.irontigers.robot.subsystems;
 import frc.irontigers.robot.Constants;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 
+import com.ctre.phoenix.led.ColorFlowAnimation.Direction;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
@@ -22,6 +23,7 @@ public class DriveSystem extends MecanumDriveSubsystem {
   private WPI_TalonFX leftBack;
   private WPI_TalonFX rightFront;
   private WPI_TalonFX rightBack;
+  static int direction = 1; //-1 or 1
 
   private AHRS gyro;
 
@@ -46,6 +48,8 @@ public class DriveSystem extends MecanumDriveSubsystem {
     
   }
 
+  
+
   public double motorToWheelSpeed(TalonFX motor) {
     return (motor.getSelectedSensorVelocity()*600/2048)/10.71;
   }
@@ -53,9 +57,32 @@ public class DriveSystem extends MecanumDriveSubsystem {
 
   @Override
   public void drive(double xSpeed, double ySpeed, double rotation) {
+      
       // TODO Remove after library fixed
       super.drive(ySpeed, xSpeed, rotation);
   }
+  public void setFrontToIntake(){
+    direction = -1;
+  }
+  public void setFrontToShooter(){
+    direction = 1;
+  }
+  public boolean isDriveDirectionTowardsShooter(){
+    if(direction == 1){
+      return true;
+    }else{
+      return false;
+    }
+  }
+  public void toggleDriveFront(){
+    if(isDriveDirectionTowardsShooter()  == true){
+      setFrontToIntake();
+    } else if(isDriveDirectionTowardsShooter() == false){
+      setFrontToShooter();
+    }
+  }
+  
+  
 
   @Override
   public void periodic() {
@@ -74,4 +101,6 @@ public class DriveSystem extends MecanumDriveSubsystem {
     rightFront.setSelectedSensorPosition(0);
     rightBack.setSelectedSensorPosition(0);
   }
+  
+  
 }

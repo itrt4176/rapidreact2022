@@ -43,6 +43,7 @@ public class RobotContainer {
   // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  //Intske Direction
   public enum Direction {
     FORWARD,
     BACKWARD,
@@ -82,6 +83,8 @@ public class RobotContainer {
 
   private final JoystickButton magazineOnButton = new JoystickButton(controller, Button.kStart.value);
   private final JoystickButton magazineOffButton = new JoystickButton(controller, Button.kBack.value);
+
+  private final JoystickButton driveInversionButton = new JoystickButton(controller, Button.kB.value);
   
 
   private final SequentialCommandGroup bangBangTest = new RampShooter(shooter, 2500, 3000)
@@ -141,6 +144,8 @@ public class RobotContainer {
     //climberExtend.whenPressed(new ClimberCommand(climber, Direction.FORWARD));
     //climberRetract.whenPressed(new ClimberCommand(climber, Direction.BACKWARD));
     //climberStop.whenPressed(new ClimberCommand(climber, Direction.STOP));
+
+    driveInversionButton.whenPressed(new InstantCommand(() ->  driveSystem.toggleDriveFront()));
 
     startBangBang.whenPressed(bangBangTest);
     stopBangBang.cancelWhenPressed(bangBangTest);
