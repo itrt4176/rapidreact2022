@@ -16,6 +16,7 @@ public class ClimberCommand extends CommandBase {
   private Climber climber;
   private Direction direction;
   private double extensionValue;
+  public boolean finished;
   public ClimberCommand(Climber climber, Direction direction) {
     this.climber = climber;
     this.direction = direction;
@@ -26,6 +27,7 @@ public class ClimberCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    finished = false;
   }
 
   
@@ -39,16 +41,19 @@ public class ClimberCommand extends CommandBase {
       climber.set(.2);
       if(extensionValue >= Constants.ClimberVals.MAX_EXTENSION){
         climber.set(0); //this is assuming it's going to check this every scheduler
+        finished = true;
       }
       break;
       case BACKWARD:
       climber.set(-.3);
       if(extensionValue <= Constants.ClimberVals.MIN_EXTENSION){
         climber.set(0);
+        finished = true;
       }
       break;
       case STOP:
       climber.set(0);
+      finished = true;
       break;
     }
   }
@@ -60,6 +65,6 @@ public class ClimberCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished(){
-    return false;
+    return finished;
 }
 }
