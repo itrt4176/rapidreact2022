@@ -13,11 +13,11 @@ public class ClimberCommand extends CommandBase {
   /** Creates a new ClimberCommand. */
   private Climber climber;
   private Direction direction;
-  private double extentionValue;
-  public ClimberCommand(Climber climber, Direction direction, double extentionValue) {
+  private double extensionValue;
+  public ClimberCommand(Climber climber, Direction direction, double extensionValue) {
     this.climber = climber;
     this.direction = direction;
-    this.extentionValue = extentionValue;
+    this.extensionValue = extensionValue;
     addRequirements(climber);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -25,7 +25,6 @@ public class ClimberCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    extentionValue = 0;  
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -33,18 +32,20 @@ public class ClimberCommand extends CommandBase {
   public void execute() {
     switch(direction){
       case FORWARD:
-      while (climber.get()<Constants.ClimberVals.DEFAULT_SPEED){
-        climber.set(climber.get()+0.05);
+      climber.set(Constants.ClimberVals.DEFAULT_SPEED);
+      if(extensionValue >= Constants.ClimberVals.MAX_EXTENSION){
+        climber.set(0) //this is assuming it's going to check this every scheduler
       }
-        break;
+      break;
       case BACKWARD:
-      while (climber.get()>-Constants.ClimberVals.DEFAULT_SPEED){
-        climber.set(climber.get()-0.05);
+      climber.set(-Constants.ClimberVals.DEFAULT_SPEED);
+      if(extensionValue <= Constants.ClimberVals.MIN_EXTENSION){
+        climber.set(0)
       }
-        break;
+      break;
       case STOP:
-        climber.set(0);
-        break;
+      climber.set(0);
+      break;
     }
   }
 
@@ -54,7 +55,30 @@ public class ClimberCommand extends CommandBase {
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() {
-    return false;
+  public boolean isFinished(){
+    switch(direction){
+      case FORWARD:
+      if(extensionValue >= Constants.ClimberVals.MAX_EXTENSION and climber.get() == 0){
+        return true;
+      }
+      else{
+        return false;
+      }
+      break;
+      case BACKWARD:
+      if(extensionValue <= Constants.ClimberVals.MIN_LENGTH and climber.get() == 0){
+        return true;
+      }
+      else{
+        return false;
+      }
+      break;
+      case STOP:
+      if(climber.get() == 0){
+        return true;
+      }
+      else{
+        return false;
+      }
+    }
   }
-}
