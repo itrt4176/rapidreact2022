@@ -19,9 +19,13 @@ public class Climber extends SubsystemBase {
   public Climber() {
     climber = new WPI_TalonFX(Constants.ClimberVals.MOTOR_ID);
   }
- 
+  
+  private void setEncoder() {
+    climber.setSelectedSensorPosition(0);
+  }
   public void set(double speed) {
     climber.set(speed);
+    setEncoder();
   }
   public double getMotorPosition(){
     return climber.getSelectedSensorPosition();

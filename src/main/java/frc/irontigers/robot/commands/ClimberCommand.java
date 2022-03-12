@@ -26,17 +26,14 @@ public class ClimberCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    setEncoder();
-    extensionValue = climber.getMotorPosition();
   }
 
-  private void setEncoder() {
-    climber.setSelectedSensorPosition(0);
-  }
+  
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    extensionValue = climber.getMotorPosition();
     switch(direction){
       case FORWARD:
       climber.set(.2);

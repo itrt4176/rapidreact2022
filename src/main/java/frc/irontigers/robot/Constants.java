@@ -16,7 +16,7 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
     public static final class ShooterVals {
         public final static double DIAMETER = Units.inchesToMeters(6);
-        public final static int MOTOR_ID = 0;
+        public final static int MOTOR_ID = 7;
         public final static double DEFAULT_SPEED = 1;
     }
 
@@ -31,15 +31,15 @@ public final class Constants {
     }
 
     public static final class DriveSystemVals {
-        public final static int BACK_LEFT = 2;
-        public final static int FRONT_LEFT = 3;
-        public final static int FRONT_RIGHT = 4;
-        public final static int BACK_RIGHT = 5;
+        public final static int BACK_LEFT = 5;
+        public final static int FRONT_LEFT = 4;
+        public final static int FRONT_RIGHT = 3;
+        public final static int BACK_RIGHT = 2;
 
         public final static double DEFAULT_SPEED = 0.2;
     }
     public static final class ClimberVals {
-        public final static int MOTOR_ID = 7; //fix this
+        public final static int MOTOR_ID = 8; //fix this
         public final static double MAX_EXTENSION = 15714.5355; //also fix this
         public final static double MIN_EXTENSION = 0; //probbaly also this
     }
