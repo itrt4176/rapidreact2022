@@ -21,6 +21,7 @@ public class ClimberCommand extends CommandBase {
     this.climber = climber;
     this.direction = direction;
     addRequirements(climber);
+    
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -38,20 +39,23 @@ public class ClimberCommand extends CommandBase {
     extensionValue = climber.getMotorPosition();
     switch(direction){
       case FORWARD:
-      climber.set(.2);
-      if(extensionValue >= Constants.ClimberVals.MAX_EXTENSION){
+      climber.set(-.3);
+      // extensionValue = climber.getMotorPosition();
+      if(extensionValue <= Constants.ClimberVals.MAX_EXTENSION){
         climber.set(0); //this is assuming it's going to check this every scheduler
         finished = true;
       }
       break;
       case BACKWARD:
-      climber.set(-.3);
-      if(extensionValue <= Constants.ClimberVals.MIN_EXTENSION){
+      climber.set(.2);
+      // extensionValue = climber.getMotorPosition();
+      if(extensionValue >= -Constants.ClimberVals.MAX_EXTENSION){
         climber.set(0);
         finished = true;
       }
       break;
       case STOP:
+      // extensionValue = climber.getMotorPosition();
       climber.set(0);
       finished = true;
       break;
@@ -66,5 +70,5 @@ public class ClimberCommand extends CommandBase {
   @Override
   public boolean isFinished(){
     return finished;
-}
+  }
 }

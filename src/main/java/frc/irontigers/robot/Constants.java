@@ -40,7 +40,7 @@ public final class Constants {
     }
     public static final class ClimberVals {
         public final static int MOTOR_ID = 8; //fix this
-        public final static double MAX_EXTENSION = 15714.5355; //also fix this
-        public final static double MIN_EXTENSION = 0; //probbaly also this
+        public final static double MAX_EXTENSION = -15714.5355; //also fix this
+        public final static double MIN_EXTENSION = 1; //probbaly also this
     }
 }

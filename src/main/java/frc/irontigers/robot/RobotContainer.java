@@ -97,8 +97,8 @@ public class RobotContainer {
     intakeBackward.whenPressed(new RunIntake(intake, Direction.BACKWARD));
     intakeStop.whenPressed(new RunIntake(intake, Direction.STOP));
 
-    climberExtend.whenPressed(new ClimberCommand(climber, Direction.FORWARD)); //probably will not work?
-    climberRetract.whenPressed(new ClimberCommand(climber, Direction.BACKWARD));
+    climberExtend.whenPressed(new ClimberCommand(climber, Direction.BACKWARD)); //probably will not work?
+    climberRetract.whenPressed(new ClimberCommand(climber, Direction.FORWARD));
     climberStop.whenPressed(new ClimberCommand(climber, Direction.STOP));
 
     startBangBang.whenPressed(bangBangTest);
