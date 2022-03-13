@@ -44,10 +44,10 @@ public final class Constants {
     }
 
     public static final class DriveSystemVals {
-        public final static int BACK_LEFT = 2;
-        public final static int FRONT_LEFT = 3;
-        public final static int FRONT_RIGHT = 4;
-        public final static int BACK_RIGHT = 5;
+        public final static int BACK_LEFT = 5;
+        public final static int FRONT_LEFT = 4;
+        public final static int FRONT_RIGHT = 3;
+        public final static int BACK_RIGHT = 2;
     
     }
     
