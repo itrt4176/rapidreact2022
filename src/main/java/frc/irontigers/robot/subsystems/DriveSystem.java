@@ -8,6 +8,7 @@ import frc.irontigers.robot.Constants;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 
 import com.ctre.phoenix.led.ColorFlowAnimation.Direction;
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
@@ -57,9 +58,9 @@ public class DriveSystem extends MecanumDriveSubsystem {
 
   @Override
   public void drive(double xSpeed, double ySpeed, double rotation) {
-      
       // TODO Remove after library fixed
-      super.drive(ySpeed, xSpeed, rotation);
+      super.drive(direction * ySpeed, direction * xSpeed, rotation);
+
   }
   public void setFrontToIntake(){
     direction = -1;
@@ -79,6 +80,7 @@ public class DriveSystem extends MecanumDriveSubsystem {
       setFrontToIntake();
     } else if(isDriveDirectionTowardsShooter() == false){
       setFrontToShooter();
+
     }
   }
   
