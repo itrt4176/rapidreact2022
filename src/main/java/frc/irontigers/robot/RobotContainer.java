@@ -10,11 +10,13 @@ import frc.tigerlib.XboxControllerIT.DPadDirection;
 import frc.tigerlib.command.MecanumJoystickDrive;
 import frc.tigerlib.command.button.DPadButton;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import static frc.irontigers.robot.Constants.*;
 
+import frc.irontigers.robot.commands.AutoDrive;
 import frc.irontigers.robot.commands.BangBangShooterTest;
 import frc.irontigers.robot.commands.RampShooter;
 import frc.irontigers.robot.commands.RunIntake;
@@ -100,6 +102,9 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return null;
+    return new ParallelCommandGroup(
+      new AutoDrive(driveSystem),
+      new RunIntake(intake, Direction.FORWARD))
+    ;
   }
 }

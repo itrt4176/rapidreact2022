@@ -15,6 +15,7 @@ import com.kauailabs.navx.frc.AHRS;
 import frc.tigerlib.subsystem.drive.MecanumDriveSubsystem;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
+import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.util.Units;
 
 public class DriveSystem extends MecanumDriveSubsystem {
@@ -48,6 +49,10 @@ public class DriveSystem extends MecanumDriveSubsystem {
     
   }
 
+  public MecanumDriveOdometry getOdometer() {
+    return odometer;
+  }
+
   @Override
   public void drive(double xSpeed, double ySpeed, double rotation) {
       // TODO Remove after library fixed
@@ -66,7 +71,12 @@ public class DriveSystem extends MecanumDriveSubsystem {
   @Override
   protected MecanumDriveWheelSpeeds getWheelSpeeds() {
     // TODO Auto-generated method stub
-    return new MecanumDriveWheelSpeeds(0, 0, 0, 0);
+    return new MecanumDriveWheelSpeeds(
+      (((leftFront.getSelectedSensorVelocity()/2048)/10.71)/(Units.inchesToMeters(6)*Math.PI)),
+      (((rightFront.getSelectedSensorVelocity()/2048)/10.71)/(Units.inchesToMeters(6)*Math.PI)),
+      (((leftBack.getSelectedSensorVelocity()/2048)/10.71)/(Units.inchesToMeters(6)*Math.PI)), 
+      (((rightBack.getSelectedSensorVelocity()/2048)/10.71)/(Units.inchesToMeters(6)*Math.PI))
+    );
   }
 
   @Override
