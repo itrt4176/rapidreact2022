@@ -24,7 +24,10 @@ public class DriveSystem extends MecanumDriveSubsystem {
   private WPI_TalonFX leftBack;
   private WPI_TalonFX rightFront;
   private WPI_TalonFX rightBack;
-  static int direction = 1; //-1 or 1
+  private int direction = 1; //-1 or 1
+  private int gear= 3; 
+  private double gearSpeed;
+
 
   private AHRS gyro;
 
@@ -59,7 +62,24 @@ public class DriveSystem extends MecanumDriveSubsystem {
   @Override
   public void drive(double xSpeed, double ySpeed, double rotation) {
       // TODO Remove after library fixed
-      super.drive(direction * ySpeed, direction * xSpeed, rotation);
+      switch(gear){
+        case 0:
+         gearSpeed = .25;
+         break;
+        case 1:
+         gearSpeed = .5;
+         break;
+        case 2:
+          gearSpeed = .75;
+          break;
+        case 3:
+          gearSpeed = 1;
+          break;
+      }
+
+      
+
+      super.drive(direction* gearSpeed * ySpeed, direction * gearSpeed * xSpeed, gearSpeed * rotation);
 
   }
   public void setFrontToIntake(){
@@ -68,6 +88,17 @@ public class DriveSystem extends MecanumDriveSubsystem {
   public void setFrontToShooter(){
     direction = 1;
   }
+  public void shiftUp(){
+    if(gear < 3){
+      gear++;
+    }
+  }
+  public void shiftDown(){
+    if(gear > 0){
+      gear--;
+    }
+  }
+
   public boolean isDriveDirectionTowardsShooter(){
     if(direction == 1){
       return true;
