@@ -106,12 +106,12 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
-    PhotonTrackedTarget target = vision.getLatestResult().getBestTarget();
+    // PhotonTrackedTarget target = vision.getLatestResult().getBestTarget();
 
-    if (target != null) {
-      SmartDashboard.putNumber("Distance to target (m)", PhotonUtils.calculateDistanceToTargetMeters(CAM_HEIGHT,
-          TARGET_HEIGHT, CAM_ANGLE, Units.degreesToRadians(target.getPitch())));
-    }
+    // if (target != null) {
+    //   SmartDashboard.putNumber("Distance to target (m)", PhotonUtils.calculateDistanceToTargetMeters(CAM_HEIGHT,
+    //       TARGET_HEIGHT, CAM_ANGLE, Units.degreesToRadians(target.getPitch())));
+    // }
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

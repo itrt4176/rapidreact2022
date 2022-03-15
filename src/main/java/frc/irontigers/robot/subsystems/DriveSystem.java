@@ -54,7 +54,7 @@ public class DriveSystem extends MecanumDriveSubsystem {
   @Override
   public void drive(double xSpeed, double ySpeed, double rotation) {
       // TODO Remove after library fixed
-      super.drive(ySpeed, xSpeed, rotation);
+      super.drive(ySpeed, xSpeed, 0.85 * rotation);
   }
 
   @Override
