@@ -72,12 +72,12 @@ public class Magazine extends SubsystemBase {
 
     states = new BallStates();
   
-   colorMatcher = new ColorMatch();
+    colorMatcher = new ColorMatch();
 
-  colorMatcher.addColorMatch(BLUE_COLOR);
-  colorMatcher.addColorMatch(RED_COLOR);
+    colorMatcher.addColorMatch(BLUE_COLOR);
+    colorMatcher.addColorMatch(RED_COLOR);
 
-  
+    
   }
 
   public void setOutput(double speed) {
