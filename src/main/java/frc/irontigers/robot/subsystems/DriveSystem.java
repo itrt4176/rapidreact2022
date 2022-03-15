@@ -56,13 +56,29 @@ public class DriveSystem extends MecanumDriveSubsystem {
   public MecanumDriveOdometry getOdometer() {
     return odometer;
   }
-
   
 
   public double motorToWheelSpeed(TalonFX motor) {
     return (motor.getSelectedSensorVelocity()*600/2048)/10.71;
   }
 
+  public double getLeftFrontDistance(){
+    return leftFront.getSelectedSensorPosition();
+  }
+
+  public double getLeftBackDistance(){
+    return leftBack.getSelectedSensorPosition();
+  }
+
+  public double getRightFrontPosition(){
+    return rightFront.getSelectedSensorPosition();
+  }
+
+  public double getRightBackPosition(){
+    return rightBack.getSelectedSensorPosition();
+  }
+
+  
 
   @Override
   public void drive(double xSpeed, double ySpeed, double rotation) {
@@ -115,8 +131,8 @@ public class DriveSystem extends MecanumDriveSubsystem {
   
   }
 
-  @Override
-  protected void resetEncoders() {
+ 
+  public void resetEncoders() {
     leftFront.setSelectedSensorPosition(0);
     leftFront.setSelectedSensorPosition(0);
     rightFront.setSelectedSensorPosition(0);

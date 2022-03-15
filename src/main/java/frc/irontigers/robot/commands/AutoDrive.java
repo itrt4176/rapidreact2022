@@ -15,18 +15,21 @@ public class AutoDrive extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     this.driveSystem = driveSystem;
     finished = false;
-    addRequirements(this.driveSystem);
+    addRequirements(driveSystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    driveSystem.resetEncoders();
+    
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    while (driveSystem.getOdometer().getPoseMeters().getX() <= 5) {
-      driveSystem.drive(0.25, 0, 0);
+    while (driveSystem.getOdometer().getPoseMeters().getY() <= 5) {
+      driveSystem.drive(0, 0.25, 0);
     }
   }
 
