@@ -26,6 +26,7 @@ import frc.irontigers.robot.commands.Shoot;
 import frc.irontigers.robot.commands.RampShooter;
 import frc.irontigers.robot.commands.RunIntake;
 import frc.irontigers.robot.commands.ballstate.IntakeBallOne;
+import frc.irontigers.robot.commands.triggers.ShootableState;
 import frc.irontigers.robot.subsystems.DriveSystem;
 import frc.irontigers.robot.subsystems.Intake;
 import frc.irontigers.robot.subsystems.Shooter;
@@ -65,7 +66,7 @@ public class RobotContainer {
   private final DriveSystem driveSystem = new DriveSystem();
   private final MecanumJoystickDrive joystickDrive = new MecanumJoystickDrive(driveSystem, controller);  
 
-  private final JoystickButton shooterOnButton = new JoystickButton(controller, Button.kRightBumper.value);
+  private final Trigger shooterOnButton = new ShootableState(magazine).and(new JoystickButton(controller, Button.kRightBumper.value));
   private final JoystickButton shooterOffButton = new JoystickButton(controller, Button.kLeftBumper.value);
 
   private final JoystickButton intakeForward = new JoystickButton(controller, Button.kY.value);
@@ -118,7 +119,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    shooterOnButton.whenPressed(runShooter);
+    shooterOnButton.whenActive(runShooter);
     shooterOffButton.cancelWhenPressed(runShooter);
 
     magazineOnButton.whenPressed(() -> magazine.setOutput(MagazineVals.DEFAULT_SPEED));
