@@ -20,11 +20,15 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import static frc.irontigers.robot.Constants.*;
 
+import org.photonvision.PhotonCamera;
+
+import frc.irontigers.robot.commands.RunShooter;
+import frc.irontigers.robot.commands.Shoot;
 import frc.irontigers.robot.commands.AutoDrive;
-import frc.irontigers.robot.commands.BangBangShooterTest;
 import frc.irontigers.robot.commands.RampShooter;
 import frc.irontigers.robot.commands.RunIntake;
 import frc.irontigers.robot.commands.ballstate.IntakeBallOne;
+import frc.irontigers.robot.commands.triggers.ShootableState;
 import frc.irontigers.robot.subsystems.DriveSystem;
 import frc.irontigers.robot.subsystems.Intake;
 import frc.irontigers.robot.subsystems.Shooter;
@@ -32,6 +36,7 @@ import frc.irontigers.robot.subsystems.magazine.Magazine;
 import frc.irontigers.robot.subsystems.magazine.BallStates.PositionState;
 import frc.irontigers.robot.subsystems.magazine.Magazine.BallGate;
 import frc.irontigers.robot.subsystems.magazine.Magazine.Sensor;
+import frc.irontigers.robot.utils.PeriodicCommandWrapper;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -56,6 +61,7 @@ public class RobotContainer {
   private final Intake intake = new Intake();
   private final Magazine magazine = new Magazine();
   //private final Climber climber = new Climber();
+  private final PhotonCamera camera = new PhotonCamera("limelight");
 
 
   private final XboxControllerIT controller = new XboxControllerIT(0);
@@ -63,7 +69,7 @@ public class RobotContainer {
   private final DriveSystem driveSystem = new DriveSystem();
   private final MecanumJoystickDrive joystickDrive = new MecanumJoystickDrive(driveSystem, controller);  
 
-  private final JoystickButton shooterOnButton = new JoystickButton(controller, Button.kRightBumper.value);
+  private final Trigger shooterOnButton = new ShootableState(magazine).and(new JoystickButton(controller, Button.kRightBumper.value));
   private final JoystickButton shooterOffButton = new JoystickButton(controller, Button.kLeftBumper.value);
 
   private final JoystickButton intakeForward = new JoystickButton(controller, Button.kY.value);
@@ -80,17 +86,20 @@ public class RobotContainer {
   //private final JoystickButton climberRetract = new JoystickButton(controller, Button.kX.value);
   //private final DPadButton climberStop = new DPadButton(controller, DPadDirection.kDown);
 
-  private final DPadButton startBangBang = new DPadButton(controller, DPadDirection.kRight);
-  private final DPadButton stopBangBang = new DPadButton(controller, DPadDirection.kLeft);
+  private final DPadButton increaseBangBang = new DPadButton(controller, DPadDirection.kRight);
+  private final DPadButton decreaseBangBang = new DPadButton(controller, DPadDirection.kLeft);
 
   private final JoystickButton magazineOnButton = new JoystickButton(controller, Button.kStart.value);
   private final JoystickButton magazineOffButton = new JoystickButton(controller, Button.kBack.value);
 
   private final JoystickButton driveInversionButton = new JoystickButton(controller, Button.kB.value);
   
+  private final Shoot runShooter = new Shoot(intake, magazine, shooter, camera);
 
-  private final SequentialCommandGroup bangBangTest = new RampShooter(shooter, 2500, 3000)
-      .andThen(new BangBangShooterTest(shooter, 2500));
+  // private final SequentialCommandGroup rampShooter = runShooter
+  //     .beforeStarting(() -> magazine.openGate(BallGate.Both));
+  
+  // private final PeriodicCommandWrapper betterShoot = new PeriodicCommandWrapper(rampShooter, 0.001);
                                                             
   // private final Trigger s0 = new Trigger(() -> magazine.readBallSensor(Sensor.S0)).debounce(0.04, DebounceType.kBoth);
   private final Trigger s1 = new Trigger(() -> magazine.readBallSensor(Sensor.S1)).debounce(0.04, DebounceType.kBoth);
@@ -102,10 +111,10 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-    controller.setDeadzone(0.15);
+    controller.setDeadzone(0.05);
     driveSystem.setDefaultCommand(joystickDrive);
 
-    magazine.closeGate(BallGate.Rear);
+    // magazine.closeGate(BallGate.Rear);
   }
 
   /**
@@ -115,10 +124,10 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    shooterOnButton.whenPressed(() -> shooter.set(ShooterVals.DEFAULT_SPEED));
-    shooterOffButton.whenPressed(() -> shooter.set(0));
+    shooterOnButton.whenActive(runShooter);
+    shooterOffButton.cancelWhenPressed(runShooter);
 
-    magazineOnButton.whenPressed(() -> magazine.setOutput(-MagazineVals.DEFAULT_SPEED/2));
+    magazineOnButton.whenPressed(() -> magazine.setOutput(MagazineVals.DEFAULT_SPEED));
     magazineOffButton.whenPressed(() -> magazine.setOutput(0));
 
     intakeForward.whenPressed(new RunIntake(intake, Direction.FORWARD));
@@ -149,8 +158,8 @@ public class RobotContainer {
 
     driveInversionButton.whenPressed(new InstantCommand(() ->  driveSystem.toggleDriveFront()));
 
-    startBangBang.whenPressed(bangBangTest);
-    stopBangBang.cancelWhenPressed(bangBangTest);
+    increaseBangBang.whenPressed(runShooter::increaseSpeed);
+    decreaseBangBang.whenPressed(runShooter::decreaseSpeed);
   }
 
   /**

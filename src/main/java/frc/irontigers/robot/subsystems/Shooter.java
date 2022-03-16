@@ -6,6 +6,9 @@ package frc.irontigers.robot.subsystems;
 
 import static frc.irontigers.robot.Constants.ShooterVals.*;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,10 +22,27 @@ public class Shooter extends SubsystemBase {
 
   public Shooter() {
     flywheel = new WPI_TalonFX(7);
+
+    flywheel.setNeutralMode(NeutralMode.Coast);
+    flywheel.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 30); // timeout taken from github.com/FRC-Sonic-Squirrels/Flywheel-Tuner/2022-CTRE/
+
+    flywheel.config_kF(0, 0.0475, 30);
+    flywheel.config_kP(0, 0.0945625, 30);
+    flywheel.config_kI(0, 0.0000008510625, 30);
+    flywheel.config_kD(0, 0.0, 30);
+    // flywheel.config_kD(0, 0.00000009560546875, 30);
+    flywheel.config_IntegralZone(0, 1701, 30);
+    flywheel.configNominalOutputForward(0, 30);
+    flywheel.configNominalOutputReverse(0, 30);
+    flywheel.configPeakOutputForward(1, 30);
+    flywheel.configPeakOutputReverse(0, 30);
+    flywheel.configAllowableClosedloopError(0, (12.5 / (600.0 / 2048.0)), 30);
+    flywheel.configVoltageCompSaturation(11.85, 30);
+    flywheel.enableVoltageCompensation(true);
   }
 
   public double getRPM() {
-    return flywheel.getSelectedSensorVelocity()*600/2048;
+    return flywheel.getSelectedSensorVelocity() * (600.0 / 2048.0);
   }
 
   public double getMPS() {
@@ -38,7 +58,11 @@ public class Shooter extends SubsystemBase {
   }
 
   public void spitBall() {
-    flywheel.set(0.2);
+    flywheel.set(0.25);
+  }
+
+  public void setVelocity(double rpm) {
+    flywheel.set(ControlMode.Velocity, (rpm / (600.0 / 2048.0)));
   }
 
   @Override
@@ -46,5 +70,7 @@ public class Shooter extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Shooter RPM", getRPM());
     SmartDashboard.putNumber("Shooter Speed", get());
+
+    SmartDashboard.putNumber("Shooter input voltage", flywheel.getBusVoltage());
   }
 }
