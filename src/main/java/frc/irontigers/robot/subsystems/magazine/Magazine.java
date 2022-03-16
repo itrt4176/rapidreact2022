@@ -7,14 +7,12 @@ package frc.irontigers.robot.subsystems.magazine;
 import java.util.EnumMap;
 import java.util.Map;
 
-
-
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorSensorV3;
 
+import edu.wpi.first.util.datalog.BooleanLogEntry;
 import edu.wpi.first.util.datalog.DataLog;
-import edu.wpi.first.util.datalog.IntegerArrayLogEntry;
 import edu.wpi.first.util.datalog.IntegerLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -54,6 +52,13 @@ public class Magazine extends SubsystemBase {
   private IntegerLogEntry h1Log;
   private IntegerLogEntry h2Log;
   private IntegerLogEntry shooterLog;
+
+  private BooleanLogEntry s0Log;
+  private BooleanLogEntry s1Log;
+  private BooleanLogEntry s2Log;
+  private BooleanLogEntry s3Log;
+
+  private EnumMap<Sensor, BooleanLogEntry> sensorLogs;
   
 
   /** Creates a new Magazine. */
@@ -90,6 +95,18 @@ public class Magazine extends SubsystemBase {
     h2Log = new IntegerLogEntry(log, "magazine/state/h2");
     shooterLog = new IntegerLogEntry(log, "magazine/state/shooter");
     updateStateLog();
+
+    s0Log = new BooleanLogEntry(log, "magazine/sensor/s0");
+    s1Log = new BooleanLogEntry(log, "magazine/sensor/s1");
+    s2Log = new BooleanLogEntry(log, "magazine/sensor/s2");
+    s3Log = new BooleanLogEntry(log, "magazine/sensor/s3");
+
+    sensorLogs = new EnumMap<>(Map.ofEntries(
+      Map.entry(Sensor.S0, s0Log),
+      Map.entry(Sensor.S1, s1Log),
+      Map.entry(Sensor.S2, s2Log),
+      Map.entry(Sensor.S3, s3Log)
+    ));
   }
 
   public void setOutput(double speed) {
@@ -118,7 +135,10 @@ public class Magazine extends SubsystemBase {
    * @return selected sensor's value
    */
   public boolean readBallSensor(Sensor sensor) {
-    return !sensors.get(sensor).get();
+    boolean reading = !sensors.get(sensor).get();
+    sensorLogs.get(sensor).append(reading);
+
+    return reading;
   }
 
   public BallStates getState() {
@@ -243,8 +263,8 @@ public class Magazine extends SubsystemBase {
     // This method will be called once per scheduler run
     // SmartDashboard.putBoolean("Rear Sensor", readBallSensor(BallPosition.Hold1));
     // SmartDashboard.putBoolean("Front Sensor", readBallSensor(BallPosition.Shot));
-    Color color = colorSensor.getColor();
-    SmartDashboard.putNumberArray("RGB", new double[] { color.red, color.green, color.blue });
+    // Color color = colorSensor.getColor();
+    // SmartDashboard.putNumberArray("RGB", new double[] { color.red, color.green, color.blue });
 
     SmartDashboard.putBoolean("Intake Unknown", states.INTAKE.state == UNKNOWN);
     SmartDashboard.putBoolean("Intake Right", states.INTAKE.state == RIGHT);
