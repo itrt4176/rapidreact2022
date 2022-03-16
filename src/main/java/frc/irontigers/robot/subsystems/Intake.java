@@ -6,6 +6,9 @@ package frc.irontigers.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.util.datalog.DoubleLogEntry;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.irontigers.robot.Constants.IntakeVals;
@@ -15,12 +18,18 @@ public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
   private WPI_TalonSRX intake;
 
+  private DoubleLogEntry speedLog;
+
   public Intake() {
     intake = new WPI_TalonSRX(IntakeVals.MOTOR_ID);
+
+    DataLog log = DataLogManager.getLog();
+    speedLog = new DoubleLogEntry(log, "intake/speed");
   }
 
   public void set(double speed) {
     intake.set(speed);
+    speedLog.append(speed);
   }
 
   public double get() {
@@ -30,6 +39,6 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Intake Speed", get());
+    // SmartDashboard.putNumber("Intake Speed", get());
   }
 }
