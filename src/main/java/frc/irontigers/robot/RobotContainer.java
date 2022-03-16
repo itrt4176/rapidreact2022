@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.XboxController.Button;
@@ -24,19 +26,25 @@ import org.photonvision.PhotonCamera;
 
 import frc.irontigers.robot.commands.RunShooter;
 import frc.irontigers.robot.commands.Shoot;
+import com.fasterxml.jackson.databind.introspect.TypeResolutionContext.Empty;
+
 import frc.irontigers.robot.commands.AutoDrive;
 import frc.irontigers.robot.commands.RampShooter;
 import frc.irontigers.robot.commands.RunIntake;
+import frc.irontigers.robot.commands.Shoot;
+import frc.irontigers.robot.commands.ballstate.AdvanceBallOne;
 import frc.irontigers.robot.commands.ballstate.IntakeBallOne;
 import frc.irontigers.robot.commands.triggers.ShootableState;
 import frc.irontigers.robot.subsystems.DriveSystem;
 import frc.irontigers.robot.subsystems.Intake;
 import frc.irontigers.robot.subsystems.Shooter;
+import frc.irontigers.robot.subsystems.magazine.BallStates;
 import frc.irontigers.robot.subsystems.magazine.Magazine;
 import frc.irontigers.robot.subsystems.magazine.BallStates.PositionState;
 import frc.irontigers.robot.subsystems.magazine.Magazine.BallGate;
 import frc.irontigers.robot.subsystems.magazine.Magazine.Sensor;
 import frc.irontigers.robot.utils.PeriodicCommandWrapper;
+import frc.irontigers.robot.utils.StateTransitionCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -170,7 +178,11 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     return new ParallelCommandGroup(
       new AutoDrive(driveSystem),
-      new RunIntake(intake, Direction.FORWARD));
+      new SequentialCommandGroup(
+        new InstantCommand(() -> intake.deploy()).andThen(new WaitUntilCommand(1)), // To make sure that the intake is actually deployd before the next scheduler call 
+        new Shoot(intake, magazine, shooter, camera)
+      )
+    );
   }
 }
 
