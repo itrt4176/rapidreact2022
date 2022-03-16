@@ -48,6 +48,8 @@ public final class Constants {
         public final static int FRONT_LEFT = 4;
         public final static int FRONT_RIGHT = 3;
         public final static int BACK_RIGHT = 2;
+
+        public final static double DEFAULT_SPEED = 0.2;
     }
     
     public static final class VisionVals {
@@ -56,4 +58,9 @@ public final class Constants {
         public static final double CAM_ANGLE = Units.degreesToRadians(21.6515);
     }
     
+    public static final class ClimberVals {
+        public final static int MOTOR_ID = 8; //fix this
+        public final static double MAX_EXTENSION = -15714.5355; //also fix this
+        public final static double MIN_EXTENSION = 1; //probbaly also this
+    }
 }

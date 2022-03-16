@@ -27,6 +27,8 @@ import frc.irontigers.robot.commands.RampShooter;
 import frc.irontigers.robot.commands.RunIntake;
 import frc.irontigers.robot.commands.ballstate.IntakeBallOne;
 import frc.irontigers.robot.commands.triggers.ShootableState;
+import frc.irontigers.robot.commands.ClimberCommand;
+import frc.irontigers.robot.subsystems.Climber;
 import frc.irontigers.robot.subsystems.DriveSystem;
 import frc.irontigers.robot.subsystems.Intake;
 import frc.irontigers.robot.subsystems.Shooter;
@@ -61,6 +63,7 @@ public class RobotContainer {
   //private final Climber climber = new Climber();
   private final PhotonCamera camera = new PhotonCamera("limelight");
 
+  private final Climber climber = new Climber();
 
   private final XboxControllerIT controller = new XboxControllerIT(0);
 
@@ -80,12 +83,12 @@ public class RobotContainer {
   private final DPadButton openRearGateButton = new DPadButton(controller, DPadDirection.kUp);
   private final DPadButton closeRearGateButton = new DPadButton(controller, DPadDirection.kDown);
 
-  //private final JoystickButton climberExtend = new JoystickButton(controller, Button.kB.value);
-  //private final JoystickButton climberRetract = new JoystickButton(controller, Button.kX.value);
-  //private final DPadButton climberStop = new DPadButton(controller, DPadDirection.kDown);
-
   private final DPadButton increaseBangBang = new DPadButton(controller, DPadDirection.kRight);
   private final DPadButton decreaseBangBang = new DPadButton(controller, DPadDirection.kLeft);
+  
+  private final JoystickButton climberExtend = new JoystickButton(controller, Button.kB.value);
+  private final JoystickButton climberRetract = new JoystickButton(controller, Button.kX.value);
+  private final DPadButton climberStop = new DPadButton(controller, DPadDirection.kDown);
 
   private final JoystickButton magazineOnButton = new JoystickButton(controller, Button.kStart.value);
   private final JoystickButton magazineOffButton = new JoystickButton(controller, Button.kBack.value);
@@ -150,14 +153,14 @@ public class RobotContainer {
     openRearGateButton.whenPressed(() -> magazine.openGate(BallGate.Rear));
     closeRearGateButton.whenPressed(() -> magazine.closeGate(BallGate.Rear));
 
-    //climberExtend.whenPressed(new ClimberCommand(climber, Direction.FORWARD));
-    //climberRetract.whenPressed(new ClimberCommand(climber, Direction.BACKWARD));
-    //climberStop.whenPressed(new ClimberCommand(climber, Direction.STOP));
-
     driveInversionButton.whenPressed(new InstantCommand(() ->  driveSystem.toggleDriveFront()));
 
     increaseBangBang.whenPressed(runShooter::increaseSpeed);
     decreaseBangBang.whenPressed(runShooter::decreaseSpeed);
+    climberExtend.whenPressed(new ClimberCommand(climber, Direction.BACKWARD)); //probably will not work?
+    climberRetract.whenPressed(new ClimberCommand(climber, Direction.FORWARD));
+    climberStop.whenPressed(new ClimberCommand(climber, Direction.STOP));
+    
   }
 
   /**
