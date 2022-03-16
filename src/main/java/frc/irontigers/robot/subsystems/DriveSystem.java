@@ -13,9 +13,15 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 import frc.tigerlib.subsystem.drive.MecanumDriveSubsystem;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.util.datalog.DoubleLogEntry;
+import edu.wpi.first.util.datalog.IntegerLogEntry;
+import edu.wpi.first.util.datalog.StringLogEntry;
+import edu.wpi.first.wpilibj.DataLogManager;
 
 public class DriveSystem extends MecanumDriveSubsystem {
   /** Creates a new DriveSystem. */
@@ -25,13 +31,21 @@ public class DriveSystem extends MecanumDriveSubsystem {
   private WPI_TalonFX rightFront;
   private WPI_TalonFX rightBack;
   private int direction = 1; //-1 or 1
-  private int gear= 3; 
-  private double gearSpeed;
+  private int gear = 3; 
+  private double gearScalar;
 
 
   private AHRS gyro;
 
   private MecanumDriveKinematics kinematics;
+
+  private IntegerLogEntry gearLog;
+  private DoubleLogEntry gearScalarLog;
+  private IntegerLogEntry directionLog;
+
+  private DoubleLogEntry odoXLog;
+  private DoubleLogEntry odoYLog;
+  private DoubleLogEntry odoRotLog;
 
   public DriveSystem() {
     leftFront = new WPI_TalonFX(Constants.DriveSystemVals.FRONT_LEFT);
@@ -49,7 +63,15 @@ public class DriveSystem extends MecanumDriveSubsystem {
 
     setGyro(gyro);
     setMotors(leftFront, leftBack, rightFront, rightBack, kinematics);
-    
+
+    DataLog log = DataLogManager.getLog();
+    gearLog = new IntegerLogEntry(log, "drive/gear");
+    gearScalarLog = new DoubleLogEntry(log, "drive/gearScalar");
+    directionLog = new IntegerLogEntry(log, "drive/direction");
+
+    odoXLog = new DoubleLogEntry(log, "drive/odometer/x");
+    odoYLog = new DoubleLogEntry(log, "drive/odometer/y");
+    odoRotLog = new DoubleLogEntry(log, "drive/odometer/rotation");
   }
 
   
@@ -61,42 +83,46 @@ public class DriveSystem extends MecanumDriveSubsystem {
 
   @Override
   public void drive(double xSpeed, double ySpeed, double rotation) {
-      // TODO Remove after library fixed
       switch(gear){
         case 0:
-         gearSpeed = .25;
+         gearScalar = .25;
          break;
         case 1:
-         gearSpeed = .5;
+         gearScalar = .5;
          break;
         case 2:
-          gearSpeed = .75;
+          gearScalar = .75;
           break;
         case 3:
-          gearSpeed = 1;
+          gearScalar = 1;
           break;
       }
 
-      
+      super.drive(direction * gearScalar * ySpeed, direction * gearScalar * xSpeed, gearScalar * rotation);
 
-      super.drive(direction* gearSpeed * ySpeed, direction * gearSpeed * xSpeed, gearSpeed * rotation);
-
+      gearScalarLog.append(gearScalar);
   }
   public void setFrontToIntake(){
     direction = -1;
+    directionLog.append(direction);
   }
   public void setFrontToShooter(){
     direction = 1;
+    directionLog.append(direction);
   }
   public void shiftUp(){
-    if(gear < 3){
+    if (gear < 3) {
       gear++;
     }
+    
+    gearLog.append(gear);
   }
   public void shiftDown(){
-    if(gear > 0){
+    if (gear > 0) {
       gear--;
     }
+    
+    gearLog.append(gear);
   }
 
   public boolean isDriveDirectionTowardsShooter(){
@@ -120,6 +146,11 @@ public class DriveSystem extends MecanumDriveSubsystem {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    super.periodic();
+    Pose2d pos = getRobotPosition();
+    odoXLog.append(pos.getX());
+    odoYLog.append(pos.getY());
+    odoRotLog.append(pos.getRotation().getDegrees());
   }
 
   @Override
