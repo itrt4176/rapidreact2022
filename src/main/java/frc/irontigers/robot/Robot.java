@@ -13,6 +13,12 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
+import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonUtils;
+import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
+
+import edu.wpi.first.math.util.Units;
 
 // import org.littletonrobotics.junction.LoggedRobot;
 // import org.littletonrobotics.junction.Logger;
@@ -23,9 +29,12 @@ import edu.wpi.first.wpilibj.DriverStation;
 
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.irontigers.robot.utils.Version;
+
+import static frc.irontigers.robot.Constants.VisionVals.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -37,6 +46,8 @@ public class Robot extends TimedRobot {
   private Command autoCommand;
 
   private RobotContainer container;
+
+  private final PhotonCamera vision = new PhotonCamera("limelight");
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -99,6 +110,13 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
+    // PhotonTrackedTarget target = vision.getLatestResult().getBestTarget();
+
+    // if (target != null) {
+    //   SmartDashboard.putNumber("Distance to target (m)", PhotonUtils.calculateDistanceToTargetMeters(CAM_HEIGHT,
+    //       TARGET_HEIGHT, CAM_ANGLE, Units.degreesToRadians(target.getPitch())));
+    // }
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
