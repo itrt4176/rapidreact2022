@@ -5,6 +5,7 @@
 package frc.irontigers.robot;
 
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.util.Color;
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -16,7 +17,7 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
     public static final class ShooterVals {
         public final static double DIAMETER = Units.inchesToMeters(6);
-        public final static int MOTOR_ID = 0;
+        public final static int MOTOR_ID = 7; // Don't change PCM from CAN ID 0
         public final static double DEFAULT_SPEED = 1;
     }
 
@@ -28,17 +29,27 @@ public final class Constants {
 
     public static final class MagazineVals {
         public final static int MOTOR_ID = 6;
-        public final static double DEFAULT_SPEED = 0.6;
+        public final static double DEFAULT_SPEED = -0.4;
+
+        public final static int S0 = 0;
+        public final static int S1 = 1;
+        public final static int S2 = 2;
+        public final static int S3 = 3;
+
+
+        public final static int FRONT_SOLENOID = 0;
+        public final static int REAR_SOLENOID = 1;
+
+        public static final Color RED_COLOR = new Color(.53, .35, .12);
+        public static final Color BLUE_COLOR = new Color(.16, .4, .44);
     }
 
     public static final class DriveSystemVals {
-        public final static int BACK_LEFT = 2;
-        public final static int FRONT_LEFT = 3;
-        public final static int FRONT_RIGHT = 4;
-        public final static int BACK_RIGHT = 5;
-
-        public final static double DEFAULT_SPEED = 0.2;
-
-        // public final static Double WHEEL_DIAMETER = Units.inchesToMeters(6/Whatever);
+        public final static int BACK_LEFT = 5;
+        public final static int FRONT_LEFT = 4;
+        public final static int FRONT_RIGHT = 3;
+        public final static int BACK_RIGHT = 2;
+    
     }
+    
 }

@@ -22,12 +22,8 @@ public class RunIntake extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    switch(direction){
+  public void initialize() {
+    switch (direction) {
       case FORWARD:
      intake.set(Constants.IntakeVals.DEFAULT_SPEED);
         break;
@@ -40,6 +36,12 @@ public class RunIntake extends CommandBase {
     }
   }
 
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {
+    
+  }
+
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {}
@@ -47,6 +49,6 @@ public class RunIntake extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }
