@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 import frc.tigerlib.subsystem.drive.MecanumDriveSubsystem;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
 import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
@@ -61,21 +62,23 @@ public class DriveSystem extends MecanumDriveSubsystem {
 
   @Override
   public void periodic() {
+    super.periodic();
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Distance1", leftFront.getSelectedSensorPosition());
     SmartDashboard.putNumber("Distance2", leftBack.getSelectedSensorPosition());
     SmartDashboard.putNumber("Distance3", rightFront.getSelectedSensorPosition());
     SmartDashboard.putNumber("Distance4", rightBack.getSelectedSensorPosition());
+    SmartDashboard.putNumber("X Distance Odometer", getRobotPosition().getTranslation().getX());
   }
 
   @Override
   protected MecanumDriveWheelSpeeds getWheelSpeeds() {
     // TODO Auto-generated method stub
     return new MecanumDriveWheelSpeeds(
-      (((leftFront.getSelectedSensorVelocity()/2048)/10.71)/(Units.inchesToMeters(6)*Math.PI)),
-      (((rightFront.getSelectedSensorVelocity()/2048)/10.71)/(Units.inchesToMeters(6)*Math.PI)),
-      (((leftBack.getSelectedSensorVelocity()/2048)/10.71)/(Units.inchesToMeters(6)*Math.PI)), 
-      (((rightBack.getSelectedSensorVelocity()/2048)/10.71)/(Units.inchesToMeters(6)*Math.PI))
+      (leftFront.getSelectedSensorVelocity() * 10.0 * Units.inchesToMeters(6 * Math.PI)) / (2048.0 * 10.71),
+      (rightFront.getSelectedSensorVelocity() * 10.0 * Units.inchesToMeters(6 * Math.PI)) / (2048.0 * 10.71),
+      (leftBack.getSelectedSensorVelocity() * 10.0 * Units.inchesToMeters(6 * Math.PI)) / (2048.0 * 10.71),
+      (rightBack.getSelectedSensorVelocity() * 10.0 * Units.inchesToMeters(6 * Math.PI)) / (2048.0 * 10.71)
     );
   }
 

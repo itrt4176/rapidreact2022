@@ -6,6 +6,7 @@ package frc.irontigers.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.irontigers.robot.Constants.IntakeVals;
@@ -26,6 +27,9 @@ public class Intake extends SubsystemBase {
   public double get() {
     return intake.get();
   }
+
+  public void deploy() {}  // Deploy the intake
+
 
   @Override
   public void periodic() {
