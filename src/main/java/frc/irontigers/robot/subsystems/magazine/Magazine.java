@@ -50,7 +50,6 @@ public class Magazine extends SubsystemBase {
   private final ColorMatch colorMatcher;
   private Color allianceColor = null;
 
-  private IntegerArrayLogEntry stateLog;
   private IntegerLogEntry intakeLog;
   private IntegerLogEntry h1Log;
   private IntegerLogEntry h2Log;
