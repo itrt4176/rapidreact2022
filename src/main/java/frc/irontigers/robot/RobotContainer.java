@@ -6,6 +6,7 @@ package frc.irontigers.robot;
 
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.PS4Controller.Axis;
 import frc.tigerlib.XboxControllerIT;
 import frc.tigerlib.XboxControllerIT.DPadDirection;
 import frc.tigerlib.command.MecanumJoystickDrive;
@@ -36,6 +37,7 @@ import frc.irontigers.robot.commands.ballstate.AdvanceBallOne;
 import frc.irontigers.robot.commands.ballstate.IntakeBallOne;
 import frc.irontigers.robot.commands.triggers.ShootableState;
 import frc.irontigers.robot.commands.ClimberCommand;
+import frc.irontigers.robot.commands.ManualClimberAdjustment;
 import frc.irontigers.robot.subsystems.Climber;
 import frc.irontigers.robot.subsystems.DriveSystem;
 import frc.irontigers.robot.subsystems.Intake;
@@ -80,32 +82,19 @@ public class RobotContainer {
   private final DriveSystem driveSystem = new DriveSystem();
   private final MecanumJoystickDrive joystickDrive = new MecanumJoystickDrive(driveSystem, controller);  
 
-  private final Trigger shooterOnButton = new ShootableState(magazine).and(new JoystickButton(controller, Button.kRightBumper.value));
-  private final JoystickButton shooterOffButton = new JoystickButton(controller, Button.kLeftBumper.value);
-
-  private final JoystickButton intakeForward = new JoystickButton(controller, Button.kY.value);
-  // private final JoystickButton intakeBackward = new JoystickButton(controller, Button.kA.value);
-  private final JoystickButton intakeStop = new JoystickButton(controller, Button.kBack.value);
-
-  private final JoystickButton openFrontGateButton = new JoystickButton(controller, Button.kX.value);
-  private final JoystickButton closeFrontGateButton = new JoystickButton(controller, Button.kA.value);
-
-  private final DPadButton openRearGateButton = new DPadButton(controller, DPadDirection.kUp);
-  private final DPadButton closeRearGateButton = new DPadButton(controller, DPadDirection.kDown);
-
-  private final DPadButton increaseBangBang = new DPadButton(controller, DPadDirection.kRight);
-  private final DPadButton decreaseBangBang = new DPadButton(controller, DPadDirection.kLeft);
+  private final Trigger shooterButton = new ShootableState(magazine).and(new JoystickButton(controller, Button.kA.value));
   
-  private final JoystickButton climberExtend = new JoystickButton(controller, Button.kB.value);
-  private final JoystickButton climberRetract = new JoystickButton(controller, Button.kX.value);
-  private final DPadButton climberStop = new DPadButton(controller, DPadDirection.kDown);
-
-  private final JoystickButton magazineOnButton = new JoystickButton(controller, Button.kStart.value);
-  private final JoystickButton magazineOffButton = new JoystickButton(controller, Button.kBack.value);
-
-  private final JoystickButton driveInversionButton = new JoystickButton(controller, Button.kB.value);
+  private final DPadButton climberExtendToHeight = new DPadButton(controller, DPadDirection.kUp);
+  private final DPadButton climberRetractFull = new DPadButton(controller, DPadDirection.kDown);
   
   private final Shoot runShooter = new Shoot(intake, magazine, shooter, camera);
+  
+  private final JoystickButton gearShiftUp = new JoystickButton(controller, Button.kRightBumper.value);
+  private final JoystickButton gearShiftDown = new JoystickButton(controller, Button.kLeftBumper.value);
+
+  private final JoystickButton toggleDriveDirection = new JoystickButton(controller, Button.kB.value);
+
+  private final ManualClimberAdjustment manualclimber = new ManualClimberAdjustment(climber, controller);
 
   // private final SequentialCommandGroup rampShooter = runShooter
   //     .beforeStarting(() -> magazine.openGate(BallGate.Both));
@@ -124,6 +113,7 @@ public class RobotContainer {
     configureButtonBindings();
     controller.setDeadzone(0.05);
     driveSystem.setDefaultCommand(joystickDrive);
+    climber.setDefaultCommand(manualclimber);
 
     // magazine.closeGate(BallGate.Rear);
   }
@@ -135,15 +125,8 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    shooterOnButton.whenActive(runShooter);
-    shooterOffButton.cancelWhenPressed(runShooter);
-
-    magazineOnButton.whenPressed(() -> magazine.setOutput(MagazineVals.DEFAULT_SPEED));
-    magazineOffButton.whenPressed(() -> magazine.setOutput(0));
-
-    intakeForward.whenPressed(new RunIntake(intake, Direction.FORWARD));
-    // intakeBackward.whenPressed(new RunIntake(intake, Direction.BACKWARD));
-    intakeStop.whenPressed(new RunIntake(intake, Direction.STOP));
+    
+    shooterButton.whenActive(new Shoot(intake, magazine, shooter, camera));
 
     // s0.whenInactive(new HandleS1(magazine));
     s0.whenActive(new ConditionalCommand(
@@ -156,20 +139,14 @@ public class RobotContainer {
     s3.whenActive(() -> magazine.shiftToNextPosition(magazine.getState().H2));
     s3.whenInactive(() -> magazine.shiftToNextPosition(magazine.getState().SHOOTER));
     
-    
-    openFrontGateButton.whenPressed(() -> magazine.openGate(BallGate.Front));
-    closeFrontGateButton.whenPressed(() -> magazine.closeGate(BallGate.Front));
+    climberExtendToHeight.whenPressed(new ClimberCommand(climber, Direction.BACKWARD)); //probably will not work?
+    climberRetractFull.whenPressed(new ClimberCommand(climber, Direction.FORWARD));
 
-    openRearGateButton.whenPressed(() -> magazine.openGate(BallGate.Rear));
-    closeRearGateButton.whenPressed(() -> magazine.closeGate(BallGate.Rear));
+    gearShiftUp.whenPressed(() -> driveSystem.shiftUp());
+    gearShiftDown.whenPressed(() -> driveSystem.shiftDown());
 
-    driveInversionButton.whenPressed(new InstantCommand(() ->  driveSystem.toggleDriveFront()));
+    toggleDriveDirection.whenPressed(() -> driveSystem.toggleDriveFront());
 
-    increaseBangBang.whenPressed(runShooter::increaseSpeed);
-    decreaseBangBang.whenPressed(runShooter::decreaseSpeed);
-    climberExtend.whenPressed(new ClimberCommand(climber, Direction.BACKWARD)); //probably will not work?
-    climberRetract.whenPressed(new ClimberCommand(climber, Direction.FORWARD));
-    climberStop.whenPressed(new ClimberCommand(climber, Direction.STOP));
     
   }
 
