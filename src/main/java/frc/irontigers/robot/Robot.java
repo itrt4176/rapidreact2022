@@ -58,8 +58,9 @@ public class Robot extends TimedRobot {
     // setUseTiming(isReal()); // Run as fast as possible during replay
     // LoggedNetworkTables.getInstance().addTable("/SmartDashboard"); // Log & replay "SmartDashboard" values (no tables are logged by default).
 
+    DataLogManager.logNetworkTables(false);
     DataLogManager.start();
-    DriverStation.startDataLog(DataLogManager.getLog());
+    // DriverStation.startDataLog(DataLogManager.getLog());
 
     Version version;
 
