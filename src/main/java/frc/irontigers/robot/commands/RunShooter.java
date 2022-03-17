@@ -11,6 +11,10 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.util.datalog.DataLogEntry;
+import edu.wpi.first.util.datalog.DoubleLogEntry;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.irontigers.robot.subsystems.Shooter;
@@ -31,6 +35,13 @@ public class RunShooter extends CommandBase {
   private final PhotonCamera camera;
   private final InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> distanceMap;
 
+  private final DoubleLogEntry distanceLog;
+  private final DoubleLogEntry targetRPMLog;
+  private final DoubleLogEntry errorLog;
+  private final DoubleLogEntry rpmLog;
+
+  private int shotCount;
+
   /** Creates a new RunShooter. */
   public RunShooter(Shooter shooter, Magazine magazine, PhotonCamera camera) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -46,6 +57,14 @@ public class RunShooter extends CommandBase {
     distanceMap.put(new InterpolatingDouble(4.173), new InterpolatingDouble(5125.0));
     distanceMap.put(new InterpolatingDouble(5.117), new InterpolatingDouble(5355.0));
     distanceMap.put(new InterpolatingDouble(6.134), new InterpolatingDouble(6125.0));
+
+    shotCount = 0;
+
+    DataLog log = DataLogManager.getLog();
+    distanceLog = new DoubleLogEntry(log, "shooter/vision/distance");
+    targetRPMLog = new DoubleLogEntry(log, "shooter/targetRPM");
+    rpmLog = new DoubleLogEntry(log, "shooter/rpm");
+    errorLog = new DoubleLogEntry(log, "shooter/error");
   }
 
   public void increaseSpeed() {
@@ -61,6 +80,12 @@ public class RunShooter extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    shotCount++;
+    distanceLog.setMetadata("Shot " + shotCount);
+    targetRPMLog.setMetadata("Shot " + shotCount);
+    rpmLog.setMetadata("Shot " + shotCount);
+    errorLog.setMetadata("Shot " + shotCount);
+
     ramper = new SlewRateLimiter(4640);
     // magazine.openGate(BallGate.Rear);
 
@@ -70,15 +95,20 @@ public class RunShooter extends CommandBase {
       double distance = PhotonUtils.calculateDistanceToTargetMeters(CAM_HEIGHT, TARGET_HEIGHT, CAM_ANGLE, Units.degreesToRadians(target.getPitch()));
 
       SmartDashboard.putNumber("Distance to target (m)", distance);
+      distanceLog.append(distance);
 
       targetRPM = distanceMap.getInterpolated(new InterpolatingDouble(distance)).value;
 
       if (targetRPM == 0) {
+        targetRPMLog.append(-1);
         cancel();
       }
 
+      targetRPMLog.append(targetRPM);
+
       SmartDashboard.putNumber("Shooter Setpoint (RPM)", targetRPM);
     } else {
+      distanceLog.append(-1);
       cancel();
     }
   }
@@ -107,6 +137,9 @@ public class RunShooter extends CommandBase {
     SmartDashboard.putNumber("Shooter Error (RPM)", error);
     SmartDashboard.putNumber("Median Error (RPM)", smoothedError);
     SmartDashboard.putNumber("Shooter Velocity (RPM)", currentRPM);
+
+    errorLog.append(smoothedError);
+    rpmLog.append(currentRPM);
     
     return smoothedError >= 0.0 && smoothedError <= 15.0;
   }

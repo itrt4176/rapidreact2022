@@ -4,6 +4,8 @@
 
 package frc.irontigers.robot.commands;
 
+import edu.wpi.first.util.datalog.StringLogEntry;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.irontigers.robot.subsystems.Intake;
 import frc.irontigers.robot.Constants;
@@ -13,11 +15,16 @@ public class RunIntake extends CommandBase {
   /** Creates a new RunIntake. */
   private Intake intake;
   private Direction direction;
+
+  private StringLogEntry directionLog;
+
   public RunIntake(Intake intake, Direction direction) {
     this.intake = intake;
     this.direction = direction;
     addRequirements(intake);
     // Use addRequirements() here to declare subsystem dependencies.
+
+    directionLog = new StringLogEntry(DataLogManager.getLog(), "intake/command/set");
   }
 
   // Called when the command is initially scheduled.
@@ -34,6 +41,8 @@ public class RunIntake extends CommandBase {
         intake.set(0);
         break;
     }
+
+    directionLog.append(direction.toString());
   }
 
   // Called every time the scheduler runs while the command is scheduled.

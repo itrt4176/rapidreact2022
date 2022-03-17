@@ -11,6 +11,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 
+import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonPipelineResult;
@@ -56,6 +58,10 @@ public class Robot extends TimedRobot {
     // setUseTiming(isReal()); // Run as fast as possible during replay
     // LoggedNetworkTables.getInstance().addTable("/SmartDashboard"); // Log & replay "SmartDashboard" values (no tables are logged by default).
 
+    DataLogManager.logNetworkTables(false);
+    DataLogManager.start();
+    // DriverStation.startDataLog(DataLogManager.getLog());
+
     Version version;
 
     try {
@@ -69,7 +75,7 @@ public class Robot extends TimedRobot {
       version = new Version();
     }
 
-    System.out.println(version);
+    DataLogManager.log(version.toString());
 
     //   Logger.getInstance().recordMetadata("Branch", version.getGitBranch()); // Set a metadata value
     //   Logger.getInstance().recordMetadata("BuildDate", version.getBuildDate());
