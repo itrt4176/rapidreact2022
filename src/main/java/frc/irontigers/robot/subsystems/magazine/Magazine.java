@@ -70,7 +70,7 @@ public class Magazine extends SubsystemBase {
 
     colorSensor = new ColorSensorV3(I2C.Port.kMXP);
 
-    states = new BallStates();
+    states = new BallStates(EMPTY, EMPTY, RIGHT, EMPTY);
   
     colorMatcher = new ColorMatch();
 

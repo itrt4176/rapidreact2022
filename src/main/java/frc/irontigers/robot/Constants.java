@@ -23,8 +23,9 @@ public final class Constants {
 
     public static final class IntakeVals {
         public final static int MOTOR_ID = 1;
-        public final static double DEFAULT_SPEED = 0.65;
-        }
+        public final static double DEFAULT_SPEED = 0.6;
+        public final static int DEPLOY_ID = 2;// Pneumatics ID for intake TBD
+    }
 
     public static final class MagazineVals {
         public final static int MOTOR_ID = 6;
