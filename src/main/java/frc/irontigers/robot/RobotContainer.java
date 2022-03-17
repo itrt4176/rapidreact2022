@@ -179,7 +179,8 @@ public class RobotContainer {
     return new ParallelCommandGroup(
       new AutoDrive(driveSystem),
       new SequentialCommandGroup(
-        new InstantCommand(() -> intake.deploy()).andThen(new WaitUntilCommand(1)), // To make sure that the intake is actually deployd before the next scheduler call 
+        new InstantCommand(() -> intake.deploy()), 
+        new WaitCommand(2), // To make sure that the intake is actually deployed before the next scheduler call 
         new Shoot(intake, magazine, shooter, camera)
       )
     );
