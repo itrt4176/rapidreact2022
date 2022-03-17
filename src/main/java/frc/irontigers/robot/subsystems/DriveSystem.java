@@ -79,7 +79,7 @@ public class DriveSystem extends MecanumDriveSubsystem {
 
       
 
-      super.drive(direction* gearSpeed * ySpeed, direction * gearSpeed * xSpeed, gearSpeed * rotation);
+      super.drive(direction* gearSpeed * ySpeed, direction * gearSpeed * -xSpeed, gearSpeed * rotation);
 
   }
   public void setFrontToIntake(){
