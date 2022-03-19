@@ -109,7 +109,7 @@ public class RunShooter extends CommandBase {
       SmartDashboard.putNumber("Shooter Setpoint (RPM)", targetRPM);
     } else {
       distanceLog.append(-1);
-      cancel();
+      targetRPM = 5200;
     }
   }
 
@@ -123,17 +123,6 @@ public class RunShooter extends CommandBase {
     double error = currentRPM - targetRPM;
     double smoothedError = smoother.calculate(error);
 
-    // if (smoothedError >= 0 && smoothedError <= 18.5) {
-    //   // magazine.openGate(BallGate.Front);
-    //   // magazine.setOutput(MagazineVals.DEFAULT_SPEED);
-    //   magazine.openGate(BallGate.Both);
-    //   SmartDashboard.putBoolean("Shootable", true);
-    // } else {
-    //   magazine.closeGate(BallGate.Front);
-    //   // magazine.setOutput(0);
-    //   SmartDashboard.putBoolean("Shootable", false);
-    // }
-
     SmartDashboard.putNumber("Shooter Error (RPM)", error);
     SmartDashboard.putNumber("Median Error (RPM)", smoothedError);
     SmartDashboard.putNumber("Shooter Velocity (RPM)", currentRPM);
@@ -143,45 +132,6 @@ public class RunShooter extends CommandBase {
     
     return smoothedError >= 0.0 && smoothedError <= 15.0;
   }
-
- /*  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    // shooter.set(bangBang.calculate(shooter.getMPS()));
-    double currentSpeed = shooter.getMPS();
-    // double error = speed - currentSpeed;
-    // double p;
-
-    // if (Math.abs(error) <= 3) {
-    //   p = 0.005;
-    // } else if (Math.abs(error) <= 5) {
-    //   p = 0.0125;
-    // } else {
-    //   p = 0.0025;
-    // }
-
-    // double output = shooter.get() + (p * error);
-
-    // if (Math.abs(error) > 0.25) {
-    //   shooter.set(output);
-    // }
-
-    shooter.set(shooter.get() + finePid.calculate(currentSpeed));
-    SmartDashboard.putNumber("Shooter mps", currentSpeed);
-
-    currentSpeed = shooter.getMPS();
-
-    double smoothSpeed = vAverage.calculate(currentSpeed);
-
-    if (Math.abs(speed - smoothSpeed) <= 0.5) {
-      magazine.openGate(BallGate.Front);
-    } else {
-      magazine.closeGate(BallGate.Front);
-    }
-
-    SmartDashboard.putNumber("Shooter mps", currentSpeed);
-    SmartDashboard.putNumber("Average Speed", smoothSpeed);
-  } */
 
   // Called once the command ends or is interrupted.
   @Override
