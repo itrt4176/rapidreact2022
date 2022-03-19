@@ -101,8 +101,7 @@ public class RunShooter extends CommandBase {
       targetRPM = distanceMap.getInterpolated(new InterpolatingDouble(distance)).value;
 
       if (targetRPM == 0) {
-        targetRPMLog.append(-1);
-        cancel();
+        targetRPM = 5200;
       }
 
       targetRPMLog.append(targetRPM);
