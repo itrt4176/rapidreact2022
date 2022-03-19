@@ -157,13 +157,15 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return new ParallelCommandGroup(
-      new AutoDrive(driveSystem),
-      new SequentialCommandGroup(
-        new InstantCommand(() -> intake.deploy()), 
-        new WaitCommand(2), // To make sure that the intake is actually deployed before the next scheduler call 
-        new Shoot(intake, magazine, shooter, camera)
-      )
-    );
+        new AutoDrive(driveSystem),
+        new SequentialCommandGroup(
+            new InstantCommand(() -> intake.deploy()),
+            new WaitCommand(2), // To make sure that the intake is actually deployed before the next scheduler call 
+            new Shoot(intake, magazine, shooter, camera)));
+  }
+  
+  PhotonCamera getCamera() {
+    return camera;
   }
 }
 

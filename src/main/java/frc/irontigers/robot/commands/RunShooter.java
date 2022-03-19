@@ -80,6 +80,7 @@ public class RunShooter extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    camera.setDriverMode(false);
     shotCount++;
     distanceLog.setMetadata("Shot " + shotCount);
     targetRPMLog.setMetadata("Shot " + shotCount);
@@ -138,6 +139,7 @@ public class RunShooter extends CommandBase {
   public void end(boolean interrupted) {
     shooter.set(DEFAULT_SPEED);
     smoother.reset();
+    camera.setDriverMode(true);
     // magazine.closeGate(BallGate.Front);
   }
 
