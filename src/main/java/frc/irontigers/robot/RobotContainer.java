@@ -78,6 +78,7 @@ public class RobotContainer {
   private final Climber climber = new Climber();
 
   private final XboxControllerIT controller = new XboxControllerIT(0);
+  private final XboxControllerIT overrideController = new XboxControllerIT(1);
 
   private final DriveSystem driveSystem = new DriveSystem();
   private final MecanumJoystickDrive joystickDrive = new MecanumJoystickDrive(driveSystem, controller);  
@@ -100,13 +101,21 @@ public class RobotContainer {
   //     .beforeStarting(() -> magazine.openGate(BallGate.Both));
   
   // private final PeriodicCommandWrapper betterShoot = new PeriodicCommandWrapper(rampShooter, 0.001);
+
+  private final Trigger s0Override = new JoystickButton(overrideController, Button.kA.value);
+  private final Trigger s1Override = new JoystickButton(overrideController, Button.kB.value).negate();
+  private final Trigger s2Override = new JoystickButton(overrideController, Button.kY.value);
+  private final Trigger s3Override = new JoystickButton(overrideController, Button.kX.value);
                                                             
   // private final Trigger s0 = new Trigger(() -> magazine.readBallSensor(Sensor.S0)).debounce(0.04, DebounceType.kBoth);
-  private final Trigger s1 = new Trigger(() -> magazine.readBallSensor(Sensor.S1)).debounce(0.04, DebounceType.kBoth);
-  private final Trigger s2 = new Trigger(() -> magazine.readBallSensor(Sensor.S2)).debounce(0.08, DebounceType.kBoth);
-  private final Trigger s3 = new Trigger(() -> magazine.readBallSensor(Sensor.S3)).debounce(0.04, DebounceType.kBoth);
+  private final Trigger s1 = new Trigger(() -> magazine.readBallSensor(Sensor.S1)).debounce(0.04, DebounceType.kBoth).or(s1Override);
+  private final Trigger s2 = new Trigger(() -> magazine.readBallSensor(Sensor.S2)).debounce(0.08, DebounceType.kBoth).or(s2Override);
+  private final Trigger s3 = new Trigger(() -> magazine.readBallSensor(Sensor.S3)).debounce(0.04, DebounceType.kBoth).or(s3Override);
 
-  private final Trigger s0 = new Trigger(() -> magazine.readBallSensor(Sensor.S0)).debounce(0.04, DebounceType.kBoth).negate().and(s1);
+  private final Trigger s0 = new Trigger(() -> magazine.readBallSensor(Sensor.S0)).debounce(0.04, DebounceType.kBoth)
+      .negate().and(s1).or(s0Override);
+  
+  
 
   public RobotContainer() {
     // Configure the button bindings
@@ -138,6 +147,19 @@ public class RobotContainer {
     s2.whenInactive(() -> magazine.shiftToNextPosition(magazine.getState().H1));
     s3.whenActive(() -> magazine.shiftToNextPosition(magazine.getState().H2));
     s3.whenInactive(() -> magazine.shiftToNextPosition(magazine.getState().SHOOTER));
+
+    // s0Override.whenActive(new ConditionalCommand(
+    //     new InstantCommand((magazine::addBall)),
+    //     new InstantCommand(() -> magazine.shiftToPreviousPosition(magazine.getState().INTAKE)),
+    //     () -> magazine.getState().INTAKE.getState() == PositionState.EMPTY));
+    // s1Override.whenInactive(() -> {
+    //   if (intake.get() == 0) {
+    //     magazine.shiftToNextPosition(magazine.getState().INTAKE);
+    //   }
+    // });
+    // s2Override.whenInactive(() -> magazine.shiftToNextPosition(magazine.getState().H1));
+    // s3Override.whenActive(() -> magazine.shiftToNextPosition(magazine.getState().H2));
+    // s3Override.whenInactive(() -> magazine.shiftToNextPosition(magazine.getState().SHOOTER));
     
     climberExtendToHeight.whenPressed(new ClimberCommand(climber, Direction.BACKWARD)); //probably will not work?
     climberRetractFull.whenPressed(new ClimberCommand(climber, Direction.FORWARD));
