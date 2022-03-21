@@ -74,10 +74,15 @@ public class RobotContainer {
   private final Magazine magazine = new Magazine();
   //private final Climber climber = new Climber();
   private final PhotonCamera camera = new PhotonCamera("limelight");
+  private boolean cancel = false;
 
   private final Climber climber = new Climber();
 
   private final XboxControllerIT controller = new XboxControllerIT(0);
+  private final XboxControllerIT secondController = new XboxControllerIT(1);
+
+// SECOND CONTROLLER
+  private final JoystickButton cancelManagemenButton = new JoystickButton(secondController, Button.kY.value);
 
   private final DriveSystem driveSystem = new DriveSystem();
   private final MecanumJoystickDrive joystickDrive = new MecanumJoystickDrive(driveSystem, controller);  
@@ -147,7 +152,8 @@ public class RobotContainer {
 
     toggleDriveDirection.whenPressed(() -> driveSystem.toggleDriveFront());
 
-    
+    // SECOND CONTROLLLER COMMANDS
+    cancelManagemenButton.whenPressed(null);
   }
 
   /**
@@ -163,6 +169,8 @@ public class RobotContainer {
             new WaitCommand(2), // To make sure that the intake is actually deployed before the next scheduler call 
             new Shoot(intake, magazine, shooter, camera)));
   }
+
+
   
   PhotonCamera getCamera() {
     return camera;
