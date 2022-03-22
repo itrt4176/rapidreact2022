@@ -23,7 +23,7 @@ public class StoreBallTwo extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new InstantCommand(() -> shooter.set(0)),
+        new InstantCommand(() -> shooter.set(0.25)),
       new InstantCommand(() -> magazine.closeGate(BallGate.Both)),
       new InstantCommand(() -> magazine.setOutput(0)),
       new RunIntake(intake, Direction.STOP)

@@ -26,14 +26,14 @@ public class AutoDrive extends CommandBase {
   @Override
   public void initialize() {
     currentPos = driveSystem.getRobotPosition();
-    destination = currentPos.plus(new Transform2d(currentPos, new Pose2d(-2.0, 1.0, new Rotation2d())));
+    destination = currentPos.plus(new Transform2d(currentPos, new Pose2d(-2.0, 0.0, new Rotation2d())));
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     currentPos = driveSystem.getRobotPosition();
-    driveSystem.drive(0, -0.15, 0);
+    driveSystem.drive(0, -0.25, 0);
     // SmartDashboard.putNumber("Coordinate change", driveSystem.getRobotPosition().getY()
   }
 
@@ -46,8 +46,6 @@ public class AutoDrive extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (currentPos.getX() <= destination.getX())
-      return true;
-    return false;
+    return currentPos.getX() <= Math.abs(destination.getX());
   }
 }

@@ -54,6 +54,10 @@ public class BallStates {
 
     @Override
     public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+
         if (obj instanceof BallStates) {
             return obj.hashCode() == hashCode();
         } else {

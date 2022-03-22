@@ -229,12 +229,12 @@ public class Magazine extends SubsystemBase {
   public void closeGate(BallGate gate) {
     switch (gate) {
       case Both:
-        rearGate.set(false);
+        // rearGate.set(false);
       case Front:
         frontGate.set(true);
         break;
       case Rear:
-        rearGate.set(false);
+        // rearGate.set(false);
         break;
     }
   }
@@ -281,6 +281,11 @@ public class Magazine extends SubsystemBase {
     SmartDashboard.putBoolean("Shooter Unknown", states.SHOOTER.state == UNKNOWN);
     SmartDashboard.putBoolean("Shooter Right", states.SHOOTER.state == RIGHT);
     SmartDashboard.putBoolean("Shooter Wrong", states.SHOOTER.state == WRONG);
+
+    SmartDashboard.putBoolean("INTAKE STATE", states.INTAKE.state != EMPTY);
+    SmartDashboard.putBoolean("H1 STATE", states.H1.state != EMPTY);
+    SmartDashboard.putBoolean("H2 STATE", states.H2.state != EMPTY);
+    SmartDashboard.putBoolean("SHOOTER STATE", states.SHOOTER.state != EMPTY);
 
     SmartDashboard.putString("BallState", states.toString());
   }

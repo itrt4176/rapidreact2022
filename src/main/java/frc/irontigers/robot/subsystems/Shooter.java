@@ -39,6 +39,8 @@ public class Shooter extends SubsystemBase {
     flywheel.configAllowableClosedloopError(0, (12.5 / (600.0 / 2048.0)), 30);
     flywheel.configVoltageCompSaturation(11.85, 30);
     flywheel.enableVoltageCompensation(true);
+
+    set(0.25);
   }
 
   public double getRPM() {
