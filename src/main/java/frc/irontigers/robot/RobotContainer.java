@@ -80,6 +80,7 @@ public class RobotContainer {
 
   private final XboxControllerIT controller = new XboxControllerIT(0);
   private final XboxControllerIT overrideController = new XboxControllerIT(1);
+  private final XboxControllerIT manuaController = new XboxControllerIT(2);
 
   private final DriveSystem driveSystem = new DriveSystem();
   private final MecanumJoystickDrive joystickDrive = new MecanumJoystickDrive(driveSystem, controller);  
