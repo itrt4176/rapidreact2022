@@ -74,6 +74,7 @@ public class RobotContainer {
   private final Magazine magazine = new Magazine();
   //private final Climber climber = new Climber();
   private final PhotonCamera camera = new PhotonCamera("limelight");
+  private boolean cancel = false;
 
   private final Climber climber = new Climber();
 
@@ -168,8 +169,6 @@ public class RobotContainer {
     gearShiftDown.whenPressed(() -> driveSystem.shiftDown());
 
     toggleDriveDirection.whenPressed(() -> driveSystem.toggleDriveFront());
-
-    
   }
 
   /**
@@ -185,6 +184,8 @@ public class RobotContainer {
             new WaitCommand(2), // To make sure that the intake is actually deployed before the next scheduler call 
             new Shoot(intake, magazine, shooter, camera)));
   }
+
+
   
   PhotonCamera getCamera() {
     return camera;
