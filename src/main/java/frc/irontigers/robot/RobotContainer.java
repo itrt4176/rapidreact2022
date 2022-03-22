@@ -83,7 +83,7 @@ public class RobotContainer {
   private final DriveSystem driveSystem = new DriveSystem();
   private final MecanumJoystickDrive joystickDrive = new MecanumJoystickDrive(driveSystem, controller);  
 
-  private final Trigger shooterButton = new ShootableState(magazine).and(new JoystickButton(controller, Button.kA.value));
+  private final Trigger shooterButton = /* new ShootableState(magazine).and( */new JoystickButton(controller, Button.kA.value);//);
   
   private final DPadButton climberExtendToHeight = new DPadButton(controller, DPadDirection.kUp);
   private final DPadButton climberRetractFull = new DPadButton(controller, DPadDirection.kDown);
@@ -179,7 +179,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return new ParallelCommandGroup(
-        new AutoDrive(driveSystem),
+        new AutoDrive(driveSystem).withTimeout(3.5),
         new SequentialCommandGroup(
             new InstantCommand(() -> intake.deploy()),
             new WaitCommand(2), // To make sure that the intake is actually deployed before the next scheduler call 
