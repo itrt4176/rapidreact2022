@@ -95,6 +95,8 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     container = new RobotContainer();
+
+    container.getCamera().setDriverMode(true);
   }
 
   /**
@@ -131,6 +133,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     autoCommand = container.getAutonomousCommand();
+    container.getCamera().setDriverMode(true);
 
     // schedule the autonomous command (example)
     if (autoCommand != null) {

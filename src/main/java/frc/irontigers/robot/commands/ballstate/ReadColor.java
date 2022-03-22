@@ -22,7 +22,7 @@ public class ReadColor extends StateTransitionCommand<BallStates> {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new InstantCommand(() -> shooter.set(0)),
+        new InstantCommand(() -> shooter.set(0.25)),
       new InstantCommand(() -> magazine.setOutput(0)),
       new InstantCommand(() -> intake.set(0)),
       new InstantCommand(magazine::readBallColor)
