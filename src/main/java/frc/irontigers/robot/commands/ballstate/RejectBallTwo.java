@@ -30,7 +30,7 @@ public class RejectBallTwo extends StateTransitionCommand<BallStates> {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new InstantCommand(() -> magazine.setOutput(-Constants.MagazineVals.DEFAULT_SPEED)),
+      new InstantCommand(() -> magazine.setOutput(-Constants.MagazineVals.DEFAULT_SPEED), magazine),
       new RunIntake(intake, Direction.BACKWARD));
 
       setNextSelector(magazine:: getState);
