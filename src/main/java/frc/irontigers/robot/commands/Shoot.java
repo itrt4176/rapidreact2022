@@ -45,11 +45,10 @@ public class Shoot extends SequentialCommandGroup {
 
     ConditionalCommand ballControl = new ConditionalCommand(
         new InstantCommand(() -> {
-          magazine.openGate(BallGate.Both);
-        },
-            magazine),
+          magazine.setOutput(MagazineVals.DEFAULT_SPEED);
+        },magazine),
         new InstantCommand(() -> {
-          magazine.closeGate(BallGate.Front);
+          magazine.setOutput(0);
         },
             magazine),
         runShooter::isReady);
@@ -58,9 +57,8 @@ public class Shoot extends SequentialCommandGroup {
 
     addCommands(
         new RunIntake(intake, Direction.STOP),
-        new InstantCommand(() -> magazine.setOutput(MagazineVals.DEFAULT_SPEED), magazine),
-        shoot,
-        new IntakeBallOne(shooter, magazine, intake));
+        new InstantCommand(() -> magazine.setOutput(MagazineVals.DEFAULT_SPEED), magazine),shoot);
+        
   }
   
   public void increaseSpeed() {

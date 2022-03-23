@@ -99,6 +99,8 @@ public class RobotContainer {
 
   private final ManualClimberAdjustment manualclimber = new ManualClimberAdjustment(climber, controller);
 
+  
+
   // private final SequentialCommandGroup rampShooter = runShooter
   //     .beforeStarting(() -> magazine.openGate(BallGate.Both));
   
@@ -118,6 +120,8 @@ public class RobotContainer {
 
   private final JoystickButton m_climberExtend = new JoystickButton(manualController, Button.kRightBumper.value);
   private final JoystickButton m_climberRetract = new JoystickButton(manualController, Button.kLeftBumper.value);
+  
+  private final JoystickButton m_runShooter = new JoystickButton(manualController, Button.kA.value);
 
                                                             
   // private final Trigger s0 = new Trigger(() -> magazine.readBallSensor(Sensor.S0)).debounce(0.04, DebounceType.kBoth);
@@ -191,6 +195,8 @@ public class RobotContainer {
 
     m_climberExtend.whenPressed(new ClimberCommand(climber, Direction.BACKWARD)); 
     m_climberRetract.whenPressed(new ClimberCommand(climber, Direction.FORWARD));
+
+    m_runShooter.whenPressed(new Shoot(intake, magazine, shooter, camera));
     
   }
 
