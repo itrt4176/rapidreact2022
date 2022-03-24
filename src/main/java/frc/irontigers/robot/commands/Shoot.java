@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.irontigers.robot.Constants.MagazineVals;
 import frc.irontigers.robot.RobotContainer.Direction;
+import frc.irontigers.robot.commands.RunShooter.ShotResult;
 import frc.irontigers.robot.commands.ballstate.IntakeBallOne;
 import frc.irontigers.robot.subsystems.Intake;
 import frc.irontigers.robot.subsystems.Shooter;
@@ -56,8 +57,7 @@ public class Shoot extends SequentialCommandGroup {
     ParallelDeadlineGroup shoot = new ParallelDeadlineGroup(runShooter, ballControl);
 
     addCommands(
-        new RunIntake(intake, Direction.STOP),
-        new InstantCommand(() -> magazine.setOutput(MagazineVals.DEFAULT_SPEED), magazine),shoot);
+        new RunIntake(intake, Direction.STOP), shoot);
         
   }
   
@@ -67,5 +67,9 @@ public class Shoot extends SequentialCommandGroup {
 
   public void decreaseSpeed() {
     runShooter.decreaseSpeed();
+  }
+
+  public void adjustDistanceMap(ShotResult result) {
+    runShooter.adjustDistanceMap(result);
   }
 }

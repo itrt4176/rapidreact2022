@@ -27,6 +27,8 @@ import org.photonvision.PhotonCamera;
 
 import frc.irontigers.robot.commands.RunShooter;
 import frc.irontigers.robot.commands.Shoot;
+import frc.irontigers.robot.commands.RunShooter.ShotResult;
+
 import com.fasterxml.jackson.databind.introspect.TypeResolutionContext.Empty;
 
 import frc.irontigers.robot.commands.AutoDrive;
@@ -78,26 +80,31 @@ public class RobotContainer {
 
   private final Climber climber = new Climber();
 
-  private final XboxControllerIT controller = new XboxControllerIT(2);
-  private final XboxControllerIT overrideController = new XboxControllerIT(1);
+  private final XboxControllerIT smartController = new XboxControllerIT(2);
+  private final XboxControllerIT overrideController = new XboxControllerIT(3);
+
   private final XboxControllerIT manualController = new XboxControllerIT(0);
+  private final XboxControllerIT shotAdjustController = new XboxControllerIT(1);
 
   private final DriveSystem driveSystem = new DriveSystem();
-  private final MecanumJoystickDrive joystickDrive = new MecanumJoystickDrive(driveSystem, manualController);  
 
-  private final Trigger shooterButton = /* new ShootableState(magazine).and( */new JoystickButton(controller, Button.kA.value);//);
+  private final MecanumJoystickDrive joystickDrive = new MecanumJoystickDrive(driveSystem, manualController);
+
+  private final Trigger shooterButton = /* new ShootableState(magazine).and( */new JoystickButton(smartController, Button.kA.value);//);
   
-  private final DPadButton climberExtendToHeight = new DPadButton(controller, DPadDirection.kUp);
-  private final DPadButton climberRetractFull = new DPadButton(controller, DPadDirection.kDown);
+  private final DPadButton climberExtendToHeight = new DPadButton(smartController, DPadDirection.kUp);
+  private final DPadButton climberRetractFull = new DPadButton(smartController, DPadDirection.kDown);
   
   private final Shoot runShooter = new Shoot(intake, magazine, shooter, camera);
   
-  private final JoystickButton gearShiftUp = new JoystickButton(controller, Button.kRightBumper.value);
-  private final JoystickButton gearShiftDown = new JoystickButton(controller, Button.kLeftBumper.value);
+  private final JoystickButton gearShiftUp = new JoystickButton(smartController, Button.kRightBumper.value);
+  private final JoystickButton gearShiftDown = new JoystickButton(smartController, Button.kLeftBumper.value);
 
-  private final JoystickButton toggleDriveDirection = new JoystickButton(controller, Button.kB.value);
+  private final JoystickButton toggleDriveDirection = new JoystickButton(smartController, Button.kB.value);
 
   private final ManualClimberAdjustment manualclimber = new ManualClimberAdjustment(climber, manualController);
+  
+  private final Shoot shoot = new Shoot(intake, magazine, shooter, camera);
 
   
 
@@ -123,6 +130,9 @@ public class RobotContainer {
   
   private final JoystickButton m_runShooter = new JoystickButton(manualController, Button.kA.value);
 
+  private final DPadButton overshot = new DPadButton(shotAdjustController, DPadDirection.kUp);
+  private final DPadButton undershot = new DPadButton(shotAdjustController, DPadDirection.kDown);
+  private final JoystickButton madeIt = new JoystickButton(shotAdjustController, Button.kA.value);
                                                             
   // private final Trigger s0 = new Trigger(() -> magazine.readBallSensor(Sensor.S0)).debounce(0.04, DebounceType.kBoth);
   private final Trigger s1 = new Trigger(() -> magazine.readBallSensor(Sensor.S1)).debounce(0.04, DebounceType.kBoth).or(s1Override);
@@ -131,13 +141,11 @@ public class RobotContainer {
 
   private final Trigger s0 = new Trigger(() -> magazine.readBallSensor(Sensor.S0)).debounce(0.04, DebounceType.kBoth)
       .negate().and(s1).or(s0Override);
-  
-  
 
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-    controller.setDeadzone(0.05);
+    smartController.setDeadzone(0.05);
     driveSystem.setDefaultCommand(joystickDrive);
     climber.setDefaultCommand(manualclimber);
 
@@ -196,7 +204,11 @@ public class RobotContainer {
     m_climberExtend.whenPressed(new ClimberCommand(climber, Direction.BACKWARD)); 
     m_climberRetract.whenPressed(new ClimberCommand(climber, Direction.FORWARD));
 
-    m_runShooter.whenPressed(new Shoot(intake, magazine, shooter, camera));
+    m_runShooter.whenPressed(shoot);
+
+    overshot.whenPressed(() -> shoot.adjustDistanceMap(ShotResult.OVERSHOT));
+    undershot.whenPressed(() -> shoot.adjustDistanceMap(ShotResult.UNDERSHOT));
+    madeIt.whenPressed(() -> shoot.adjustDistanceMap(ShotResult.SCORE));
     
   }
 
