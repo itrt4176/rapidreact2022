@@ -96,7 +96,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     container = new RobotContainer();
 
-    container.getCamera().setDriverMode(true);
+    container.getCamera().setDriverMode(false);
   }
 
   /**
