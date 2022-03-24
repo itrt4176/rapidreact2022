@@ -103,7 +103,7 @@ public class RobotContainer {
   private final JoystickButton toggleDriveDirection = new JoystickButton(smartController, Button.kB.value);
 
   private final ManualClimberAdjustment manualclimber = new ManualClimberAdjustment(climber, manualController);
-  
+
   private final Shoot shoot = new Shoot(intake, magazine, shooter, camera);
 
   
@@ -218,12 +218,10 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new ParallelCommandGroup(
-        new AutoDrive(driveSystem).withTimeout(3.5),
-        new SequentialCommandGroup(
-            new InstantCommand(() -> intake.deploy(), intake),
-            new WaitCommand(2), // To make sure that the intake is actually deployed before the next scheduler call 
-            new Shoot(intake, magazine, shooter, camera)));
+    return new SequentialCommandGroup(
+        new AutoDrive(driveSystem).withTimeout(4),
+        new Shoot(intake, magazine, shooter, camera)
+      );
   }
 
 
