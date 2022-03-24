@@ -83,7 +83,7 @@ public class RobotContainer {
   private final XboxControllerIT manualController = new XboxControllerIT(0);
 
   private final DriveSystem driveSystem = new DriveSystem();
-  private final MecanumJoystickDrive joystickDrive = new MecanumJoystickDrive(driveSystem, controller);  
+  private final MecanumJoystickDrive joystickDrive = new MecanumJoystickDrive(driveSystem, manualController);  
 
   private final Trigger shooterButton = /* new ShootableState(magazine).and( */new JoystickButton(controller, Button.kA.value);//);
   
@@ -97,7 +97,7 @@ public class RobotContainer {
 
   private final JoystickButton toggleDriveDirection = new JoystickButton(controller, Button.kB.value);
 
-  private final ManualClimberAdjustment manualclimber = new ManualClimberAdjustment(climber, controller);
+  private final ManualClimberAdjustment manualclimber = new ManualClimberAdjustment(climber, manualController);
 
   
 
