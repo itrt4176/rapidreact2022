@@ -37,6 +37,8 @@ import frc.irontigers.robot.commands.RunIntake;
 import frc.irontigers.robot.commands.Shoot;
 import frc.irontigers.robot.commands.ballstate.AdvanceBallOne;
 import frc.irontigers.robot.commands.ballstate.IntakeBallOne;
+import frc.irontigers.robot.commands.ballstate.ReadColor;
+import frc.irontigers.robot.commands.ballstate.RejectBallOne;
 import frc.irontigers.robot.commands.triggers.ShootableState;
 import frc.irontigers.robot.commands.ClimberCommand;
 import frc.irontigers.robot.commands.ManualClimberAdjustment;
@@ -120,7 +122,7 @@ public class RobotContainer {
 
   private final JoystickButton intakeForward = new JoystickButton(manualController, Button.kY.value);
   private final JoystickButton intakeBackward = new JoystickButton(manualController, Button.kX.value);
-  private final DPadButton intakeOff = new DPadButton(manualController, DPadDirection.kLeft);
+  private final DPadButton autoColorCheck = new DPadButton(manualController, DPadDirection.kLeft);
 
   private final JoystickButton magazineOn = new JoystickButton(manualController, Button.kStart.value);
   private final JoystickButton magazineOff = new JoystickButton(manualController, Button.kBack.value);
@@ -129,6 +131,8 @@ public class RobotContainer {
   private final JoystickButton m_climberRetract = new JoystickButton(manualController, Button.kLeftBumper.value);
   
   private final JoystickButton m_runShooter = new JoystickButton(manualController, Button.kA.value);
+
+
 
   private final DPadButton overshot = new DPadButton(shotAdjustController, DPadDirection.kUp);
   private final DPadButton undershot = new DPadButton(shotAdjustController, DPadDirection.kDown);
@@ -196,7 +200,7 @@ public class RobotContainer {
 
     intakeForward.whenPressed(new RunIntake(intake, Direction.FORWARD));
     intakeBackward.whenPressed(new RunIntake(intake, Direction.BACKWARD));
-    intakeOff.whenPressed(new RunIntake(intake, Direction.STOP));
+    autoColorCheck.whenPressed(new RunIntake(intake, Direction.STOP) );
 
     magazineOn.whenPressed(new InstantCommand(() -> magazine.setOutput(MagazineVals.DEFAULT_SPEED), magazine));
     magazineOff.whenPressed(new InstantCommand(() -> magazine.setOutput(0), magazine));
@@ -210,6 +214,12 @@ public class RobotContainer {
     undershot.whenPressed(() -> shoot.adjustDistanceMap(ShotResult.UNDERSHOT));
     madeIt.whenPressed(() -> shoot.adjustDistanceMap(ShotResult.SCORE));
     
+    autoColorCheck.whenPressed(
+      new InstantCommand(() -> intake.set(0)).andThen(
+      new ConditionalCommand(
+        new InstantCommand(() -> {}) , 
+        new RejectBallOne(shooter, magazine, intake), 
+        magazine::isCorrectBallColor)));
   }
 
   /**

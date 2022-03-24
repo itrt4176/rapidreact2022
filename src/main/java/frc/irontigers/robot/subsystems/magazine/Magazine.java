@@ -6,6 +6,7 @@ package frc.irontigers.robot.subsystems.magazine;
 
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.function.BooleanSupplier;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.ColorMatch;
@@ -23,11 +24,17 @@ import static edu.wpi.first.wpilibj.PneumaticsModuleType.CTREPCM;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.irontigers.robot.commands.ballstate.RejectBallOne;
+import frc.irontigers.robot.subsystems.Shooter;
 import frc.irontigers.robot.subsystems.magazine.BallStates.Position;
 
 import static frc.irontigers.robot.Constants.MagazineVals.*;
 import static frc.irontigers.robot.subsystems.magazine.BallStates.PositionState.*;
+import frc.irontigers.robot.subsystems.Shooter.*;
+import frc.irontigers.robot.subsystems.Intake;
+import frc.irontigers.robot.commands.ballstate.RejectBallOne;
 
 public class Magazine extends SubsystemBase {
 
@@ -63,6 +70,7 @@ public class Magazine extends SubsystemBase {
 
   /** Creates a new Magazine. */
   public Magazine() {
+    
     conveyor = new WPI_TalonFX(MOTOR_ID);
 
     s0 = new DigitalInput(S0);
@@ -140,6 +148,8 @@ public class Magazine extends SubsystemBase {
 
     return reading;
   }
+
+  
 
   public BallStates getState() {
     return states;
@@ -251,7 +261,16 @@ public class Magazine extends SubsystemBase {
     updateStateLog();
   }
 
-  private void updateStateLog() {
+ 
+  public boolean isCorrectBallColor(){
+    readBallColor();
+    if(states.INTAKE.state == RIGHT){
+      return true;
+    }else{
+      return false;
+    }
+  }
+    private void updateStateLog() {
     intakeLog.append(states.INTAKE.state.ordinal());
     h1Log.append(states.H1.state.ordinal());
     h2Log.append(states.H2.state.ordinal());
