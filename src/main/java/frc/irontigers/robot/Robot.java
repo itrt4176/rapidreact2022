@@ -124,7 +124,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    container.getCamera().setDriverMode(true);
+  }
 
   @Override
   public void disabledPeriodic() {}
@@ -133,7 +135,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     autoCommand = container.getAutonomousCommand();
-    container.getCamera().setDriverMode(true);
+    container.getCamera().setDriverMode(false);
 
     // schedule the autonomous command (example)
     if (autoCommand != null) {
@@ -154,6 +156,8 @@ public class Robot extends TimedRobot {
     if (autoCommand != null) {
       autoCommand.cancel();
     }
+
+    container.getCamera().setDriverMode(false);
   }
 
   /** This function is called periodically during operator control. */

@@ -27,7 +27,7 @@ public class Advance extends StateTransitionCommand<BallStates> {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new RunIntake(intake, Direction.STOP),
-      new InstantCommand(() -> magazine.setOutput(MagazineVals.DEFAULT_SPEED))
+      new InstantCommand(() -> magazine.setOutput(MagazineVals.DEFAULT_SPEED), magazine)
     );
 
     setNextSelector(magazine::getState);
