@@ -97,13 +97,14 @@ public class RobotContainer {
   
   private final Shoot runShooter = new Shoot(intake, magazine, shooter, camera);
   
-  private final JoystickButton gearShiftUp = new JoystickButton(smartController, Button.kRightBumper.value);
-  private final JoystickButton gearShiftDown = new JoystickButton(smartController, Button.kLeftBumper.value);
+  private final JoystickButton gearShiftUp = new JoystickButton(manualController, Button.kRightBumper.value);
+  private final JoystickButton gearShiftDown = new JoystickButton(manualController, Button.kLeftBumper.value);
 
   private final JoystickButton toggleDriveDirection = new JoystickButton(smartController, Button.kB.value);
 
   private final ManualClimberAdjustment manualclimber = new ManualClimberAdjustment(climber, manualController);
-  
+
+  // private final RunShooter shoot = new RunShooter(shooter, magazine, camera);
   private final Shoot shoot = new Shoot(intake, magazine, shooter, camera);
 
   
@@ -118,21 +119,24 @@ public class RobotContainer {
   private final Trigger s2Override = new JoystickButton(overrideController, Button.kY.value);
   private final Trigger s3Override = new JoystickButton(overrideController, Button.kX.value);
 
-  private final JoystickButton intakeForward = new JoystickButton(manualController, Button.kY.value);
-  private final JoystickButton intakeBackward = new JoystickButton(manualController, Button.kX.value);
-  private final DPadButton intakeOff = new DPadButton(manualController, DPadDirection.kLeft);
+  private final JoystickButton intakeForward = new JoystickButton(manualController, Button.kStart.value);
+  private final JoystickButton intakeBackward = new JoystickButton(overrideController, Button.kX.value);
+  private final JoystickButton intakeOff = new JoystickButton(manualController, Button.kBack.value);
 
-  private final JoystickButton magazineOn = new JoystickButton(manualController, Button.kStart.value);
-  private final JoystickButton magazineOff = new JoystickButton(manualController, Button.kBack.value);
+  private final JoystickButton magazineOn = new JoystickButton(manualController, Button.kX.value);
+  private final JoystickButton magazineOff = new JoystickButton(manualController, Button.kY.value);
 
-  private final JoystickButton m_climberExtend = new JoystickButton(manualController, Button.kRightBumper.value);
-  private final JoystickButton m_climberRetract = new JoystickButton(manualController, Button.kLeftBumper.value);
+  private final DPadButton m_climberExtend = new DPadButton(manualController, DPadDirection.kUp);
+  private final DPadButton m_climberRetract = new DPadButton(manualController, DPadDirection.kDown);
   
   private final JoystickButton m_runShooter = new JoystickButton(manualController, Button.kA.value);
+  private final JoystickButton stopShooter = new JoystickButton(manualController, Button.kB.value);
 
   private final DPadButton overshot = new DPadButton(shotAdjustController, DPadDirection.kUp);
   private final DPadButton undershot = new DPadButton(shotAdjustController, DPadDirection.kDown);
   private final JoystickButton madeIt = new JoystickButton(shotAdjustController, Button.kA.value);
+  private final DPadButton increaseSpeed = new DPadButton(shotAdjustController, DPadDirection.kRight);
+  private final DPadButton decreaseSpeed = new DPadButton(shotAdjustController, DPadDirection.kLeft);
                                                             
   // private final Trigger s0 = new Trigger(() -> magazine.readBallSensor(Sensor.S0)).debounce(0.04, DebounceType.kBoth);
   private final Trigger s1 = new Trigger(() -> magazine.readBallSensor(Sensor.S1)).debounce(0.04, DebounceType.kBoth).or(s1Override);
@@ -189,10 +193,10 @@ public class RobotContainer {
     climberExtendToHeight.whenPressed(new ClimberCommand(climber, Direction.BACKWARD)); 
     climberRetractFull.whenPressed(new ClimberCommand(climber, Direction.FORWARD));
 
-    gearShiftUp.whenPressed(() -> driveSystem.shiftUp(), driveSystem);
-    gearShiftDown.whenPressed(() -> driveSystem.shiftDown(), driveSystem);
+    gearShiftUp.whenPressed(() -> driveSystem.shiftUp());
+    gearShiftDown.whenPressed(() -> driveSystem.shiftDown());
 
-    toggleDriveDirection.whenPressed(() -> driveSystem.toggleDriveFront(), driveSystem);
+    toggleDriveDirection.whenPressed(() -> driveSystem.toggleDriveFront());
 
     intakeForward.whenPressed(new RunIntake(intake, Direction.FORWARD));
     intakeBackward.whenPressed(new RunIntake(intake, Direction.BACKWARD));
@@ -205,10 +209,14 @@ public class RobotContainer {
     m_climberRetract.whenPressed(new ClimberCommand(climber, Direction.FORWARD));
 
     m_runShooter.whenPressed(shoot);
+    stopShooter.cancelWhenPressed(shoot);
 
     overshot.whenPressed(() -> shoot.adjustDistanceMap(ShotResult.OVERSHOT));
     undershot.whenPressed(() -> shoot.adjustDistanceMap(ShotResult.UNDERSHOT));
     madeIt.whenPressed(() -> shoot.adjustDistanceMap(ShotResult.SCORE));
+    increaseSpeed.whenPressed(shoot::increaseSpeed);
+    decreaseSpeed.whenPressed(shoot::decreaseSpeed);
+    
     
   }
 
@@ -218,12 +226,10 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new ParallelCommandGroup(
-        new AutoDrive(driveSystem).withTimeout(3.5),
-        new SequentialCommandGroup(
-            new InstantCommand(() -> intake.deploy(), intake),
-            new WaitCommand(2), // To make sure that the intake is actually deployed before the next scheduler call 
-            new Shoot(intake, magazine, shooter, camera)));
+    return new SequentialCommandGroup(
+        new AutoDrive(driveSystem),//.withTimeout(4),
+        new Shoot(intake, magazine, shooter, camera)
+      );
   }
 
 

@@ -64,6 +64,8 @@ public class Magazine extends SubsystemBase {
   /** Creates a new Magazine. */
   public Magazine() {
     conveyor = new WPI_TalonFX(MOTOR_ID);
+    conveyor.configVoltageCompSaturation(12.0, 30);
+    conveyor.enableVoltageCompensation(true);
 
     s0 = new DigitalInput(S0);
     s1 = new DigitalInput(S1);
