@@ -46,6 +46,6 @@ public class AutoDrive extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(currentPos.getX()) <= Math.abs(destination.getX());
+    return Math.abs(currentPos.getX()) >= Math.abs(destination.getX());
   }
 }
