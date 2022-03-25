@@ -24,6 +24,8 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.irontigers.robot.Constants.MagazineVals;
+import frc.irontigers.robot.subsystems.Intake;
 import frc.irontigers.robot.subsystems.Shooter;
 import frc.irontigers.robot.subsystems.magazine.BallStates;
 import frc.irontigers.robot.subsystems.magazine.Magazine;
@@ -79,8 +81,8 @@ public class RunShooter extends CommandBase {
 
     distanceMap = new AdjustableInterpolatingTreeMap<>();
 
-    double[] defaultDist = { 3.263, 4.173, 5.117, 6.134 };
-    double[] defaultRpms = { 4950.0, 5125.0, 5355.0, 6125.0 };
+    double[] defaultDist = { 2.390710, 3.263000, 3.752025 };
+    double[] defaultRpms = { 4530.000000, 4950.000000, 5149.043341 };
 
     distanceKeys = ntShooterMap.getEntry("distances");
     distanceKeys.setDefaultDoubleArray(defaultDist);
@@ -112,12 +114,12 @@ public class RunShooter extends CommandBase {
   }
 
   public void increaseSpeed() {
-    targetRPM += 25;
+    targetRPM += 15;
     SmartDashboard.putNumber("Shooter Setpoint (RPM)", targetRPM);
   }
 
   public void decreaseSpeed() {
-    targetRPM -= 25;
+    targetRPM -= 15;
     SmartDashboard.putNumber("Shooter Setpoint (RPM)", targetRPM);
   }
 
@@ -128,13 +130,14 @@ public class RunShooter extends CommandBase {
 
     switch (result) {
       case UNDERSHOT:
-        distanceMap.replaceNearest(new InterpolatingDouble(distance), new InterpolatingDouble(targetRPM + 10));
+        distanceMap.replaceNearest(new InterpolatingDouble(distance), new InterpolatingDouble(targetRPM + 15));
         break;
       case OVERSHOT:
-        distanceMap.replaceNearest(new InterpolatingDouble(distance), new InterpolatingDouble(targetRPM - 10));
+        distanceMap.replaceNearest(new InterpolatingDouble(distance), new InterpolatingDouble(targetRPM - 15));
         break;
       case SCORE:
         distanceMap.put(new InterpolatingDouble(distance), new InterpolatingDouble(targetRPM));
+        // distanceMap.replaceNearest(new InterpolatingDouble(distance), new InterpolatingDouble(targetRPM));
         break;
     }
 
@@ -196,6 +199,40 @@ public class RunShooter extends CommandBase {
   @Override
   public void execute() {
     shooter.setVelocity(ramper.calculate(targetRPM));
+
+    SmartDashboard.putNumber("Target RPM", targetRPM);
+
+    PhotonTrackedTarget target = camera.getLatestResult().getBestTarget();
+
+    if (target != null) {
+      double distance = PhotonUtils.calculateDistanceToTargetMeters(CAM_HEIGHT, TARGET_HEIGHT, CAM_ANGLE,
+          Units.degreesToRadians(target.getPitch()));
+
+      SmartDashboard.putNumber("Distance to target (m)", distance);
+      // distanceLog.append(distance);
+
+      // targetRPM = distanceMap.getInterpolated(new InterpolatingDouble(distance)).value;
+
+      // if (targetRPM == 0) {
+        // targetRPM = 5200;
+      // }
+
+      // targetRPMLog.append(targetRPM);
+
+      // if (isReady()) {
+      //   magazine.setOutput(MagazineVals.DEFAULT_SPEED);
+      // } else {
+      //   magazine.setOutput(0);
+      // }
+
+      SmartDashboard.putNumber("Shooter Setpoint (RPM)", targetRPM);
+    } else {
+      // distance = 0;
+      // distanceLog.append(0);
+      // targetRPM = 5200;
+    }
+
+    SmartDashboard.putBoolean("Ready to shoot", isReady());
   }
 
   public boolean isReady() {
@@ -210,7 +247,7 @@ public class RunShooter extends CommandBase {
     errorLog.append(smoothedError);
     rpmLog.append(currentRPM);
 
-    return smoothedError >= 0.0 && smoothedError <= 15.0;
+    return smoothedError >= -5.0 && smoothedError <= 15.0;
   }
 
   // Called once the command ends or is interrupted.

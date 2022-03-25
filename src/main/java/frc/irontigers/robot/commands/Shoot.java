@@ -44,20 +44,20 @@ public class Shoot extends SequentialCommandGroup {
 
     runShooter = new RunShooter(shooter, magazine, camera);
 
-    ConditionalCommand ballControl = new ConditionalCommand(
-        new InstantCommand(() -> {
-          magazine.setOutput(MagazineVals.DEFAULT_SPEED);
-        },magazine),
-        new InstantCommand(() -> {
-          magazine.setOutput(0);
-        },
-            magazine),
-        runShooter::isReady);
+    // ConditionalCommand ballControl = new ConditionalCommand(
+    //     new InstantCommand(() -> {
+    //       magazine.setOutput(MagazineVals.DEFAULT_SPEED);
+    //     },magazine),
+    //     new InstantCommand(() -> {
+    //       magazine.setOutput(0);
+    //     },
+    //         magazine),
+    //     runShooter::isReady);
 
-    ParallelDeadlineGroup shoot = new ParallelDeadlineGroup(runShooter, ballControl);
+    // ParallelDeadlineGroup shoot = new ParallelDeadlineGroup(runShooter, ballControl);
 
     addCommands(
-        new RunIntake(intake, Direction.STOP), shoot);
+        new RunIntake(intake, Direction.STOP), runShooter);
         
   }
   
