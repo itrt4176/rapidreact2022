@@ -228,8 +228,8 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     SequentialCommandGroup drive = new SequentialCommandGroup(
         new AutoDrive(driveSystem),//.withTimeout(4),
-        new WaitUntilCommand(145)//,
-        //new InstantCommand(() -> magazine.setOutput(MagazineVals.DEFAULT_SPEED), magazine)
+        new WaitUntilCommand(145),
+        new InstantCommand(() -> magazine.setOutput(MagazineVals.DEFAULT_SPEED), magazine)
     );
 
     return drive;

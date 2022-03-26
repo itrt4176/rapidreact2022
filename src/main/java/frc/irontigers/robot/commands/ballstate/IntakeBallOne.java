@@ -25,7 +25,7 @@ public class IntakeBallOne extends StateTransitionCommand<BallStates> {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-        new InstantCommand(() -> shooter.setVelocity(3315), shooter),
+        new InstantCommand(() -> shooter.setVelocity(3215), shooter),
       new InstantCommand(() -> magazine.openGate(BallGate.Both), magazine),
       new InstantCommand(() -> magazine.setOutput(0), magazine),
       new RunIntake(intake, Direction.FORWARD)
