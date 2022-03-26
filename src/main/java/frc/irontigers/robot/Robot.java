@@ -135,7 +135,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     autoCommand = container.getAutonomousCommand();
-    container.getCamera().setDriverMode(false);
+    container.getCamera().setDriverMode(true);
 
     // schedule the autonomous command (example)
     if (autoCommand != null) {
@@ -157,7 +157,7 @@ public class Robot extends TimedRobot {
       autoCommand.cancel();
     }
 
-    container.getCamera().setDriverMode(false);
+    container.getCamera().setDriverMode(true);
   }
 
   /** This function is called periodically during operator control. */

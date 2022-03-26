@@ -162,7 +162,7 @@ public class RunShooter extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    camera.setDriverMode(false);
+    camera.setDriverMode(true);
     shotCount++;
     distanceLog.setMetadata("Shot " + shotCount);
     targetRPMLog.setMetadata("Shot " + shotCount);
