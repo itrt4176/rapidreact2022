@@ -169,6 +169,7 @@ public class RunShooter extends CommandBase {
     rpmLog.setMetadata("Shot " + shotCount);
     errorLog.setMetadata("Shot " + shotCount);
 
+    
     ramper = new SlewRateLimiter(4640);
     // magazine.openGate(BallGate.Rear);
 

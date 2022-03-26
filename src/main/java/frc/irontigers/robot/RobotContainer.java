@@ -228,7 +228,10 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     return new SequentialCommandGroup(
         new AutoDrive(driveSystem),//.withTimeout(4),
-        new Shoot(intake, magazine, shooter, camera)
+        // new Shoot(intake, magazine, shooter, camera)  Cannot see the target, calibration not 100%
+        new InstantCommand(() -> shooter.set(.85), shooter),  // Short term solution for auto
+        new WaitCommand(3),
+        new InstantCommand(() -> magazine.setOutput(.5), magazine)
       );
   }
 
