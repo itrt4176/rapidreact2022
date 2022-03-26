@@ -184,7 +184,7 @@ public class RunShooter extends CommandBase {
       targetRPM = distanceMap.getInterpolated(new InterpolatingDouble(distance)).value;
 
       if (targetRPM == 0) {
-        targetRPM = 5200;
+        targetRPM = 4630;
       }
 
       targetRPMLog.append(targetRPM);
@@ -192,8 +192,8 @@ public class RunShooter extends CommandBase {
       SmartDashboard.putNumber("Shooter Setpoint (RPM)", targetRPM);
     } else {
       distance = 0;
-      distanceLog.append(0);
-      targetRPM = 5200;
+      distanceLog.append(distance);
+      targetRPM = 4630;
     }
   }
 

@@ -214,8 +214,8 @@ public class RobotContainer {
     overshot.whenPressed(() -> shoot.adjustDistanceMap(ShotResult.OVERSHOT));
     undershot.whenPressed(() -> shoot.adjustDistanceMap(ShotResult.UNDERSHOT));
     madeIt.whenPressed(() -> shoot.adjustDistanceMap(ShotResult.SCORE));
-    increaseSpeed.whenPressed(shoot::increaseSpeed);
-    decreaseSpeed.whenPressed(shoot::decreaseSpeed);
+    // increaseSpeed.whenPressed(shoot::increaseSpeed);
+    // decreaseSpeed.whenPressed(shoot::decreaseSpeed);
     
     
   }
@@ -226,13 +226,16 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new SequentialCommandGroup(
+    SequentialCommandGroup drive = new SequentialCommandGroup(
         new AutoDrive(driveSystem),//.withTimeout(4),
-        // new Shoot(intake, magazine, shooter, camera)  Cannot see the target, calibration not 100%
-        new InstantCommand(() -> shooter.set(.85), shooter),  // Short term solution for auto
-        new WaitCommand(3),
-        new InstantCommand(() -> magazine.setOutput(.5), magazine)
-      );
+        new WaitUntilCommand(145),
+        new InstantCommand(() -> magazine.setOutput(MagazineVals.DEFAULT_SPEED), magazine)
+    );
+      
+    return new ParallelCommandGroup(
+      drive,
+      shoot
+    );
   }
 
 
