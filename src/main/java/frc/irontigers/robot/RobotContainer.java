@@ -214,8 +214,8 @@ public class RobotContainer {
     overshot.whenPressed(() -> shoot.adjustDistanceMap(ShotResult.OVERSHOT));
     undershot.whenPressed(() -> shoot.adjustDistanceMap(ShotResult.UNDERSHOT));
     madeIt.whenPressed(() -> shoot.adjustDistanceMap(ShotResult.SCORE));
-    increaseSpeed.whenPressed(shoot::increaseSpeed);
-    decreaseSpeed.whenPressed(shoot::decreaseSpeed);
+    // increaseSpeed.whenPressed(shoot::increaseSpeed);
+    // decreaseSpeed.whenPressed(shoot::decreaseSpeed);
     
     
   }
