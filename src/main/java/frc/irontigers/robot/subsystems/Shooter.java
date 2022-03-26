@@ -40,7 +40,8 @@ public class Shooter extends SubsystemBase {
     flywheel.configVoltageCompSaturation(11.85, 30);
     flywheel.enableVoltageCompensation(true);
 
-    set(0.25);
+    // set(0.25);
+    setVelocity(3315);
   }
 
   public double getRPM() {

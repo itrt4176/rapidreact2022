@@ -208,7 +208,7 @@ public class RobotContainer {
     m_climberExtend.whenPressed(new ClimberCommand(climber, Direction.BACKWARD)); 
     m_climberRetract.whenPressed(new ClimberCommand(climber, Direction.FORWARD));
 
-    m_runShooter.whenPressed(shoot);
+    // m_runShooter.whenPressed(shoot);
     stopShooter.cancelWhenPressed(shoot);
 
     overshot.whenPressed(() -> shoot.adjustDistanceMap(ShotResult.OVERSHOT));
@@ -228,14 +228,16 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     SequentialCommandGroup drive = new SequentialCommandGroup(
         new AutoDrive(driveSystem),//.withTimeout(4),
-        new WaitUntilCommand(145),
-        new InstantCommand(() -> magazine.setOutput(MagazineVals.DEFAULT_SPEED), magazine)
+        new WaitUntilCommand(145)//,
+        //new InstantCommand(() -> magazine.setOutput(MagazineVals.DEFAULT_SPEED), magazine)
     );
+
+    return drive;
       
-    return new ParallelCommandGroup(
-      drive,
-      shoot
-    );
+    // return new ParallelCommandGroup(
+    //   drive,
+    //   shoot
+    // );
   }
 
 

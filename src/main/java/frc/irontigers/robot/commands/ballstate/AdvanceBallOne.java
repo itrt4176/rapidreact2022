@@ -27,7 +27,7 @@ public class AdvanceBallOne extends StateTransitionCommand<BallStates> {
     // addCommands(new FooCommand(), new BarCommand());
 
     addCommands(
-        new InstantCommand(() -> shooter.set(0.25), shooter),
+        new InstantCommand(() -> shooter.setVelocity(3315), shooter),
       new InstantCommand(() -> magazine.closeGate(BallGate.Front), magazine),
       new InstantCommand(() -> magazine.openGate(BallGate.Rear), magazine),
       new InstantCommand(() -> magazine.setOutput(Constants.MagazineVals.DEFAULT_SPEED), magazine),
