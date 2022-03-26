@@ -122,7 +122,7 @@ public class DriveSystem extends MecanumDriveSubsystem {
           break;
       }
 
-      super.drive(direction * gearScalar * ySpeed, direction * gearScalar * xSpeed, gearScalar * rotation);
+      super.drive(direction * gearScalar * -ySpeed, direction * gearScalar * xSpeed, gearScalar * rotation);
 
       gearScalarLog.append(gearScalar);
   }

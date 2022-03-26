@@ -33,7 +33,7 @@ public class AutoDrive extends CommandBase {
   @Override
   public void execute() {
     currentPos = driveSystem.getRobotPosition();
-    driveSystem.drive(0, -0.45, 0);
+    driveSystem.drive(0, 0.45, 0);
     // SmartDashboard.putNumber("Coordinate change", driveSystem.getRobotPosition().getY()
   }
 
