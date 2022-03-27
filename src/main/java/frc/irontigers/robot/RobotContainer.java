@@ -6,6 +6,7 @@ package frc.irontigers.robot;
 
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller.Axis;
 import frc.tigerlib.XboxControllerIT;
 import frc.tigerlib.XboxControllerIT.DPadDirection;
@@ -76,7 +77,7 @@ public class RobotContainer {
   private final Magazine magazine = new Magazine();
   //private final Climber climber = new Climber();
   private final PhotonCamera camera = new PhotonCamera("limelight");
-  private boolean cancel = false;
+  private boolean toggle = false;
 
   private final Climber climber = new Climber();
 
@@ -107,7 +108,7 @@ public class RobotContainer {
   // private final RunShooter shoot = new RunShooter(shooter, magazine, camera);
   private final Shoot shoot = new Shoot(intake, magazine, shooter, camera);
 
-  
+  private final JoystickButton toggleMagIntakeButton = new JoystickButton(manualController, Button.kX.value);
 
   // private final SequentialCommandGroup rampShooter = runShooter
   //     .beforeStarting(() -> magazine.openGate(BallGate.Both));
@@ -119,25 +120,25 @@ public class RobotContainer {
   private final Trigger s2Override = new JoystickButton(overrideController, Button.kY.value);
   private final Trigger s3Override = new JoystickButton(overrideController, Button.kX.value);
 
-  private final JoystickButton intakeForward = new JoystickButton(manualController, Button.kStart.value);
-  private final JoystickButton intakeBackward = new JoystickButton(overrideController, Button.kX.value);
-  private final JoystickButton intakeOff = new JoystickButton(manualController, Button.kBack.value);
-
+  
   private final JoystickButton magazineOn = new JoystickButton(manualController, Button.kX.value);
   private final JoystickButton magazineOff = new JoystickButton(manualController, Button.kY.value);
-
+  
   private final DPadButton m_climberExtend = new DPadButton(manualController, DPadDirection.kUp);
   private final DPadButton m_climberRetract = new DPadButton(manualController, DPadDirection.kDown);
   
   private final JoystickButton m_runShooter = new JoystickButton(manualController, Button.kA.value);
   private final JoystickButton stopShooter = new JoystickButton(manualController, Button.kB.value);
-
+  
   private final DPadButton overshot = new DPadButton(shotAdjustController, DPadDirection.kUp);
   private final DPadButton undershot = new DPadButton(shotAdjustController, DPadDirection.kDown);
   private final JoystickButton madeIt = new JoystickButton(shotAdjustController, Button.kA.value);
   private final DPadButton increaseSpeed = new DPadButton(shotAdjustController, DPadDirection.kRight);
   private final DPadButton decreaseSpeed = new DPadButton(shotAdjustController, DPadDirection.kLeft);
-                                                            
+  private final JoystickButton intakeForward = new JoystickButton(shotAdjustController, Button.kStart.value);  // To make it easier for the driver
+  private final JoystickButton intakeBackward = new JoystickButton(shotAdjustController, Button.kX.value);  // To make it easier for the driver
+  private final JoystickButton intakeOff = new JoystickButton(shotAdjustController, Button.kBack.value);  // To make it easier for the driver
+  
   // private final Trigger s0 = new Trigger(() -> magazine.readBallSensor(Sensor.S0)).debounce(0.04, DebounceType.kBoth);
   private final Trigger s1 = new Trigger(() -> magazine.readBallSensor(Sensor.S1)).debounce(0.04, DebounceType.kBoth).or(s1Override);
   private final Trigger s2 = new Trigger(() -> magazine.readBallSensor(Sensor.S2)).debounce(0.08, DebounceType.kBoth).or(s2Override);
@@ -198,12 +199,23 @@ public class RobotContainer {
 
     toggleDriveDirection.whenPressed(() -> driveSystem.toggleDriveFront());
 
-    intakeForward.whenPressed(new RunIntake(intake, Direction.FORWARD));
-    intakeBackward.whenPressed(new RunIntake(intake, Direction.BACKWARD));
-    intakeOff.whenPressed(new RunIntake(intake, Direction.STOP));
+    // intakeForward.whenPressed(new RunIntake(intake, Direction.FORWARD));
+    // intakeBackward.whenPressed(new RunIntake(intake, Direction.BACKWARD));
+    // intakeOff.whenPressed(new RunIntake(intake, Direction.STOP));
 
-    magazineOn.whenPressed(new InstantCommand(() -> magazine.setOutput(MagazineVals.DEFAULT_SPEED), magazine));
-    magazineOff.whenPressed(new InstantCommand(() -> magazine.setOutput(0), magazine));
+    magazineOn.whenPressed(() -> 
+      {if (toggle == true) {
+        magazine.setOutput(MagazineVals.DEFAULT_SPEED);
+        intake.set(0);
+        toggle = false;
+      } else {
+        magazine.setOutput(0);
+        intake.set(IntakeVals.DEFAULT_SPEED);
+        toggle = true;
+      }}
+    );
+
+    // magazineOff.whenPressed(new InstantCommand(() -> magazine.setOutput(0), magazine));
 
     m_climberExtend.whenPressed(new ClimberCommand(climber, Direction.BACKWARD)); 
     m_climberRetract.whenPressed(new ClimberCommand(climber, Direction.FORWARD));
@@ -240,6 +252,12 @@ public class RobotContainer {
     // );
   }
 
+  public ParallelCommandGroup handleMag() {
+    return new ParallelCommandGroup(
+      new RunIntake(intake, Direction.STOP),
+      new InstantCommand(() -> magazine.setOutput(MagazineVals.DEFAULT_SPEED), magazine)
+    );
+  }
 
   
   PhotonCamera getCamera() {
